@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movies</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 30%),
+    linear-gradient(135deg, #1d2671, #c33764);
+  color: white;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.hero p {
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 760px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 20px;
+  backdrop-filter: blur(16px);
+}
+
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+}
+
+.movie {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.movie:hover {
+  transform: translateY(-4px);
+}
+
+.movie.selected {
+  border-color: #00e08f;
+  box-shadow: 0 0 0 2px rgba(0, 224, 143, 0.22);
+}
+
+.movie img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+
+.movie-content {
+  padding: 14px;
+}
+
+.movie-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.movie-actions button,
+.summary button,
+.qty button {
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.movie-actions button {
+  flex: 1;
+  padding: 10px 12px;
+}
+
+.movie-actions .trailer {
+  background: rgba(255,255,255,0.14);
+  color: white;
+}
+
+.movie-actions .select {
+  background: #00e08f;
+  color: #08221a;
+}
+
+.chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.chip-group strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.chip.active {
+  background: rgba(0, 224, 143, 0.18);
+  border-color: #00e08f;
+}
+
+.seat-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.seat {
+  padding: 12px 0;
+  text-align: center;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.14);
+  cursor: pointer;
+}
+
+.seat.selected {
+  background: #00e08f;
+  color: #04251a;
+  font-weight: 700;
+}
+
+.snacks {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.snack {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.1);
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty button {
+  width: 34px;
+  height: 34px;
+  background: rgba(255,255,255,0.14);
+  color: white;
+}
+
+.summary {
+  position: sticky;
+  top: 20px;
+}
+
+.summary-card {
+  background: rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.summary button {
+  width: 100%;
+  padding: 14px 16px;
+  background: #00e08f;
+  color: #08221a;
+}
+
+#status {
+  margin-top: 14px;
+  color: #dffef0;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-box {
+  background: #0f1d3b;
+  border-radius: 20px;
+  padding: 18px;
+  width: min(720px, 100%);
+}
+
+.modal iframe {
+  width: 100%;
+  height: 380px;
+  border: none;
+  border-radius: 16px;
+}
+
+.modal-close {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: white;
+  color: #102c5c;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="hero">
+    <h1>Movie Booking</h1>
+    <p>Choose your movie, theatre, show time, seats, and snacks before moving to payment.</p>
+  </div>
+
+  <div class="layout">
+    <section class="panel">
+      <h2>Select Movie</h2>
+      <div class="movies" id="movies"></div>
+
+      <div class="chip-grid" style="margin-top:22px;">
+        <div class="chip-group">
+          <strong>Theatre</strong>
+          <div class="chips" id="theatres"></div>
+        </div>
+        <div class="chip-group">
+          <strong>Show Time</strong>
+          <div class="chips" id="times"></div>
+        </div>
+      </div>
+
+      <h2>Select Seats</h2>
+      <div class="seat-grid" id="seats"></div>
+
+      <h2 style="margin-top:22px;">Snacks</h2>
+      <div class="snacks" id="snacks"></div>
+    </section>
+
+    <aside class="panel summary">
+      <h2>Booking Summary</h2>
+      <div class="summary-card">
+        <div class="line"><span>Movie</span><strong id="summaryMovie">Not selected</strong></div>
+        <div class="line"><span>Theatre</span><strong id="summaryTheatre">PVR</strong></div>
+        <div class="line"><span>Show Time</span><strong id="summaryTime">10AM</strong></div>
+        <div class="line"><span>Seats</span><strong id="summarySeats">0</strong></div>
+        <div class="line"><span>Snacks</span><strong id="summarySnacks">None</strong></div>
+        <div class="line"><span>Total</span><strong id="summaryTotal">Rs. 0</strong></div>
+      </div>
+      <button id="bookBtn">Proceed To Payment</button>
+      <div id="status">Choose a movie and seats to continue.</div>
+    </aside>
+  </div>
+</div>
+
+<div class="modal" id="trailerModal">
+  <div class="modal-box">
+    <iframe id="trailerFrame" allowfullscreen></iframe>
+    <button class="modal-close" id="closeTrailer" type="button">Close Trailer</button>
+  </div>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+const movies = [
+  { name: "Leo", img: "Assests/LEO.jpg", rating: 4, trailer: "https://www.youtube.com/embed/Po3jStA673E" },
+  { name: "Jailer", img: "Assests/JAiler.jpg", rating: 5, trailer: "https://www.youtube.com/embed/Y5BeWdODPqo" },
+  { name: "Vikram", img: "Assests/Vikram.jpg", rating: 5, trailer: "https://www.youtube.com/embed/OKBMCL-frPU" },
+  { name: "Salaar", img: "Assests/SALAR.jpg", rating: 4, trailer: "https://www.youtube.com/embed/4GPvYMKtrtI" },
+  { name: "Dune 2", img: "Assests/DUNE2.jpg", rating: 5, trailer: "https://www.youtube.com/embed/U2Qp5pL3ovA" }
+];
+
+const theatres = ["PVR", "INOX", "AGS", "Sathyam"];
+const showTimes = ["10AM", "2PM", "6PM", "10PM"];
+const snackItems = [
+  { name: "Popcorn", price: 120 },
+  { name: "Coke", price: 80 },
+  { name: "Combo", price: 180 }
+];
+
+const moviesBox = document.getElementById("movies");
+const theatreBox = document.getElementById("theatres");
+const timeBox = document.getElementById("times");
+const seatsBox = document.getElementById("seats");
+const snacksBox = document.getElementById("snacks");
+const statusBox = document.getElementById("status");
+const trailerModal = document.getElementById("trailerModal");
+const trailerFrame = document.getElementById("trailerFrame");
+
+let selectedMovie = null;
+let selectedTheatre = theatres[0];
+let selectedTime = showTimes[0];
+let selectedSeats = [];
+let snacks = {};
+
+function formatCurrency(value) {
+  return TrendCartAPI.formatCurrency(value);
+}
+
+function updateSummary() {
+  const snackList = Object.entries(snacks)
+    .filter(([, value]) => value.qty > 0)
+    .map(([name, value]) => `${name} x${value.qty}`);
+
+  const totalSeatAmount = selectedSeats.length * 180;
+  const totalSnackAmount = Object.values(snacks).reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const total = totalSeatAmount + totalSnackAmount;
+
+  document.getElementById("summaryMovie").textContent = selectedMovie ? selectedMovie.name : "Not selected";
+  document.getElementById("summaryTheatre").textContent = selectedTheatre;
+  document.getElementById("summaryTime").textContent = selectedTime;
+  document.getElementById("summarySeats").textContent = selectedSeats.length ? selectedSeats.join(", ") : "0";
+  document.getElementById("summarySnacks").textContent = snackList.length ? snackList.join(", ") : "None";
+  document.getElementById("summaryTotal").textContent = formatCurrency(total);
+}
+
+function renderMovies() {
+  moviesBox.innerHTML = movies.map((movie) => `
+    <div class="movie ${selectedMovie && selectedMovie.name === movie.name ? "selected" : ""}" data-movie="${movie.name}">
+      <img src="${movie.img}" alt="${movie.name}">
+      <div class="movie-content">
+        <h3>${movie.name}</h3>
+        <div>${"★".repeat(movie.rating)}</div>
+        <div class="movie-actions">
+          <button class="trailer" data-trailer="${movie.trailer}" type="button">Trailer</button>
+          <button class="select" data-select="${movie.name}" type="button">Select</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-select]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedMovie = movies.find((movie) => movie.name === button.dataset.select);
+      statusBox.textContent = `${selectedMovie.name} selected. Continue with seats and snacks.`;
+      renderMovies();
+      updateSummary();
+    });
+  });
+
+  document.querySelectorAll("[data-trailer]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      trailerFrame.src = button.dataset.trailer;
+      trailerModal.classList.add("open");
+    });
+  });
+}
+
+function renderChips(container, values, selectedValue, onSelect) {
+  container.innerHTML = values.map((value) => `
+    <button class="chip ${value === selectedValue ? "active" : ""}" data-value="${value}" type="button">${value}</button>
+  `).join("");
+
+  container.querySelectorAll(".chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      onSelect(chip.dataset.value);
+      renderChips(container, values, chip.dataset.value, onSelect);
+      updateSummary();
+    });
+  });
+}
+
+function renderSeats() {
+  seatsBox.innerHTML = "";
+  for (let index = 1; index <= 24; index += 1) {
+    const seatNo = `S${index}`;
+    const seat = document.createElement("button");
+    seat.type = "button";
+    seat.className = `seat ${selectedSeats.includes(seatNo) ? "selected" : ""}`;
+    seat.textContent = seatNo;
+    seat.addEventListener("click", () => {
+      if (selectedSeats.includes(seatNo)) {
+        selectedSeats = selectedSeats.filter((value) => value !== seatNo);
+      } else {
+        selectedSeats.push(seatNo);
+      }
+      renderSeats();
+      updateSummary();
+    });
+    seatsBox.appendChild(seat);
+  }
+}
+
+function renderSnacks() {
+  snacksBox.innerHTML = snackItems.map((snack) => {
+    const qty = snacks[snack.name]?.qty || 0;
+    return `
+      <div class="snack">
+        <div>
+          <strong>${snack.name}</strong>
+          <div>${formatCurrency(snack.price)}</div>
+        </div>
+        <div class="qty">
+          <button data-snack-minus="${snack.name}" type="button">-</button>
+          <span>${qty}</span>
+          <button data-snack-plus="${snack.name}" type="button">+</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  document.querySelectorAll("[data-snack-minus]").forEach((button) => {
+    button.addEventListener("click", () => changeSnackQty(button.dataset.snackMinus, -1));
+  });
+
+  document.querySelectorAll("[data-snack-plus]").forEach((button) => {
+    button.addEventListener("click", () => changeSnackQty(button.dataset.snackPlus, 1));
+  });
+}
+
+function changeSnackQty(name, change) {
+  const item = snackItems.find((snack) => snack.name === name);
+  if (!snacks[name]) {
+    snacks[name] = { price: item.price, qty: 0 };
+  }
+  snacks[name].qty = Math.max(0, snacks[name].qty + change);
+  renderSnacks();
+  updateSummary();
+}
+
+document.getElementById("closeTrailer").addEventListener("click", () => {
+  trailerFrame.src = "";
+  trailerModal.classList.remove("open");
+});
+
+document.getElementById("bookBtn").addEventListener("click", async () => {
+  if (!selectedMovie) {
+    statusBox.textContent = "Please select a movie.";
+    return;
+  }
+
+  if (selectedSeats.length === 0) {
+    statusBox.textContent = "Please select at least one seat.";
+    return;
+  }
+
+  try {
+    const { user } = await TrendCartAPI.getCurrentUser();
+    if (!user) {
+      window.location.href = "Login.html";
+      return;
+    }
+
+    const snackList = Object.entries(snacks)
+      .filter(([, value]) => value.qty > 0)
+      .map(([name, value]) => `${name} x${value.qty}`);
+    const snackAmount = Object.values(snacks).reduce((sum, value) => sum + (value.price * value.qty), 0);
+    const total = (selectedSeats.length * 180) + snackAmount;
+
+    TrendCartAPI.setPendingPayment({
+      type: "movie",
+      title: selectedMovie.name,
+      subtitle: `${selectedTheatre} • ${selectedTime}`,
+      amount: total,
+      movie: selectedMovie.name,
+      theatre: selectedTheatre,
+      time: selectedTime,
+      seats: selectedSeats,
+      snacks: snackList,
+      items: [
+        `Seats: ${selectedSeats.join(", ")}`,
+        ...(snackList.length ? snackList : [])
+      ]
+    });
+
+    window.location.href = "Payment.html?type=movie";
+  } catch (error) {
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    statusBox.textContent = error.message;
+  }
+});
+
+renderMovies();
+renderChips(theatreBox, theatres, selectedTheatre, (value) => { selectedTheatre = value; });
+renderChips(timeBox, showTimes, selectedTime, (value) => { selectedTime = value; });
+renderSeats();
+renderSnacks();
+updateSummary();
+</script>
+</body>
+</html>

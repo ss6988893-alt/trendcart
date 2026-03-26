@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket History</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #2c2c54, #6a0572);
+  color: white;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.card a {
+  display: inline-block;
+  margin-top: 10px;
+  color: white;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <h1>Ticket History</h1>
+  <div class="grid" id="tickets"></div>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+async function loadTickets() {
+  const box = document.getElementById("tickets");
+  try {
+    const tickets = await TrendCartAPI.listMovieTickets();
+    if (tickets.length === 0) {
+      box.innerHTML = `<div class="card">No bookings yet.</div>`;
+      return;
+    }
+
+    box.innerHTML = tickets.map((ticket) => `
+      <div class="card">
+        <h3>${ticket.movie}</h3>
+        <p>${ticket.theatre}</p>
+        <p>${ticket.time}</p>
+        <p>Seats: ${ticket.seats.join(", ")}</p>
+        <p>${TrendCartAPI.formatCurrency(ticket.price)}</p>
+        <p>${ticket.date}</p>
+        <p>UPI Ref: ${ticket.paymentReference || "Not entered"}</p>
+        <a href="Ticketview.html?id=${ticket.id}">Open Ticket</a>
+      </div>
+    `).join("");
+  } catch (error) {
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    box.innerHTML = `<div class="card">${error.message}</div>`;
+  }
+}
+
+loadTickets();
+</script>
+</body>
+</html>

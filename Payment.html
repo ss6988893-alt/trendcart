@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Payment</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.14), transparent 30%),
+    linear-gradient(135deg, #07142e, #1649a3 55%, #18a7ff);
+  min-height: 100vh;
+  color: white;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.hero p {
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 720px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 22px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  padding: 24px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 40px rgba(4, 18, 43, 0.24);
+}
+
+.summary-card,
+.payment-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 18px;
+  margin-top: 14px;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.big {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.qr-wrap {
+  background: white;
+  border-radius: 24px;
+  padding: 20px;
+  width: fit-content;
+  margin: 18px auto 10px;
+}
+
+#qrImage {
+  width: 240px;
+  height: 240px;
+  display: block;
+}
+
+label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+button {
+  display: inline-block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+button.primary {
+  background: #ffffff;
+  color: #0f244f;
+}
+
+button.secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
+
+.hint {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.fine-print {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.68);
+  margin-top: 10px;
+}
+
+#message {
+  min-height: 24px;
+  margin-top: 16px;
+  font-size: 15px;
+}
+
+ul {
+  padding-left: 18px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="hero">
+    <span class="badge">TrendCart Secure Checkout</span>
+    <h1>Complete your payment</h1>
+    <p>
+      Review the booking summary, scan the QR code, or use Razorpay test checkout.
+      Product, food, and movie data are saved in MySQL only after payment success.
+    </p>
+  </div>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Order Summary</h2>
+      <div id="summary">Loading payment details...</div>
+    </section>
+
+    <section class="panel">
+      <h2>Checkout Options</h2>
+      <div class="payment-card">
+        <div class="qr-wrap">
+          <img id="qrImage" alt="Payment QR code">
+        </div>
+        <p class="hint">Scan this QR with PhonePe, Google Pay, Paytm, or any UPI app.</p>
+        <div class="line">
+          <span>Payable amount</span>
+          <strong id="amount">Rs. 0</strong>
+        </div>
+        <div class="line">
+          <span>UPI ID</span>
+          <strong>ss6988893@okicici</strong>
+        </div>
+        <div class="line">
+          <span>Razorpay Test</span>
+          <strong id="razorpayStatus">Checking...</strong>
+        </div>
+        <label for="utr">UPI Reference No. (optional for QR payment)</label>
+        <input id="utr" type="text" placeholder="Example: 435678901234">
+        <div class="fine-print">
+          Automatic verification works only in Razorpay test mode when you add test keys.
+          QR payment remains user-confirmed with optional UPI reference capture.
+        </div>
+      </div>
+      <button class="primary" id="razorpayBtn" disabled>Pay With Razorpay Test</button>
+      <button class="secondary" id="confirmBtn">I Have Paid With QR</button>
+      <button class="secondary" id="cancelBtn">Cancel Payment</button>
+      <div id="message"></div>
+    </section>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="Assests/api.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const type = params.get("type") || "product";
+const summaryBox = document.getElementById("summary");
+const amountBox = document.getElementById("amount");
+const messageBox = document.getElementById("message");
+const qrImage = document.getElementById("qrImage");
+const utrInput = document.getElementById("utr");
+const razorpayBtn = document.getElementById("razorpayBtn");
+const razorpayStatus = document.getElementById("razorpayStatus");
+let paymentData = null;
+let serverInfo = null;
+
+function setMessage(text, isError = false) {
+  messageBox.textContent = text;
+  messageBox.style.color = isError ? "#ffd5d5" : "#d5ffe7";
+}
+
+function getQrUrl(amount, note) {
+  const upiLink = `upi://pay?pa=ss6988893@okicici&pn=TrendCart&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiLink)}`;
+}
+
+async function buildProductPayment() {
+  const items = await TrendCartAPI.getCart();
+  if (!items.length) {
+    throw new Error("Your cart is empty.");
+  }
+
+  const total = items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+  return {
+    type: "product",
+    title: "Shopping Checkout",
+    subtitle: `${items.length} cart item(s) ready for payment`,
+    amount: total,
+    items: items.map((item) => `${item.name} x ${item.quantity}`)
+  };
+}
+
+function renderSummary(data) {
+  const items = Array.isArray(data.items) && data.items.length
+    ? `<ul>${data.items.map((item) => `<li>${item}</li>`).join("")}</ul>`
+    : "";
+
+  summaryBox.innerHTML = `
+    <div class="summary-card">
+      <div class="line"><span>Category</span><strong>${data.type.toUpperCase()}</strong></div>
+      <div class="line"><span>Title</span><strong>${data.title}</strong></div>
+      <div class="line"><span>Details</span><strong>${data.subtitle || "-"}</strong></div>
+      <div class="line"><span>Total</span><strong class="big">${TrendCartAPI.formatCurrency(data.amount)}</strong></div>
+      ${items}
+    </div>
+  `;
+
+  amountBox.textContent = TrendCartAPI.formatCurrency(data.amount);
+  qrImage.src = getQrUrl(data.amount, `${data.type} payment`);
+}
+
+async function finalizeSuccess(paymentReference = "") {
+  if (type === "product") {
+    const result = await TrendCartAPI.placeOrder("UPI", paymentReference);
+    window.location.href = `success.html?type=product&id=${result.orderId}`;
+    return;
+  }
+
+  if (type === "food") {
+    const result = await TrendCartAPI.orderFood(
+      paymentData.foodItemId,
+      paymentData.quantity || 1,
+      paymentReference
+    );
+    TrendCartAPI.clearPendingPayment();
+    window.location.href = `success.html?type=food&id=${result.orderId}`;
+    return;
+  }
+
+  if (type === "movie") {
+    const result = await TrendCartAPI.saveMovieTicket({
+      movie: paymentData.movie,
+      theatre: paymentData.theatre,
+      time: paymentData.time,
+      seats: paymentData.seats || [],
+      snacks: paymentData.snacks || [],
+      price: paymentData.amount,
+      paymentReference,
+      date: new Date().toLocaleString()
+    });
+    TrendCartAPI.clearPendingPayment();
+    window.location.href = `Ticketview.html?id=${result.ticketId}`;
+  }
+}
+
+async function openRazorpayCheckout() {
+  try {
+    setMessage("Creating Razorpay test order...");
+    const order = await TrendCartAPI.createRazorpayOrder({
+      amount: paymentData.amount,
+      type
+    });
+
+    const options = {
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: "TrendCart",
+      description: `${paymentData.title} payment`,
+      order_id: order.orderId,
+      handler: async function (response) {
+        try {
+          setMessage("Verifying Razorpay payment...");
+          const verification = await TrendCartAPI.verifyRazorpayPayment(response);
+          await finalizeSuccess(verification.paymentReference);
+        } catch (error) {
+          setMessage(error.message, true);
+        }
+      },
+      prefill: {},
+      theme: {
+        color: "#1758d7"
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on("payment.failed", function (response) {
+      setMessage(response.error.description || "Razorpay payment failed.", true);
+    });
+    rzp.open();
+  } catch (error) {
+    setMessage(error.message, true);
+  }
+}
+
+async function loadPayment() {
+  try {
+    serverInfo = await TrendCartAPI.getServerInfo();
+    razorpayStatus.textContent = serverInfo.razorpayEnabled ? "Enabled" : "Not configured";
+    razorpayBtn.disabled = !serverInfo.razorpayEnabled;
+
+    if (type === "product") {
+      paymentData = await buildProductPayment();
+    } else {
+      paymentData = TrendCartAPI.getPendingPayment();
+      if (!paymentData || paymentData.type !== type) {
+        throw new Error("Payment details not found. Please try again.");
+      }
+    }
+
+    renderSummary(paymentData);
+  } catch (error) {
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    setMessage(error.message, true);
+    razorpayBtn.disabled = true;
+    document.getElementById("confirmBtn").disabled = true;
+  }
+}
+
+razorpayBtn.addEventListener("click", openRazorpayCheckout);
+
+document.getElementById("confirmBtn").addEventListener("click", async () => {
+  try {
+    const paymentReference = utrInput.value.trim();
+    setMessage("Saving payment and creating your booking...");
+    await finalizeSuccess(paymentReference);
+  } catch (error) {
+    setMessage(error.message, true);
+  }
+});
+
+document.getElementById("cancelBtn").addEventListener("click", () => {
+  TrendCartAPI.clearPendingPayment();
+  window.location.href = "Error.html?message=Payment cancelled by user.";
+});
+
+loadPayment();
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f7fc;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 20px 50px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  background: white;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(10, 27, 56, 0.08);
+}
+
+.item img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+button,
+a {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  background: #da3b36;
+  color: white;
+}
+
+a {
+  background: #1758d7;
+  color: white;
+}
+
+.summary {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(10, 27, 56, 0.08);
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <h1>Your Cart</h1>
+  <div id="items"></div>
+
+  <div class="summary">
+    <h2>Total: <span id="total">Rs. 0</span></h2>
+    <a href="Payment.html">Proceed to Payment</a>
+  </div>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+async function loadCart() {
+  const itemsBox = document.getElementById("items");
+  const totalBox = document.getElementById("total");
+
+  try {
+    const items = await TrendCartAPI.getCart();
+
+    if (items.length === 0) {
+      itemsBox.innerHTML = `<div class="summary">Your cart is empty. <a href="Product.html">Shop now</a></div>`;
+      totalBox.textContent = "Rs. 0";
+      return;
+    }
+
+    let total = 0;
+    itemsBox.innerHTML = items.map((item) => {
+      const lineTotal = Number(item.price) * Number(item.quantity);
+      total += lineTotal;
+      return `
+        <div class="item">
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <h3>${item.name}</h3>
+            <p>${item.quantity} x ${TrendCartAPI.formatCurrency(item.price)}</p>
+            <strong>${TrendCartAPI.formatCurrency(lineTotal)}</strong>
+          </div>
+          <button data-remove="${item.id}">Remove</button>
+        </div>
+      `;
+    }).join("");
+
+    totalBox.textContent = TrendCartAPI.formatCurrency(total);
+
+    document.querySelectorAll("[data-remove]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        await TrendCartAPI.removeFromCart(Number(button.dataset.remove));
+        loadCart();
+      });
+    });
+  } catch (error) {
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    itemsBox.innerHTML = `<div class="summary">${error.message}</div>`;
+  }
+}
+
+loadCart();
+</script>
+</body>
+</html>

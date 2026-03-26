@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Details</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #eef2f9;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.panel {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 16px 32px rgba(12, 29, 58, 0.08);
+}
+
+img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+button,
+a {
+  display: inline-block;
+  margin-top: 12px;
+  margin-right: 12px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  background: #1758d7;
+  color: white;
+}
+
+a {
+  background: #ff8a00;
+  color: white;
+}
+
+button.secondary {
+  background: #ff8a00;
+}
+
+#message {
+  margin-top: 16px;
+  color: #1758d7;
+}
+
+@media (max-width: 860px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="panel">
+    <img id="image" alt="Product image">
+  </div>
+
+  <div class="panel">
+    <h1 id="name">Loading...</h1>
+    <p id="category"></p>
+    <p id="description"></p>
+    <h2 id="price"></h2>
+    <div id="rating"></div>
+
+    <label for="quantity">Quantity</label>
+    <input id="quantity" type="number" min="1" value="1">
+
+    <div>
+      <button id="addBtn">Add to Cart</button>
+      <button id="buyBtn" class="secondary">Buy Now</button>
+      <a href="Cart.html">Go to Cart</a>
+    </div>
+
+    <div id="message"></div>
+  </div>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const productId = Number(params.get("id"));
+const messageBox = document.getElementById("message");
+
+async function loadProduct() {
+  try {
+    const product = await TrendCartAPI.getProduct(productId);
+    document.getElementById("image").src = product.image;
+    document.getElementById("name").textContent = product.name;
+    document.getElementById("category").textContent = `Category: ${product.category}`;
+    document.getElementById("description").textContent = product.description;
+    document.getElementById("price").textContent = TrendCartAPI.formatCurrency(product.price);
+    document.getElementById("rating").textContent = "Rating: " + "★".repeat(product.rating);
+
+    document.getElementById("addBtn").addEventListener("click", async () => {
+      const quantity = Math.max(1, Number(document.getElementById("quantity").value || 1));
+      try {
+        await TrendCartAPI.addToCart(product.id, quantity);
+        messageBox.textContent = "Item added to cart successfully.";
+      } catch (error) {
+        if (error.message.includes("login")) {
+          window.location.href = "Login.html";
+          return;
+        }
+        messageBox.textContent = error.message;
+      }
+    });
+
+    document.getElementById("buyBtn").addEventListener("click", async () => {
+      const quantity = Math.max(1, Number(document.getElementById("quantity").value || 1));
+      try {
+        const { user } = await TrendCartAPI.getCurrentUser();
+        if (!user) {
+          window.location.href = "Login.html";
+          return;
+        }
+
+        await TrendCartAPI.addToCart(product.id, quantity);
+        window.location.href = "Payment.html?type=product";
+      } catch (error) {
+        if (error.message.includes("login")) {
+          window.location.href = "Login.html";
+          return;
+        }
+        messageBox.textContent = error.message;
+      }
+    });
+  } catch (error) {
+    document.querySelector(".container").innerHTML = `<div class="panel">${error.message}</div>`;
+  }
+}
+
+loadProduct();
+</script>
+</body>
+</html>

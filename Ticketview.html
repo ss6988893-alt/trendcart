@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket View</title>
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 30%),
+    linear-gradient(135deg, #1d2671, #c33764);
+  color: white;
+}
+
+.wrapper {
+  width: min(820px, calc(100vw - 32px));
+}
+
+.ticket {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  background: white;
+  color: #151922;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.28);
+}
+
+.left,
+.right {
+  padding: 28px;
+}
+
+.left {
+  background: linear-gradient(180deg, #ffffff, #f5f7ff);
+}
+
+.right {
+  background: linear-gradient(180deg, #102c5c, #153d7e);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pill {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(23, 88, 215, 0.1);
+  color: #1758d7;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.meta-box {
+  background: rgba(16, 44, 92, 0.06);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.meta-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #5d6d88;
+}
+
+.qr-box {
+  background: white;
+  padding: 16px;
+  border-radius: 18px;
+  width: fit-content;
+  margin: 16px auto 0;
+}
+
+#qr {
+  width: 180px;
+  height: 180px;
+  display: block;
+}
+
+.actions {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.actions a,
+.actions button {
+  display: inline-block;
+  margin: 8px 8px 0 0;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: none;
+  background: white;
+  color: #102c5c;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 820px) {
+  .ticket {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="ticket" id="ticket">Loading ticket...</div>
+  <div class="actions">
+    <a href="Tickethistory.html">Ticket History</a>
+    <a href="Movies.html">Book Another</a>
+    <button id="printBtn" type="button">Print Ticket</button>
+  </div>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+async function loadTicket() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const box = document.getElementById("ticket");
+
+  if (!id) {
+    box.textContent = "Ticket id is missing.";
+    return;
+  }
+
+  try {
+    const ticket = await TrendCartAPI.getMovieTicket(id);
+    const serverInfo = await TrendCartAPI.getServerInfo();
+    const scanUrl = `${serverInfo.baseUrl}/Ticketscan.html?id=${ticket.id}`;
+    const qrText = encodeURIComponent(scanUrl);
+    box.innerHTML = `
+      <div class="left">
+        <span class="pill">TrendCart Cinema Pass</span>
+        <h1>${ticket.movie}</h1>
+        <p>Your booking is confirmed and stored in MySQL.</p>
+        <div class="meta">
+          <div class="meta-box"><strong>Ticket ID</strong>#${ticket.id}</div>
+          <div class="meta-box"><strong>Theatre</strong>${ticket.theatre}</div>
+          <div class="meta-box"><strong>Show Time</strong>${ticket.time}</div>
+          <div class="meta-box"><strong>Seats</strong>${ticket.seats.join(", ")}</div>
+          <div class="meta-box"><strong>Snacks</strong>${ticket.snacks.length ? ticket.snacks.join(", ") : "None"}</div>
+          <div class="meta-box"><strong>Paid</strong>${TrendCartAPI.formatCurrency(ticket.price)}</div>
+        </div>
+      </div>
+      <div class="right">
+        <h2>Scan at entry</h2>
+        <p>Scan this QR code to verify movie name, timing, seats, and payment status.</p>
+        <div class="qr-box">
+          <img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrText}" alt="Ticket QR code">
+        </div>
+        <p><strong>Booked At:</strong> ${ticket.date}</p>
+        <p><strong>UPI Ref:</strong> ${ticket.paymentReference || "Not entered"}</p>
+        <p><strong>Status:</strong> Confirmed</p>
+      </div>
+    `;
+  } catch (error) {
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    box.textContent = error.message;
+  }
+}
+
+document.getElementById("printBtn").addEventListener("click", () => {
+  window.print();
+});
+
+loadTicket();
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Order</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #fff7f2;
+}
+
+.topbar {
+  background: linear-gradient(90deg, #ff6a00, #db3a34);
+  color: white;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.topbar input {
+  padding: 12px;
+  width: min(320px, 100%);
+  border-radius: 12px;
+  border: none;
+}
+
+.grid {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(126, 45, 9, 0.09);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.content {
+  padding: 16px;
+}
+
+button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #db3a34;
+  color: white;
+  cursor: pointer;
+}
+
+#status {
+  padding: 0 24px 24px;
+  color: #db3a34;
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div>
+    <strong>TrendCart Food</strong>
+    <div>Food orders are saved in MySQL</div>
+  </div>
+  <input id="search" type="text" placeholder="Search food...">
+</header>
+
+<div id="status"></div>
+<div class="grid" id="foods"></div>
+
+<script src="Assests/api.js"></script>
+<script>
+const foodsBox = document.getElementById("foods");
+const statusBox = document.getElementById("status");
+
+function renderFood(list) {
+  foodsBox.innerHTML = list.map((food) => `
+    <div class="card">
+      <img src="${food.image}" alt="${food.name}">
+      <div class="content">
+        <h3>${food.name}</h3>
+        <p>${food.restaurant}</p>
+        <p>${food.time}</p>
+        <p>${TrendCartAPI.formatCurrency(food.price)}</p>
+        <button data-order="${food.id}">Order Now</button>
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-order]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        const { user } = await TrendCartAPI.getCurrentUser();
+        if (!user) {
+          window.location.href = "Login.html";
+          return;
+        }
+
+        const food = list.find((item) => item.id === Number(button.dataset.order));
+        TrendCartAPI.setPendingPayment({
+          type: "food",
+          title: food.name,
+          subtitle: `${food.restaurant} • ${food.time}`,
+          amount: Number(food.price),
+          foodItemId: food.id,
+          quantity: 1
+        });
+        window.location.href = "Payment.html?type=food";
+      } catch (error) {
+        if (error.message.includes("login")) {
+          window.location.href = "Login.html";
+          return;
+        }
+        statusBox.textContent = error.message;
+      }
+    });
+  });
+}
+
+async function loadFood(search = "") {
+  try {
+    const foods = await TrendCartAPI.listFoodItems({ search });
+    renderFood(foods);
+    statusBox.textContent = `${foods.length} food item(s) loaded from MySQL.`;
+  } catch (error) {
+    statusBox.textContent = error.message;
+  }
+}
+
+document.getElementById("search").addEventListener("input", (event) => {
+  loadFood(event.target.value.trim());
+});
+
+loadFood();
+</script>
+</body>
+</html>

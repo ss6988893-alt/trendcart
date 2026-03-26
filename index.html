@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendCart</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f5f7fb;
+  color: #162033;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #1758d7, #102c5c);
+  color: white;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.navbar a,
+.navbar button {
+  color: white;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.hero {
+  padding: 56px 32px 28px;
+  background:
+    radial-gradient(circle at top, rgba(23, 88, 215, 0.15), transparent 40%),
+    linear-gradient(180deg, #eef5ff, #f5f7fb 70%);
+}
+
+.hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(32px, 4vw, 48px);
+}
+
+.hero p {
+  margin: 0;
+  max-width: 720px;
+  color: #42526d;
+}
+
+.cards,
+.users {
+  padding: 24px 32px 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.card,
+.user-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px rgba(17, 38, 74, 0.08);
+}
+
+.card a {
+  display: inline-block;
+  margin-top: 12px;
+  color: #1758d7;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e5efff;
+  color: #1758d7;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="brand">
+    <strong>TrendCart</strong>
+    <div id="welcome">MySQL Full Stack Demo</div>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="Product.html">Products</a>
+    <a href="Food.html">Food</a>
+    <a href="Movies.html">Movies</a>
+    <a href="Cart.html">Cart</a>
+    <a href="Orderhistory.html">Orders</a>
+    <a href="Tickethistory.html">Tickets</a>
+    <a href="Profile.html">Profile</a>
+    <a href="Admin.html">Admin</a>
+    <a href="Login.html" id="loginLink">Login</a>
+    <button id="logoutBtn" hidden>Logout</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Professional full-stack shopping, food, and movie booking app.</h1>
+  <p>
+    TrendCart now includes MySQL-backed login, cart, checkout, order history, ticket history,
+    profile, admin dashboard, and QR payment flows powered by your backend.
+  </p>
+</section>
+
+<section class="cards">
+  <div class="grid">
+    <div class="card">
+      <div class="badge">Shop</div>
+      <h3>Products from MySQL</h3>
+      <p>Browse products loaded from the database and pay through the secure checkout flow.</p>
+      <a href="Product.html">Explore products</a>
+    </div>
+
+    <div class="card">
+      <div class="badge">Food</div>
+      <h3>Food Orders</h3>
+      <p>Food items use the same QR payment process and are saved in your order history.</p>
+      <a href="Food.html">Order food</a>
+    </div>
+
+    <div class="card">
+      <div class="badge">Movies</div>
+      <h3>Ticket Booking</h3>
+      <p>Book tickets, pay first, and view a professional ticket card after confirmation.</p>
+      <a href="Movies.html">Book tickets</a>
+    </div>
+
+    <div class="card">
+      <div class="badge">Account</div>
+      <h3>Profile and History</h3>
+      <p>Check your profile, product/food order history, and your saved ticket bookings.</p>
+      <a href="Profile.html">Open profile</a>
+    </div>
+  </div>
+</section>
+
+<section class="users">
+  <h2>Recent Users from MySQL</h2>
+  <div class="grid" id="users"></div>
+</section>
+
+<script src="Assests/api.js"></script>
+<script>
+async function loadUsers() {
+  const container = document.getElementById("users");
+  try {
+    const users = await TrendCartAPI.listUsers();
+    container.innerHTML = users.map((user) => `
+      <div class="user-card">
+        <h3>${user.name}</h3>
+        <p>${user.email}</p>
+      </div>
+    `).join("");
+  } catch (error) {
+    container.innerHTML = `<div class="user-card">${error.message}</div>`;
+  }
+}
+
+async function loadSession() {
+  const { user } = await TrendCartAPI.getCurrentUser();
+  const welcome = document.getElementById("welcome");
+  const loginLink = document.getElementById("loginLink");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (user) {
+    welcome.textContent = `Welcome, ${user.name} (${user.role})`;
+    loginLink.hidden = true;
+    logoutBtn.hidden = false;
+  } else {
+    welcome.textContent = "Please login to save cart, orders, and bookings";
+  }
+
+  logoutBtn.addEventListener("click", async () => {
+    await TrendCartAPI.logout();
+    window.location.href = "Login.html";
+  });
+}
+
+loadUsers();
+loadSession();
+</script>
+</body>
+</html>

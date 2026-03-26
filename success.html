@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Success</title>
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #1ea55b, #0f7b45);
+}
+
+.box {
+  width: min(520px, calc(100vw - 32px));
+  background: white;
+  border-radius: 22px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+a {
+  display: inline-block;
+  margin-top: 16px;
+  margin-right: 10px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: #1758d7;
+  color: white;
+  text-decoration: none;
+}
+
+#details {
+  margin-top: 18px;
+  text-align: left;
+  background: #f5f8ff;
+  border-radius: 16px;
+  padding: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h1>Order Successful</h1>
+  <p>Your data is now stored in the backend and MySQL database.</p>
+  <div id="details">Loading order details...</div>
+  <a href="index.html">Go Home</a>
+  <a href="Orderhistory.html">Open Order History</a>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+async function loadDetails() {
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("id");
+  const type = params.get("type") || "product";
+  const details = document.getElementById("details");
+
+  if (!orderId) {
+    details.textContent = "Order created successfully.";
+    return;
+  }
+
+  try {
+    const order = await TrendCartAPI.getOrder(orderId);
+    const itemsHtml = order.items.map((item) => `
+      <li>${item.item_name} - ${item.quantity} x ${TrendCartAPI.formatCurrency(item.unit_price)}</li>
+    `).join("");
+
+    details.innerHTML = `
+      <p><strong>Order ID:</strong> #${order.id}</p>
+      <p><strong>Type:</strong> ${type}</p>
+      <p><strong>Status:</strong> ${order.payment_status}</p>
+      <p><strong>Payment Method:</strong> ${order.payment_method}</p>
+      <p><strong>UPI Ref:</strong> ${order.payment_reference || "Not entered"}</p>
+      <p><strong>Total:</strong> ${TrendCartAPI.formatCurrency(order.total_amount)}</p>
+      <p><strong>Items:</strong></p>
+      <ul>${itemsHtml}</ul>
+    `;
+  } catch (error) {
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    details.textContent = error.message;
+  }
+}
+
+loadDetails();
+</script>
+</body>
+</html>

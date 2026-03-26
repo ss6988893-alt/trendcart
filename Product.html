@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f3f6fb;
+}
+
+.navbar {
+  background: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+.navbar input {
+  width: min(320px, 100%);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d7deea;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 76px);
+}
+
+.sidebar {
+  background: #102c5c;
+  color: white;
+  padding: 24px;
+}
+
+.sidebar button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+  cursor: pointer;
+}
+
+.products {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.product {
+  background: white;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(15, 36, 73, 0.09);
+}
+
+.product img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.rating {
+  color: #d18600;
+}
+
+button.action,
+a.action {
+  display: inline-block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 12px;
+  background: #1758d7;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+button.secondary {
+  background: #ff8a00;
+}
+
+#status {
+  padding: 0 24px 24px;
+  color: #1758d7;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <strong>TrendCart Products</strong>
+  <input id="search" type="text" placeholder="Search products...">
+  <a href="Cart.html">Go to Cart</a>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h3>Categories</h3>
+    <button data-category="All">All</button>
+    <button data-category="Mobiles">Mobiles</button>
+    <button data-category="Laptops">Laptops</button>
+    <button data-category="Shoes">Shoes</button>
+    <button data-category="Headphones">Headphones</button>
+  </aside>
+
+  <main>
+    <div id="status"></div>
+    <div class="products" id="products"></div>
+  </main>
+</div>
+
+<script src="Assests/api.js"></script>
+<script>
+const productBox = document.getElementById("products");
+const statusBox = document.getElementById("status");
+let selectedCategory = "All";
+let searchText = "";
+
+function renderProducts(list) {
+  productBox.innerHTML = list.map((product) => `
+    <div class="product">
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>${TrendCartAPI.formatCurrency(product.price)}</p>
+      <div class="rating">${"★".repeat(product.rating)}</div>
+      <a class="action" href="product-details.html?id=${product.id}">View Details</a>
+      <button class="action secondary" data-add="${product.id}">Add to Cart</button>
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-add]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await TrendCartAPI.addToCart(Number(button.dataset.add), 1);
+        statusBox.textContent = "Item added to cart.";
+      } catch (error) {
+        if (error.message.includes("login")) {
+          window.location.href = "Login.html";
+          return;
+        }
+        statusBox.textContent = error.message;
+      }
+    });
+  });
+}
+
+async function loadProducts() {
+  try {
+    const products = await TrendCartAPI.listProducts({
+      category: selectedCategory,
+      search: searchText
+    });
+    renderProducts(products);
+    statusBox.textContent = `${products.length} product(s) loaded from MySQL.`;
+  } catch (error) {
+    productBox.innerHTML = "";
+    statusBox.textContent = error.message;
+  }
+}
+
+document.querySelectorAll("[data-category]").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+    loadProducts();
+  });
+});
+
+document.getElementById("search").addEventListener("input", (event) => {
+  searchText = event.target.value.trim();
+  loadProducts();
+});
+
+loadProducts();
+</script>
+</body>
+</html>
