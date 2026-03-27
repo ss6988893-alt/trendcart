@@ -9,12 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --line: rgba(154, 210, 255, 0.14);
-  --text: #eef5ff;
-  --muted: #95a7c7;
-  --accent: #89f8d6;
-  --accent-2: #6db8ff;
-  --shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+  --line: rgba(86, 118, 170, 0.14);
+  --text: #1a2c42;
+  --muted: #697f98;
+  --accent: #1ea7fd;
+  --accent-2: #6d78ff;
+  --shadow: 0 20px 48px rgba(45, 79, 128, 0.14);
 }
 * { box-sizing: border-box; }
 body {
@@ -25,9 +25,9 @@ body {
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 20% 18%, rgba(109, 184, 255, 0.18), transparent 22%),
-    radial-gradient(circle at 82% 22%, rgba(137, 248, 214, 0.12), transparent 18%),
-    linear-gradient(180deg, #040814, #07101f 46%, #050816);
+    radial-gradient(circle at 20% 18%, rgba(109, 184, 255, 0.2), transparent 22%),
+    radial-gradient(circle at 82% 22%, rgba(156, 197, 255, 0.18), transparent 18%),
+    linear-gradient(180deg, #f8fbff, #eef4ff 46%, #f4f8ff);
 }
 body::before {
   content: "";
@@ -35,8 +35,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(90,119,163,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,119,163,0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
@@ -54,13 +54,13 @@ body::before {
 }
 .info {
   padding: 34px;
-  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
 }
 .eyebrow {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(30,167,253,0.1);
   color: var(--accent);
   font-size: 0.8rem;
   font-weight: 800;
@@ -87,8 +87,8 @@ body::before {
 .bullet {
   padding: 14px 16px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(245,248,255,0.95);
+  border: 1px solid rgba(86,118,170,0.1);
 }
 .bullet strong {
   display: block;
@@ -99,7 +99,7 @@ body::before {
 }
 .card {
   padding: 32px;
-  background: rgba(9, 17, 34, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(18px);
 }
 .card h2 {
@@ -122,8 +122,8 @@ input {
   padding: 14px;
   margin-bottom: 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(86,118,170,0.14);
+  background: #f7faff;
   color: var(--text);
   font-size: 15px;
 }
@@ -138,19 +138,19 @@ button {
   font-weight: 800;
 }
 button.primary {
-  background: linear-gradient(135deg, var(--accent), #c5fff0);
-  color: #041520;
+  background: linear-gradient(135deg, var(--accent), #8fd1ff);
+  color: #ffffff;
 }
 button.secondary {
-  background: rgba(255,255,255,0.06);
+  background: #f7faff;
   color: var(--text);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(86,118,170,0.14);
 }
 .hint {
   margin-top: 16px;
   padding: 14px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(245,248,255,0.95);
   color: var(--muted);
   font-size: 13px;
   line-height: 1.7;

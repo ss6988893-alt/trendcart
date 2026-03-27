@@ -9,16 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #050816;
-  --panel: rgba(13, 21, 44, 0.76);
-  --panel-strong: rgba(10, 18, 36, 0.92);
-  --line: rgba(158, 206, 255, 0.14);
-  --text: #eef5ff;
-  --muted: #97a7c3;
-  --accent: #8cf7d7;
-  --accent-2: #6cb6ff;
-  --accent-3: #d4f1ff;
-  --shadow: 0 28px 70px rgba(2, 8, 24, 0.45);
+  --bg: #f4f8ff;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-strong: rgba(255, 255, 255, 0.96);
+  --line: rgba(77, 111, 166, 0.14);
+  --text: #18283d;
+  --muted: #67809d;
+  --accent: #1ea7fd;
+  --accent-2: #6d78ff;
+  --accent-3: #22529a;
+  --shadow: 0 24px 54px rgba(45, 79, 128, 0.14);
 }
 
 * {
@@ -33,10 +33,10 @@ body {
   margin: 0;
   font-family: "Manrope", sans-serif;
   background:
-    radial-gradient(circle at 15% 18%, rgba(72, 125, 255, 0.18), transparent 24%),
-    radial-gradient(circle at 82% 20%, rgba(88, 255, 208, 0.14), transparent 22%),
-    radial-gradient(circle at 50% 80%, rgba(0, 134, 255, 0.12), transparent 26%),
-    linear-gradient(180deg, #040712 0%, #07101f 42%, #050816 100%);
+    radial-gradient(circle at 15% 18%, rgba(90, 145, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 82% 20%, rgba(122, 214, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 50% 80%, rgba(164, 196, 255, 0.18), transparent 26%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 44%, #f4f8ff 100%);
   color: var(--text);
 }
 
@@ -45,8 +45,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(90, 119, 163, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 119, 163, 0.06) 1px, transparent 1px);
   background-size: 56px 56px;
   pointer-events: none;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 88%);
@@ -72,7 +72,7 @@ body::before {
   padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: 24px;
-  background: rgba(5, 11, 24, 0.72);
+  background: rgba(255, 255, 255, 0.84);
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow);
 }
@@ -103,8 +103,8 @@ body::before {
 
 .nav-links a,
 .nav-links button {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: rgba(255, 255, 255, 0.78);
   color: var(--text);
   text-decoration: none;
   padding: 10px 14px;
@@ -118,8 +118,8 @@ body::before {
 .nav-links a:hover,
 .nav-links button:hover {
   transform: translateY(-1px);
-  border-color: rgba(140, 247, 215, 0.5);
-  background: rgba(140, 247, 215, 0.08);
+  border-color: rgba(30, 167, 253, 0.35);
+  background: rgba(30, 167, 253, 0.08);
 }
 
 .hero {
@@ -132,7 +132,7 @@ body::before {
   border: 1px solid var(--line);
   border-radius: 34px;
   background:
-    linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.78)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 246, 255, 0.94)),
     radial-gradient(circle at top right, rgba(108, 182, 255, 0.16), transparent 28%);
   box-shadow: var(--shadow);
 }
@@ -161,7 +161,7 @@ body::before {
   gap: 10px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(30, 167, 253, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--accent);
   font-size: 0.82rem;
@@ -207,14 +207,14 @@ body::before {
 }
 
 .cta-primary {
-  background: linear-gradient(135deg, var(--accent), #c3fff0);
-  color: #041520;
-  box-shadow: 0 18px 30px rgba(140, 247, 215, 0.18);
+  background: linear-gradient(135deg, var(--accent), #8fd1ff);
+  color: #ffffff;
+  box-shadow: 0 18px 30px rgba(30, 167, 253, 0.2);
 }
 
 .cta-secondary {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--text);
 }
 
@@ -384,7 +384,7 @@ body::before {
   align-items: start;
   padding: 14px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(241, 246, 255, 0.92);
 }
 
 .step-index {
@@ -393,7 +393,7 @@ body::before {
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: rgba(140, 247, 215, 0.12);
+  background: rgba(30, 167, 253, 0.12);
   color: var(--accent);
   font-weight: 800;
 }

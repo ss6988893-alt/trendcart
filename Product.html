@@ -9,15 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #050816;
-  --panel: rgba(10, 18, 36, 0.86);
-  --panel-soft: rgba(255, 255, 255, 0.05);
-  --line: rgba(154, 210, 255, 0.12);
-  --text: #eef4ff;
-  --muted: #90a4c5;
-  --accent: #89f8d6;
-  --accent-2: #6db8ff;
-  --shadow: 0 22px 58px rgba(0, 0, 0, 0.34);
+  --bg: #f4f8ff;
+  --panel: rgba(255, 255, 255, 0.92);
+  --panel-soft: #f6f9ff;
+  --line: rgba(86, 118, 170, 0.14);
+  --text: #1a2c42;
+  --muted: #687d98;
+  --accent: #1ea7fd;
+  --accent-2: #6d78ff;
+  --shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
 * { box-sizing: border-box; }
 body {
@@ -25,9 +25,9 @@ body {
   font-family: "Manrope", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(109, 184, 255, 0.16), transparent 22%),
-    radial-gradient(circle at 80% 16%, rgba(137, 248, 214, 0.12), transparent 18%),
-    linear-gradient(180deg, #040814, #07101f 44%, #050816);
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.2), transparent 22%),
+    radial-gradient(circle at 80% 16%, rgba(156, 197, 255, 0.18), transparent 18%),
+    linear-gradient(180deg, #f8fbff, #eef4ff 44%, #f4f8ff);
 }
 body::before {
   content: "";
@@ -35,8 +35,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(90,119,163,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,119,163,0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
@@ -58,7 +58,7 @@ body::before {
   flex-wrap: wrap;
   padding: 16px 18px;
   border-radius: 24px;
-  background: rgba(6, 12, 26, 0.74);
+  background: rgba(255, 255, 255, 0.84);
   backdrop-filter: blur(16px);
 }
 .brand strong {
@@ -80,29 +80,29 @@ body::before {
   width: min(340px, 100%);
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: #f7faff;
   color: var(--text);
 }
 .toolbar a {
   text-decoration: none;
   padding: 12px 16px;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent), #c5fff0);
-  color: #041520;
+  background: linear-gradient(135deg, var(--accent), #8fd1ff);
+  color: #ffffff;
   font-weight: 800;
 }
 .hero {
   margin-top: 18px;
   padding: 24px;
   border-radius: 28px;
-  background: linear-gradient(135deg, rgba(11, 20, 40, 0.92), rgba(8, 16, 34, 0.74));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
 }
 .eyebrow {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(30,167,253,0.1);
   color: var(--accent);
   font-size: 0.8rem;
   font-weight: 800;
@@ -161,14 +161,14 @@ body::before {
 .sidebar button:hover,
 .sidebar button.active {
   transform: translateY(-1px);
-  border-color: rgba(137, 248, 214, 0.42);
-  background: rgba(137, 248, 214, 0.08);
+  border-color: rgba(30,167,253,0.35);
+  background: rgba(30,167,253,0.08);
 }
 #status {
   margin-bottom: 14px;
   padding: 14px 16px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(246,249,255,0.95);
   color: var(--accent-2);
   border: 1px solid var(--line);
 }
@@ -180,7 +180,7 @@ body::before {
 .product {
   padding: 18px;
   border-radius: 24px;
-  background: rgba(9, 18, 35, 0.92);
+  background: rgba(255, 255, 255, 0.96);
   transform: translateY(18px);
   opacity: 0;
   animation: rise 0.55s ease forwards;
@@ -201,7 +201,7 @@ body::before {
   margin-top: 14px;
   padding: 7px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(30,167,253,0.1);
   color: var(--accent-2);
   font-size: 0.76rem;
   font-weight: 800;
@@ -250,13 +250,13 @@ body::before {
   text-align: center;
 }
 .action {
-  background: linear-gradient(135deg, var(--accent-2), #8dd3ff);
-  color: #041320;
+  background: linear-gradient(135deg, var(--accent), #8fd1ff);
+  color: #ffffff;
 }
 .secondary {
-  background: rgba(255,255,255,0.06);
+  background: #f7faff;
   color: var(--text);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(86,118,170,0.14);
 }
 @keyframes rise {
   to { opacity: 1; transform: translateY(0); }

@@ -15,10 +15,10 @@ body {
   place-items: center;
   font-family: "Manrope", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(109, 184, 255, 0.18), transparent 22%),
-    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
-    linear-gradient(180deg, #040814, #07101f 44%, #050816);
-  color: white;
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.2), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(156, 197, 255, 0.18), transparent 18%),
+    linear-gradient(180deg, #f8fbff, #eef4ff 44%, #f4f8ff);
+  color: #1a2c42;
 }
 body::before {
   content: "";
@@ -26,8 +26,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    linear-gradient(rgba(90,119,163,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,119,163,0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
@@ -40,7 +40,7 @@ body::before {
   border: 1px solid rgba(154, 210, 255, 0.12);
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
 .left,
 .right {
@@ -51,8 +51,8 @@ body::before {
   color: #151922;
 }
 .right {
-  background: linear-gradient(180deg, #0a1730, #102c5c 56%, #153d7e);
-  color: white;
+  background: linear-gradient(180deg, #ffffff, #eef4ff 56%, #e6efff);
+  color: #1a2c42;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,8 +61,8 @@ body::before {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(23, 88, 215, 0.1);
-  color: #1758d7;
+  background: rgba(30,167,253,0.1);
+  color: #1ea7fd;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -110,7 +110,7 @@ body::before {
   display: block;
 }
 .right p {
-  color: rgba(255,255,255,0.82);
+  color: #697f98;
   line-height: 1.75;
 }
 .actions {
@@ -124,8 +124,8 @@ body::before {
   padding: 12px 16px;
   border-radius: 999px;
   border: none;
-  background: rgba(255,255,255,0.92);
-  color: #102c5c;
+  background: linear-gradient(135deg, #1ea7fd, #8fd1ff);
+  color: #ffffff;
   text-decoration: none;
   cursor: pointer;
   font-weight: 800;
