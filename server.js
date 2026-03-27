@@ -122,6 +122,20 @@ function getNetworkBaseUrl() {
   return `http://localhost:${port}`;
 }
 
+function isRazorpayConfigured() {
+  const keyId = process.env.RAZORPAY_KEY_ID || "";
+  const keySecret = process.env.RAZORPAY_KEY_SECRET || "";
+
+  if (!keyId || !keySecret) {
+    return false;
+  }
+
+  const invalidFragments = ["your_key", "your_real", "your_razorpay", "placeholder"];
+  return !invalidFragments.some((fragment) =>
+    keyId.toLowerCase().includes(fragment) || keySecret.toLowerCase().includes(fragment)
+  );
+}
+
 async function createDatabaseIfMissing() {
   if (process.env.MYSQLHOST && process.env.MYSQLDATABASE) {
     return;
@@ -382,11 +396,13 @@ app.get("/api/auth/me", (req, res) => {
 });
 
 app.get("/api/server-info", (_req, res) => {
+  const razorpayKeyId = process.env.RAZORPAY_KEY_ID || "";
   res.json({
     baseUrl: getNetworkBaseUrl(),
     localhostUrl: `http://localhost:${port}`,
-    razorpayKeyId: process.env.RAZORPAY_KEY_ID || "",
-    razorpayEnabled: Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET)
+    razorpayKeyId,
+    razorpayEnabled: isRazorpayConfigured(),
+    razorpayMode: razorpayKeyId.startsWith("rzp_live_") ? "live" : "test"
   });
 });
 
@@ -394,7 +410,7 @@ app.post("/api/payments/razorpay/order", requireAuth, async (req, res) => {
   try {
     const { amount, type } = req.body;
 
-    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    if (!isRazorpayConfigured()) {
       return res.status(400).json({ message: "Razorpay keys are not configured yet." });
     }
 
@@ -449,7 +465,7 @@ app.post("/api/payments/razorpay/verify", requireAuth, async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-    if (!process.env.RAZORPAY_KEY_SECRET) {
+    if (!isRazorpayConfigured()) {
       return res.status(400).json({ message: "Razorpay secret is not configured yet." });
     }
 

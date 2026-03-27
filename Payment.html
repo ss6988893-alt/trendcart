@@ -146,6 +146,16 @@ button.secondary {
   margin-top: 10px;
 }
 
+.mode-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+}
+
 #message {
   min-height: 24px;
   margin-top: 16px;
@@ -210,6 +220,7 @@ ul {
       <button class="primary" id="razorpayBtn" disabled>Pay With Razorpay Test</button>
       <button class="secondary" id="confirmBtn">I Have Paid With QR</button>
       <button class="secondary" id="cancelBtn">Cancel Payment</button>
+      <div class="mode-note" id="modeNote">Checking payment gateway status...</div>
       <div id="message"></div>
     </section>
   </div>
@@ -227,6 +238,7 @@ const qrImage = document.getElementById("qrImage");
 const utrInput = document.getElementById("utr");
 const razorpayBtn = document.getElementById("razorpayBtn");
 const razorpayStatus = document.getElementById("razorpayStatus");
+const modeNote = document.getElementById("modeNote");
 let paymentData = null;
 let serverInfo = null;
 
@@ -352,8 +364,16 @@ async function openRazorpayCheckout() {
 async function loadPayment() {
   try {
     serverInfo = await TrendCartAPI.getServerInfo();
-    razorpayStatus.textContent = serverInfo.razorpayEnabled ? "Enabled" : "Not configured";
+    razorpayStatus.textContent = serverInfo.razorpayEnabled
+      ? `${serverInfo.razorpayMode === "live" ? "Live" : "Test"} mode ready`
+      : "Not configured";
     razorpayBtn.disabled = !serverInfo.razorpayEnabled;
+    razorpayBtn.textContent = serverInfo.razorpayMode === "live"
+      ? "Pay With Razorpay"
+      : "Pay With Razorpay Test";
+    modeNote.textContent = serverInfo.razorpayEnabled
+      ? `Razorpay ${serverInfo.razorpayMode} mode is enabled for this deployment.`
+      : "Razorpay is not configured, so QR payment is the active checkout option.";
 
     if (type === "product") {
       paymentData = await buildProductPayment();
@@ -371,6 +391,7 @@ async function loadPayment() {
       return;
     }
     setMessage(error.message, true);
+    modeNote.textContent = "Unable to check payment gateway status right now.";
     razorpayBtn.disabled = true;
     document.getElementById("confirmBtn").disabled = true;
   }

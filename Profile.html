@@ -92,6 +92,7 @@ async function loadProfile() {
   try {
     const data = await TrendCartAPI.getProfileSummary();
     const user = data.user;
+    const adminLink = user.role === "admin" ? `<a href="Admin.html">Admin Dashboard</a>` : "";
     document.getElementById("profileCard").innerHTML = `
       <h2>${user.name}</h2>
       <p><strong>Email:</strong> ${user.email}</p>
@@ -99,7 +100,7 @@ async function loadProfile() {
       <div class="quick">
         <a href="Orderhistory.html">Order History</a>
         <a href="Tickethistory.html">Ticket History</a>
-        <a href="Admin.html">Admin Dashboard</a>
+        ${adminLink}
       </div>
     `;
 
