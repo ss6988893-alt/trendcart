@@ -4,84 +4,189 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Food Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --line: rgba(255, 180, 130, 0.15);
+  --text: #f5f7ff;
+  --muted: #a0acc4;
+  --accent: #ffb37b;
+  --accent-2: #ff8b6b;
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #fff7f2;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 164, 94, 0.18), transparent 22%),
+    radial-gradient(circle at 88% 18%, rgba(255, 111, 89, 0.12), transparent 20%),
+    linear-gradient(180deg, #070914, #111321 44%, #090d18);
 }
-
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
+.page {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 22px 20px 42px;
+}
+.topbar, .hero, .card {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
 .topbar {
-  background: linear-gradient(90deg, #ff6a00, #db3a34);
-  color: white;
-  padding: 18px 24px;
   display: flex;
   justify-content: space-between;
   gap: 16px;
   align-items: center;
   flex-wrap: wrap;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(8, 11, 22, 0.74);
+  backdrop-filter: blur(16px);
 }
-
+.brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.2rem;
+}
+.brand span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
 .topbar input {
-  padding: 12px;
-  width: min(320px, 100%);
-  border-radius: 12px;
-  border: none;
+  width: min(340px, 100%);
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
 }
-
-.grid {
+.hero {
+  margin-top: 18px;
   padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(18, 22, 40, 0.92), rgba(15, 18, 34, 0.74));
+}
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 0.98;
+}
+.hero p {
+  margin: 0;
+  max-width: 760px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+#status {
+  margin: 18px 0 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  color: var(--accent);
+  border: 1px solid var(--line);
+}
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 18px;
 }
-
 .card {
-  background: white;
-  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(126, 45, 9, 0.09);
+  border-radius: 24px;
+  background: rgba(14, 21, 40, 0.84);
+  transform: translateY(18px);
+  opacity: 0;
+  animation: rise 0.55s ease forwards;
 }
-
+.card:nth-child(2) { animation-delay: 0.06s; }
+.card:nth-child(3) { animation-delay: 0.12s; }
+.card:nth-child(4) { animation-delay: 0.18s; }
 .card img {
   width: 100%;
-  height: 180px;
+  height: 190px;
   object-fit: cover;
 }
-
 .content {
-  padding: 16px;
+  padding: 18px;
 }
-
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 14px;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+.price {
+  font-size: 1.16rem;
+  font-weight: 800;
+}
 button {
   width: 100%;
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 12px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
   border: none;
-  background: #db3a34;
-  color: white;
+  background: linear-gradient(135deg, var(--accent-2), #ffbf86);
+  color: #1f0b06;
   cursor: pointer;
+  font-weight: 800;
 }
-
-#status {
-  padding: 0 24px 24px;
-  color: #db3a34;
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 <body>
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <strong>TrendCart Food</strong>
+      <span>Fast ordering with payment-first flow and saved order history</span>
+    </div>
+    <input id="search" type="text" placeholder="Search food...">
+  </header>
 
-<header class="topbar">
-  <div>
-    <strong>TrendCart Food</strong>
-    <div>Food orders are saved in MySQL</div>
-  </div>
-  <input id="search" type="text" placeholder="Search food...">
-</header>
+  <section class="hero">
+    <span class="eyebrow">Food Delivery</span>
+    <h1>Order food in a sharper, warmer interface.</h1>
+    <p>
+      Browse your food menu, move to checkout, save orders in the backend, and keep the
+      overall TrendCart experience aligned with the new premium landing-page mood.
+    </p>
+  </section>
 
-<div id="status"></div>
-<div class="grid" id="foods"></div>
+  <div id="status"></div>
+  <div class="grid" id="foods"></div>
+</div>
 
 <script src="Assests/api.js"></script>
 <script>
@@ -94,9 +199,11 @@ function renderFood(list) {
       <img src="${food.image}" alt="${food.name}">
       <div class="content">
         <h3>${food.name}</h3>
-        <p>${food.restaurant}</p>
-        <p>${food.time}</p>
-        <p>${TrendCartAPI.formatCurrency(food.price)}</p>
+        <div class="meta">
+          <span>${food.restaurant}</span>
+          <span>${food.time}</span>
+        </div>
+        <div class="price">${TrendCartAPI.formatCurrency(food.price)}</div>
         <button data-order="${food.id}">Order Now</button>
       </div>
     </div>
@@ -136,7 +243,7 @@ async function loadFood(search = "") {
   try {
     const foods = await TrendCartAPI.listFoodItems({ search });
     renderFood(foods);
-    statusBox.textContent = `${foods.length} food item(s) loaded from MySQL.`;
+    statusBox.textContent = `${foods.length} food item(s) are ready to order.`;
   } catch (error) {
     statusBox.textContent = error.message;
   }

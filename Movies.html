@@ -4,168 +4,202 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Movies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --panel: rgba(10, 18, 36, 0.84);
+  --line: rgba(154, 210, 255, 0.12);
+  --text: #eff5ff;
+  --muted: #95a8c7;
+  --accent: #89f8d6;
+  --accent-2: #6db8ff;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
   background:
-    radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 30%),
-    linear-gradient(135deg, #1d2671, #c33764);
-  color: white;
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #081020 44%, #050816);
 }
-
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
 .page {
-  max-width: 1200px;
+  position: relative;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 28px 20px 48px;
+  padding: 22px 20px 42px;
 }
-
+.hero, .panel, .movie {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
 .hero {
-  margin-bottom: 24px;
+  margin-bottom: 18px;
+  padding: 26px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
 }
-
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.9rem);
+  line-height: 0.98;
+}
 .hero p {
-  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
   max-width: 760px;
+  color: var(--muted);
+  line-height: 1.8;
 }
-
 .layout {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 22px;
+  gap: 20px;
 }
-
 .panel {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 20px;
+  padding: 22px;
+  border-radius: 26px;
+  background: var(--panel);
   backdrop-filter: blur(16px);
 }
-
 .movies {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 18px;
 }
-
 .movie {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
   overflow: hidden;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.05);
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transform: translateY(18px);
+  opacity: 0;
+  animation: rise 0.55s ease forwards;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
-
-.movie:hover {
-  transform: translateY(-4px);
-}
-
+.movie:nth-child(2) { animation-delay: 0.06s; }
+.movie:nth-child(3) { animation-delay: 0.12s; }
+.movie:nth-child(4) { animation-delay: 0.18s; }
+.movie:nth-child(5) { animation-delay: 0.24s; }
+.movie:hover { transform: translateY(-4px); }
 .movie.selected {
-  border-color: #00e08f;
-  box-shadow: 0 0 0 2px rgba(0, 224, 143, 0.22);
+  border-color: rgba(137, 248, 214, 0.6);
+  box-shadow: 0 0 0 2px rgba(137, 248, 214, 0.12), var(--shadow);
 }
-
 .movie img {
   width: 100%;
-  height: 240px;
+  height: 250px;
   object-fit: cover;
 }
-
-.movie-content {
-  padding: 14px;
-}
-
+.movie-content { padding: 16px; }
+.movie-content h3 { margin: 0 0 6px; }
+.movie-rating { color: #ffd978; letter-spacing: 0.08em; }
 .movie-actions {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
-
 .movie-actions button,
 .summary button,
 .qty button {
   border: none;
   cursor: pointer;
-  border-radius: 12px;
-  font-weight: 700;
+  border-radius: 14px;
+  font-weight: 800;
 }
-
 .movie-actions button {
   flex: 1;
-  padding: 10px 12px;
+  padding: 11px 12px;
 }
-
 .movie-actions .trailer {
-  background: rgba(255,255,255,0.14);
-  color: white;
+  background: rgba(255,255,255,0.07);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
 .movie-actions .select {
-  background: #00e08f;
-  color: #08221a;
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
 }
-
 .chip-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
 }
-
 .chip-group strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
-
 .chips {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
-
 .chip {
-  padding: 10px 14px;
+  padding: 11px 15px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.12);
-  color: white;
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
   border: 1px solid transparent;
   cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
 }
-
+.chip:hover { transform: translateY(-1px); }
 .chip.active {
-  background: rgba(0, 224, 143, 0.18);
-  border-color: #00e08f;
+  background: rgba(137, 248, 214, 0.08);
+  border-color: rgba(137, 248, 214, 0.5);
 }
-
 .seat-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 8px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 12px;
 }
-
 .seat {
   padding: 12px 0;
   text-align: center;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.14);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
   cursor: pointer;
 }
-
 .seat.selected {
-  background: #00e08f;
-  color: #04251a;
-  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), #bbffe9);
+  color: #05201a;
+  border-color: rgba(137, 248, 214, 0.45);
 }
-
 .snacks {
   display: grid;
   gap: 12px;
   margin-top: 18px;
 }
-
 .snack {
   display: flex;
   justify-content: space-between;
@@ -173,101 +207,105 @@ body {
   align-items: center;
   padding: 14px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
 }
-
 .qty {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 .qty button {
   width: 34px;
   height: 34px;
-  background: rgba(255,255,255,0.14);
-  color: white;
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
 }
-
 .summary {
   position: sticky;
-  top: 20px;
+  top: 18px;
+  height: fit-content;
 }
-
 .summary-card {
-  background: rgba(255,255,255,0.12);
-  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 22px;
   padding: 18px;
   margin-bottom: 14px;
 }
-
 .line {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 12px;
-  margin: 10px 0;
+  margin: 12px 0;
+  color: var(--muted);
 }
-
+.line strong {
+  color: var(--text);
+  text-align: right;
+}
 .summary button {
   width: 100%;
   padding: 14px 16px;
-  background: #00e08f;
-  color: #08221a;
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
 }
-
 #status {
   margin-top: 14px;
-  color: #dffef0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  color: var(--accent-2);
+  border: 1px solid rgba(255,255,255,0.06);
 }
-
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.72);
+  background: rgba(0,0,0,0.76);
   display: none;
   justify-content: center;
   align-items: center;
   padding: 20px;
 }
-
-.modal.open {
-  display: flex;
-}
-
+.modal.open { display: flex; }
 .modal-box {
-  background: #0f1d3b;
-  border-radius: 20px;
+  background: #0d1730;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
   padding: 18px;
-  width: min(720px, 100%);
+  width: min(760px, 100%);
 }
-
 .modal iframe {
   width: 100%;
-  height: 380px;
+  height: 390px;
   border: none;
   border-radius: 16px;
 }
-
 .modal-close {
   margin-top: 12px;
   padding: 12px 16px;
   background: white;
   color: #102c5c;
 }
-
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
 @media (max-width: 980px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
+  .layout { grid-template-columns: 1fr; }
+  .summary { position: static; }
 }
 </style>
 </head>
 <body>
-
 <div class="page">
   <div class="hero">
-    <h1>Movie Booking</h1>
-    <p>Choose your movie, theatre, show time, seats, and snacks before moving to payment.</p>
+    <span class="eyebrow">Cinema Flow</span>
+    <h1>Book shows in a more cinematic interface.</h1>
+    <p>
+      Select movies, theatre, timing, seats, and snacks in a darker premium layout that
+      stays close to your new TrendCart landing page while keeping the booking process clear.
+    </p>
   </div>
 
   <div class="layout">
@@ -275,7 +313,7 @@ body {
       <h2>Select Movie</h2>
       <div class="movies" id="movies"></div>
 
-      <div class="chip-grid" style="margin-top:22px;">
+      <div class="chip-grid">
         <div class="chip-group">
           <strong>Theatre</strong>
           <div class="chips" id="theatres"></div>
@@ -286,10 +324,10 @@ body {
         </div>
       </div>
 
-      <h2>Select Seats</h2>
+      <h2 style="margin-top: 26px;">Select Seats</h2>
       <div class="seat-grid" id="seats"></div>
 
-      <h2 style="margin-top:22px;">Snacks</h2>
+      <h2 style="margin-top: 26px;">Snacks</h2>
       <div class="snacks" id="snacks"></div>
     </section>
 
@@ -376,7 +414,7 @@ function renderMovies() {
       <img src="${movie.img}" alt="${movie.name}">
       <div class="movie-content">
         <h3>${movie.name}</h3>
-        <div>${"★".repeat(movie.rating)}</div>
+        <div class="movie-rating">${"★".repeat(movie.rating)}</div>
         <div class="movie-actions">
           <button class="trailer" data-trailer="${movie.trailer}" type="button">Trailer</button>
           <button class="select" data-select="${movie.name}" type="button">Select</button>

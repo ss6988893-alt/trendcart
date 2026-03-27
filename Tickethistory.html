@@ -4,44 +4,117 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ticket History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --line: rgba(154, 210, 255, 0.12);
+  --text: #eef5ff;
+  --muted: #95a8c7;
+  --accent: #89f8d6;
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #2c2c54, #6a0572);
-  color: white;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #081020 44%, #050816);
 }
-
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
 .page {
-  max-width: 1100px;
+  position: relative;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 24px 20px 42px;
 }
-
+.hero,
+.card {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.hero {
+  margin-bottom: 18px;
+  padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
+}
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 0.98;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 18px;
 }
-
 .card {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  padding: 18px;
+  border-radius: 24px;
+  padding: 20px;
+  background: rgba(10, 18, 36, 0.84);
 }
-
+.card h3 {
+  margin-top: 0;
+  font-family: "Syne", sans-serif;
+}
+.card p {
+  color: var(--muted);
+}
 .card a {
   display: inline-block;
   margin-top: 10px;
-  color: white;
-  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
 }
 </style>
 </head>
 <body>
-
 <div class="page">
-  <h1>Ticket History</h1>
+  <section class="hero">
+    <span class="eyebrow">Ticket Archive</span>
+    <h1>Review your saved movie bookings.</h1>
+    <p>
+      Open previously booked tickets, check payment reference details, and move into the
+      ticket view whenever you want to show the QR or booking information.
+    </p>
+  </section>
+
   <div class="grid" id="tickets"></div>
 </div>
 
@@ -59,12 +132,12 @@ async function loadTickets() {
     box.innerHTML = tickets.map((ticket) => `
       <div class="card">
         <h3>${ticket.movie}</h3>
-        <p>${ticket.theatre}</p>
-        <p>${ticket.time}</p>
-        <p>Seats: ${ticket.seats.join(", ")}</p>
-        <p>${TrendCartAPI.formatCurrency(ticket.price)}</p>
-        <p>${ticket.date}</p>
-        <p>UPI Ref: ${ticket.paymentReference || "Not entered"}</p>
+        <p><strong>Theatre:</strong> ${ticket.theatre}</p>
+        <p><strong>Show Time:</strong> ${ticket.time}</p>
+        <p><strong>Seats:</strong> ${ticket.seats.join(", ")}</p>
+        <p><strong>Total:</strong> ${TrendCartAPI.formatCurrency(ticket.price)}</p>
+        <p><strong>Date:</strong> ${ticket.date}</p>
+        <p><strong>UPI Ref:</strong> ${ticket.paymentReference || "Not entered"}</p>
         <a href="Ticketview.html?id=${ticket.id}">Open Ticket</a>
       </div>
     `).join("");

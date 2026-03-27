@@ -4,133 +4,307 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg: #050816;
+  --panel: rgba(10, 18, 36, 0.86);
+  --panel-soft: rgba(255, 255, 255, 0.05);
+  --line: rgba(154, 210, 255, 0.12);
+  --text: #eef4ff;
+  --muted: #90a4c5;
+  --accent: #89f8d6;
+  --accent-2: #6db8ff;
+  --shadow: 0 22px 58px rgba(0, 0, 0, 0.34);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f3f6fb;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 80% 16%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #07101f 44%, #050816);
 }
-
-.navbar {
-  background: white;
-  padding: 16px 24px;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
+.page {
+  position: relative;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 22px 20px 42px;
+}
+.topbar, .sidebar, .hero, .product {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(6, 12, 26, 0.74);
+  backdrop-filter: blur(16px);
 }
-
-.navbar input {
-  width: min(320px, 100%);
+.brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.2rem;
+}
+.brand span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.toolbar input {
+  width: min(340px, 100%);
   padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid #d7deea;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
 }
-
+.toolbar a {
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
+  font-weight: 800;
+}
+.hero {
+  margin-top: 18px;
+  padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(11, 20, 40, 0.92), rgba(8, 16, 34, 0.74));
+}
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 0.98;
+}
+.hero p {
+  margin: 0;
+  max-width: 740px;
+  color: var(--muted);
+  line-height: 1.75;
+}
 .layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: calc(100vh - 76px);
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+  margin-top: 18px;
 }
-
 .sidebar {
-  background: #102c5c;
-  color: white;
-  padding: 24px;
+  position: sticky;
+  top: 18px;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--panel);
 }
-
+.sidebar h3 {
+  margin: 0 0 12px;
+  font-family: "Syne", sans-serif;
+}
+.sidebar p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.94rem;
+}
 .sidebar button {
   width: 100%;
   margin-bottom: 10px;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: rgba(255, 255, 255, 0.14);
-  color: white;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: var(--panel-soft);
+  color: var(--text);
+  text-align: left;
   cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
-
+.sidebar button:hover,
+.sidebar button.active {
+  transform: translateY(-1px);
+  border-color: rgba(137, 248, 214, 0.42);
+  background: rgba(137, 248, 214, 0.08);
+}
+#status {
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  color: var(--accent-2);
+  border: 1px solid var(--line);
+}
 .products {
-  padding: 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
 }
-
 .product {
-  background: white;
-  border-radius: 18px;
   padding: 18px;
-  box-shadow: 0 12px 28px rgba(15, 36, 73, 0.09);
+  border-radius: 24px;
+  background: rgba(9, 18, 35, 0.92);
+  transform: translateY(18px);
+  opacity: 0;
+  animation: rise 0.55s ease forwards;
 }
-
+.product:nth-child(2) { animation-delay: 0.06s; }
+.product:nth-child(3) { animation-delay: 0.12s; }
+.product:nth-child(4) { animation-delay: 0.18s; }
+.product:nth-child(5) { animation-delay: 0.24s; }
+.product:nth-child(6) { animation-delay: 0.3s; }
 .product img {
   width: 100%;
-  height: 180px;
+  height: 190px;
   object-fit: cover;
-  border-radius: 14px;
+  border-radius: 18px;
 }
-
+.category-tag {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent-2);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.product h3 {
+  margin: 12px 0 6px;
+  font-size: 1.2rem;
+}
+.product p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.price {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
 .rating {
-  color: #d18600;
+  color: #ffd978;
+  letter-spacing: 0.08em;
 }
-
-button.action,
-a.action {
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+.action,
+.secondary {
   display: inline-block;
   width: 100%;
-  margin-top: 10px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   border: none;
-  border-radius: 12px;
-  background: #1758d7;
-  color: white;
-  text-align: center;
-  text-decoration: none;
+  border-radius: 14px;
   cursor: pointer;
-  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 800;
+  text-align: center;
 }
-
-button.secondary {
-  background: #ff8a00;
+.action {
+  background: linear-gradient(135deg, var(--accent-2), #8dd3ff);
+  color: #041320;
 }
-
-#status {
-  padding: 0 24px 24px;
-  color: #1758d7;
+.secondary {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
-@media (max-width: 860px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 920px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
 }
 </style>
 </head>
 <body>
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <strong>TrendCart Products</strong>
+      <span>Catalog browsing with cart and database-backed checkout</span>
+    </div>
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Search products...">
+      <a href="Cart.html">Go to Cart</a>
+    </div>
+  </header>
 
-<header class="navbar">
-  <strong>TrendCart Products</strong>
-  <input id="search" type="text" placeholder="Search products...">
-  <a href="Cart.html">Go to Cart</a>
-</header>
+  <section class="hero">
+    <span class="eyebrow">Storefront</span>
+    <h1>Explore your product catalog in a cleaner premium layout.</h1>
+    <p>
+      Browse items from the database, filter by category, open product details, and move into
+      the cart and payment flow without losing the full-stack behavior behind the page.
+    </p>
+  </section>
 
-<div class="layout">
-  <aside class="sidebar">
-    <h3>Categories</h3>
-    <button data-category="All">All</button>
-    <button data-category="Mobiles">Mobiles</button>
-    <button data-category="Laptops">Laptops</button>
-    <button data-category="Shoes">Shoes</button>
-    <button data-category="Headphones">Headphones</button>
-  </aside>
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Categories</h3>
+      <p>Filter the product feed and focus on the items you want to demo or buy.</p>
+      <button class="active" data-category="All">All Products</button>
+      <button data-category="Mobiles">Mobiles</button>
+      <button data-category="Laptops">Laptops</button>
+      <button data-category="Shoes">Shoes</button>
+      <button data-category="Headphones">Headphones</button>
+    </aside>
 
-  <main>
-    <div id="status"></div>
-    <div class="products" id="products"></div>
-  </main>
+    <main>
+      <div id="status"></div>
+      <div class="products" id="products"></div>
+    </main>
+  </div>
 </div>
 
 <script src="Assests/api.js"></script>
@@ -144,11 +318,17 @@ function renderProducts(list) {
   productBox.innerHTML = list.map((product) => `
     <div class="product">
       <img src="${product.image}" alt="${product.name}">
+      <span class="category-tag">${product.category}</span>
       <h3>${product.name}</h3>
-      <p>${TrendCartAPI.formatCurrency(product.price)}</p>
-      <div class="rating">${"★".repeat(product.rating)}</div>
-      <a class="action" href="product-details.html?id=${product.id}">View Details</a>
-      <button class="action secondary" data-add="${product.id}">Add to Cart</button>
+      <p>${product.description}</p>
+      <div class="price-row">
+        <span class="price">${TrendCartAPI.formatCurrency(product.price)}</span>
+        <span class="rating">${"★".repeat(product.rating)}</span>
+      </div>
+      <div class="actions">
+        <a class="action" href="product-details.html?id=${product.id}">View Details</a>
+        <button class="secondary" data-add="${product.id}">Add to Cart</button>
+      </div>
     </div>
   `).join("");
 
@@ -156,7 +336,7 @@ function renderProducts(list) {
     button.addEventListener("click", async () => {
       try {
         await TrendCartAPI.addToCart(Number(button.dataset.add), 1);
-        statusBox.textContent = "Item added to cart.";
+        statusBox.textContent = "Item added to cart successfully.";
       } catch (error) {
         if (error.message.includes("login")) {
           window.location.href = "Login.html";
@@ -175,7 +355,7 @@ async function loadProducts() {
       search: searchText
     });
     renderProducts(products);
-    statusBox.textContent = `${products.length} product(s) loaded from MySQL.`;
+    statusBox.textContent = `${products.length} product(s) loaded and ready to explore.`;
   } catch (error) {
     productBox.innerHTML = "";
     statusBox.textContent = error.message;
@@ -185,6 +365,8 @@ async function loadProducts() {
 document.querySelectorAll("[data-category]").forEach((button) => {
   button.addEventListener("click", () => {
     selectedCategory = button.dataset.category;
+    document.querySelectorAll("[data-category]").forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
     loadProducts();
   });
 });

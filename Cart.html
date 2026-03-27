@@ -4,74 +4,186 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --line: rgba(154, 210, 255, 0.12);
+  --text: #eef5ff;
+  --muted: #95a8c7;
+  --accent: #89f8d6;
+  --accent-2: #6db8ff;
+  --danger: #ff7d7d;
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f4f7fc;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #081020 44%, #050816);
 }
-
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
 .page {
-  max-width: 1000px;
+  position: relative;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 32px 20px 50px;
+  padding: 24px 20px 42px;
 }
-
+.hero,
+.item,
+.summary,
+.empty {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.hero {
+  padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
+}
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 0.98;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+  margin-top: 18px;
+}
+.items {
+  display: grid;
+  gap: 16px;
+}
 .item {
   display: grid;
-  grid-template-columns: 100px 1fr auto;
+  grid-template-columns: 110px 1fr auto;
   gap: 16px;
   align-items: center;
-  background: white;
   padding: 16px;
-  margin-bottom: 16px;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(10, 27, 56, 0.08);
+  border-radius: 22px;
+  background: rgba(9, 18, 35, 0.92);
 }
-
 .item img {
   width: 100%;
-  height: 80px;
+  height: 88px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 14px;
 }
-
+.item p {
+  margin: 6px 0;
+  color: var(--muted);
+}
+.actions {
+  display: grid;
+  gap: 10px;
+}
 button,
 a {
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
   border: none;
   text-decoration: none;
   cursor: pointer;
+  font-weight: 800;
+  text-align: center;
 }
-
 button {
-  background: #da3b36;
-  color: white;
+  background: rgba(255,255,255,0.06);
+  color: var(--danger);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
 a {
-  background: #1758d7;
-  color: white;
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
 }
-
 .summary {
-  background: white;
+  position: sticky;
+  top: 18px;
+  height: fit-content;
   padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(10, 27, 56, 0.08);
+  border-radius: 24px;
+  background: rgba(10, 18, 36, 0.86);
+}
+.summary h2 {
+  margin-top: 0;
+  font-family: "Syne", sans-serif;
+}
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0;
+  color: var(--muted);
+}
+.line strong {
+  color: var(--text);
+}
+.empty {
+  padding: 20px;
+  border-radius: 22px;
+  background: rgba(10, 18, 36, 0.86);
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .summary { position: static; }
+  .item { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-
 <div class="page">
-  <h1>Your Cart</h1>
-  <div id="items"></div>
+  <section class="hero">
+    <span class="eyebrow">Cart Review</span>
+    <h1>Your selected items are ready for checkout.</h1>
+    <p>
+      Review your cart, remove anything you do not want, and continue to the payment flow
+      when you are ready to place the order.
+    </p>
+  </section>
 
-  <div class="summary">
-    <h2>Total: <span id="total">Rs. 0</span></h2>
-    <a href="Payment.html">Proceed to Payment</a>
+  <div class="layout">
+    <div id="items" class="items"></div>
+
+    <div class="summary">
+      <h2>Cart Summary</h2>
+      <div class="line"><span>Checkout</span><strong>Product Order</strong></div>
+      <div class="line"><span>Total</span><strong id="total">Rs. 0</strong></div>
+      <a href="Payment.html">Proceed to Payment</a>
+    </div>
   </div>
 </div>
 
@@ -85,7 +197,7 @@ async function loadCart() {
     const items = await TrendCartAPI.getCart();
 
     if (items.length === 0) {
-      itemsBox.innerHTML = `<div class="summary">Your cart is empty. <a href="Product.html">Shop now</a></div>`;
+      itemsBox.innerHTML = `<div class="empty">Your cart is empty. <a href="Product.html" style="margin-top:12px;display:inline-block;">Shop now</a></div>`;
       totalBox.textContent = "Rs. 0";
       return;
     }
@@ -102,7 +214,9 @@ async function loadCart() {
             <p>${item.quantity} x ${TrendCartAPI.formatCurrency(item.price)}</p>
             <strong>${TrendCartAPI.formatCurrency(lineTotal)}</strong>
           </div>
-          <button data-remove="${item.id}">Remove</button>
+          <div class="actions">
+            <button data-remove="${item.id}">Remove</button>
+          </div>
         </div>
       `;
     }).join("");
@@ -120,7 +234,7 @@ async function loadCart() {
       window.location.href = "Login.html";
       return;
     }
-    itemsBox.innerHTML = `<div class="summary">${error.message}</div>`;
+    itemsBox.innerHTML = `<div class="empty">${error.message}</div>`;
   }
 }
 

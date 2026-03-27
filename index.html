@@ -4,189 +4,672 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrendCart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg: #050816;
+  --panel: rgba(13, 21, 44, 0.76);
+  --panel-strong: rgba(10, 18, 36, 0.92);
+  --line: rgba(158, 206, 255, 0.14);
+  --text: #eef5ff;
+  --muted: #97a7c3;
+  --accent: #8cf7d7;
+  --accent-2: #6cb6ff;
+  --accent-3: #d4f1ff;
+  --shadow: 0 28px 70px rgba(2, 8, 24, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f5f7fb;
-  color: #162033;
+  font-family: "Manrope", sans-serif;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(72, 125, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 82% 20%, rgba(88, 255, 208, 0.14), transparent 22%),
+    radial-gradient(circle at 50% 80%, rgba(0, 134, 255, 0.12), transparent 26%),
+    linear-gradient(180deg, #040712 0%, #07101f 42%, #050816 100%);
+  color: var(--text);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 88%);
+}
+
+.shell {
+  position: relative;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 22px 20px 64px;
 }
 
 .navbar {
-  background: linear-gradient(90deg, #1758d7, #102c5c);
-  color: white;
-  padding: 16px 32px;
+  position: sticky;
+  top: 14px;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   flex-wrap: wrap;
+  margin-bottom: 26px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(5, 11, 24, 0.72);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
 }
 
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.navbar nav {
+.brand strong {
+  font-family: "Syne", sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+}
+
+.brand span {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.nav-links {
   display: flex;
-  gap: 14px;
   flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-.navbar a,
-.navbar button {
-  color: white;
+.nav-links a,
+.nav-links button {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
   text-decoration: none;
-  border: none;
-  background: transparent;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 15px;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.nav-links a:hover,
+.nav-links button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(140, 247, 215, 0.5);
+  background: rgba(140, 247, 215, 0.08);
 }
 
 .hero {
-  padding: 56px 32px 28px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 22px;
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 34px;
   background:
-    radial-gradient(circle at top, rgba(23, 88, 215, 0.15), transparent 40%),
-    linear-gradient(180deg, #eef5ff, #f5f7fb 70%);
+    linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.78)),
+    radial-gradient(circle at top right, rgba(108, 182, 255, 0.16), transparent 28%);
+  box-shadow: var(--shadow);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -100px;
+  top: -70px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(140, 247, 215, 0.2), transparent 64%);
+  filter: blur(8px);
+}
+
+.hero-copy,
+.hero-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .hero h1 {
-  margin: 0 0 10px;
-  font-size: clamp(32px, 4vw, 48px);
+  margin: 18px 0 14px;
+  max-width: 760px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2.7rem, 7vw, 5.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
 }
 
 .hero p {
+  max-width: 620px;
   margin: 0;
-  max-width: 720px;
-  color: #42526d;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.8;
 }
 
-.cards,
-.users {
-  padding: 24px 32px 40px;
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
 }
 
-.grid {
+.cta-row a {
+  text-decoration: none;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-weight: 800;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cta-row a:hover {
+  transform: translateY(-2px);
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, var(--accent), #c3fff0);
+  color: #041520;
+  box-shadow: 0 18px 30px rgba(140, 247, 215, 0.18);
+}
+
+.cta-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+.hero-panel {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.signal,
+.metric,
+.info-card,
+.feature-card,
+.showcase {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.signal {
+  padding: 20px;
+}
+
+.signal small,
+.metric small,
+.feature-card small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.signal strong {
+  display: block;
+  margin-top: 8px;
+  font-family: "Syne", sans-serif;
+  font-size: 2.3rem;
+}
+
+.signal p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metric {
+  padding: 18px;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.7rem;
+}
+
+.section {
+  margin-top: 24px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.section-head p {
+  margin: 0;
+  max-width: 600px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
-.card,
-.user-card {
-  background: white;
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 12px 30px rgba(17, 38, 74, 0.08);
+.feature-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  min-height: 250px;
 }
 
-.card a {
-  display: inline-block;
-  margin-top: 12px;
-  color: #1758d7;
+.feature-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -40px -55px auto;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 182, 255, 0.26), transparent 70%);
+}
+
+.feature-card h3 {
+  margin: 12px 0 12px;
+  font-size: 1.35rem;
+}
+
+.feature-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.feature-card a {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--accent-3);
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 800;
 }
 
-.badge {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #e5efff;
-  color: #1758d7;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 10px;
+.showcase-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 18px;
+}
+
+.showcase {
+  padding: 26px;
+}
+
+.showcase h3 {
+  margin: 8px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.55rem;
+}
+
+.showcase p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.timeline {
+  margin-top: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.step-index {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(140, 247, 215, 0.12);
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.step strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.step p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.footer-panel {
+  margin-top: 24px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--panel-strong);
+  color: var(--muted);
+}
+
+.footer-panel strong {
+  color: var(--text);
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .showcase-grid,
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .shell {
+    padding: 14px 14px 44px;
+  }
+
+  .navbar,
+  .hero,
+  .feature-card,
+  .showcase,
+  .footer-panel {
+    border-radius: 22px;
+  }
+
+  .hero {
+    padding: 24px 20px;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-row a {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>
 </head>
 <body>
 
-<header class="navbar">
-  <div class="brand">
-    <strong>TrendCart</strong>
-    <div id="welcome">MySQL Full Stack Demo</div>
-  </div>
-
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="Product.html">Products</a>
-    <a href="Food.html">Food</a>
-    <a href="Movies.html">Movies</a>
-    <a href="Cart.html">Cart</a>
-    <a href="Orderhistory.html">Orders</a>
-    <a href="Tickethistory.html">Tickets</a>
-    <a href="Profile.html">Profile</a>
-    <a href="Admin.html">Admin</a>
-    <a href="Login.html" id="loginLink">Login</a>
-    <button id="logoutBtn" hidden>Logout</button>
-  </nav>
-</header>
-
-<section class="hero">
-  <h1>Professional full-stack shopping, food, and movie booking app.</h1>
-  <p>
-    TrendCart now includes MySQL-backed login, cart, checkout, order history, ticket history,
-    profile, admin dashboard, and QR payment flows powered by your backend.
-  </p>
-</section>
-
-<section class="cards">
-  <div class="grid">
-    <div class="card">
-      <div class="badge">Shop</div>
-      <h3>Products from MySQL</h3>
-      <p>Browse products loaded from the database and pay through the secure checkout flow.</p>
-      <a href="Product.html">Explore products</a>
+<div class="shell">
+  <header class="navbar">
+    <div class="brand">
+      <strong>TrendCart</strong>
+      <span id="welcome">Smart shopping, food, and movie bookings</span>
     </div>
 
-    <div class="card">
-      <div class="badge">Food</div>
-      <h3>Food Orders</h3>
-      <p>Food items use the same QR payment process and are saved in your order history.</p>
-      <a href="Food.html">Order food</a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Food</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Cart.html">Cart</a>
+      <a href="Orderhistory.html">Orders</a>
+      <a href="Tickethistory.html">Tickets</a>
+      <a href="Profile.html">Profile</a>
+      <a href="Admin.html">Admin</a>
+      <a href="Login.html" id="loginLink">Login</a>
+      <button id="logoutBtn" hidden>Logout</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">Next Generation Commerce</div>
+      <h1>One system for shopping, food delivery, and cinema bookings.</h1>
+      <p>
+        TrendCart combines a polished frontend with a real backend, MySQL database, secure
+        login flow, checkout handling, ticket generation, order history, and admin controls
+        in a single full-stack experience.
+      </p>
+
+      <div class="cta-row">
+        <a class="cta-primary" href="Product.html">Enter Store</a>
+        <a class="cta-secondary" href="Movies.html">Book a Show</a>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="badge">Movies</div>
-      <h3>Ticket Booking</h3>
-      <p>Book tickets, pay first, and view a professional ticket card after confirmation.</p>
-      <a href="Movies.html">Book tickets</a>
+    <div class="hero-panel">
+      <div class="signal">
+        <small>System Status</small>
+        <strong>Backend Active</strong>
+        <p>
+          Real authentication, order persistence, ticket storage, QR verification,
+          deployment, and history tracking are all wired into the live TrendCart flow.
+        </p>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric">
+          <small>Stack</small>
+          <strong>Node + MySQL</strong>
+        </div>
+        <div class="metric">
+          <small>Modules</small>
+          <strong>Shop / Food / Movies</strong>
+        </div>
+        <div class="metric">
+          <small>Checkout</small>
+          <strong>QR + Gateway Ready</strong>
+        </div>
+        <div class="metric">
+          <small>Deployment</small>
+          <strong>GitHub + Railway</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>Core Experiences</h2>
+      </div>
+      <p>
+        Each part of the platform follows a complete flow: selection, payment, database save,
+        confirmation, and history access.
+      </p>
     </div>
 
-    <div class="card">
-      <div class="badge">Account</div>
-      <h3>Profile and History</h3>
-      <p>Check your profile, product/food order history, and your saved ticket bookings.</p>
-      <a href="Profile.html">Open profile</a>
-    </div>
-  </div>
-</section>
+    <div class="feature-grid">
+      <article class="feature-card">
+        <small>01</small>
+        <h3>Products</h3>
+        <p>
+          Browse catalog items from MySQL, add products to cart, move through checkout,
+          and store completed orders in the backend.
+        </p>
+        <a href="Product.html">Explore products</a>
+      </article>
 
-<section class="users">
-  <h2>Recent Users from MySQL</h2>
-  <div class="grid" id="users"></div>
-</section>
+      <article class="feature-card">
+        <small>02</small>
+        <h3>Food Orders</h3>
+        <p>
+          Select food items, continue to payment, and track food purchases in the order
+          history section with payment reference details.
+        </p>
+        <a href="Food.html">Order food</a>
+      </article>
+
+      <article class="feature-card">
+        <small>03</small>
+        <h3>Movie Tickets</h3>
+        <p>
+          Choose theatre, show time, seats, and snacks, then generate a verified ticket
+          with QR-based entry view after successful payment.
+        </p>
+        <a href="Movies.html">Book tickets</a>
+      </article>
+
+      <article class="feature-card">
+        <small>04</small>
+        <h3>Profile + Admin</h3>
+        <p>
+          Users can view profile and history, while admins get visibility into platform
+          users, orders, tickets, and revenue snapshots.
+        </p>
+        <a href="Profile.html">Open profile</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="showcase-grid">
+      <article class="showcase">
+        <small class="eyebrow">Flow Design</small>
+        <h3>Built for a clean end-to-end demo</h3>
+        <p>
+          TrendCart is structured so that every important action can be shown clearly in a
+          presentation: account login, product selection, payment, database storage, ticket
+          generation, order history, and administrative monitoring.
+        </p>
+
+        <div class="timeline">
+          <div class="step">
+            <div class="step-index">1</div>
+            <div>
+              <strong>Login and session</strong>
+              <p>User accounts are authenticated through the backend and maintained with sessions.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-index">2</div>
+            <div>
+              <strong>Checkout and payment</strong>
+              <p>Users move from product, food, or movie selection into a shared payment experience.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-index">3</div>
+            <div>
+              <strong>Database persistence</strong>
+              <p>Orders, tickets, cart items, and user details are stored in MySQL-backed tables.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="showcase">
+        <small class="eyebrow">Live Access</small>
+        <h3>Ready for testing and presentation</h3>
+        <p>
+          The project is prepared for GitHub-based deployment and public access, so the UI,
+          backend, and data flow can be shown as a proper deployed full-stack application.
+        </p>
+
+        <div class="timeline">
+          <div class="step">
+            <div class="step-index">A</div>
+            <div>
+              <strong>History tracking</strong>
+              <p>Product and food orders are visible from order history, and ticket bookings are stored separately.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-index">B</div>
+            <div>
+              <strong>QR verification</strong>
+              <p>Movie tickets include a QR route that can display movie name, timing, seats, and booking state.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-index">C</div>
+            <div>
+              <strong>Admin oversight</strong>
+              <p>Admin mode helps demonstrate platform usage, recent orders, and overall application metrics.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="footer-panel">
+    <strong>TrendCart Overview:</strong> a full-stack e-commerce, food, and movie booking system
+    built with HTML, CSS, JavaScript, Node.js, Express, MySQL, GitHub, and Railway deployment.
+  </section>
+</div>
 
 <script src="Assests/api.js"></script>
 <script>
-async function loadUsers() {
-  const container = document.getElementById("users");
-  try {
-    const users = await TrendCartAPI.listUsers();
-    container.innerHTML = users.map((user) => `
-      <div class="user-card">
-        <h3>${user.name}</h3>
-        <p>${user.email}</p>
-      </div>
-    `).join("");
-  } catch (error) {
-    container.innerHTML = `<div class="user-card">${error.message}</div>`;
-  }
-}
-
 async function loadSession() {
   const { user } = await TrendCartAPI.getCurrentUser();
   const welcome = document.getElementById("welcome");
@@ -198,7 +681,7 @@ async function loadSession() {
     loginLink.hidden = true;
     logoutBtn.hidden = false;
   } else {
-    welcome.textContent = "Please login to save cart, orders, and bookings";
+    welcome.textContent = "Login to save cart, orders, and movie bookings";
   }
 
   logoutBtn.addEventListener("click", async () => {
@@ -207,7 +690,6 @@ async function loadSession() {
   });
 }
 
-loadUsers();
 loadSession();
 </script>
 </body>

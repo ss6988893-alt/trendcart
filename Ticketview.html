@@ -4,50 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ticket View</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 body {
   margin: 0;
   min-height: 100vh;
   display: grid;
   place-items: center;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Manrope", sans-serif;
   background:
-    radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 30%),
-    linear-gradient(135deg, #1d2671, #c33764);
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #07101f 44%, #050816);
   color: white;
 }
-
-.wrapper {
-  width: min(820px, calc(100vw - 32px));
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
-
+.wrapper {
+  width: min(980px, calc(100vw - 32px));
+}
 .ticket {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  background: white;
-  color: #151922;
-  border-radius: 28px;
+  grid-template-columns: 1.1fr 0.9fr;
+  border: 1px solid rgba(154, 210, 255, 0.12);
+  border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
 }
-
 .left,
 .right {
   padding: 28px;
 }
-
 .left {
-  background: linear-gradient(180deg, #ffffff, #f5f7ff);
+  background: linear-gradient(180deg, #f9fbff, #edf3ff);
+  color: #151922;
 }
-
 .right {
-  background: linear-gradient(180deg, #102c5c, #153d7e);
+  background: linear-gradient(180deg, #0a1730, #102c5c 56%, #153d7e);
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .pill {
   display: inline-block;
   padding: 8px 12px;
@@ -55,48 +64,59 @@ body {
   background: rgba(23, 88, 215, 0.1);
   color: #1758d7;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-
+.left h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 0.98;
+}
+.left p {
+  color: #5d6d88;
+  line-height: 1.75;
+}
 .meta {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
   margin-top: 18px;
 }
-
 .meta-box {
   background: rgba(16, 44, 92, 0.06);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 14px;
 }
-
 .meta-box strong {
   display: block;
   margin-bottom: 6px;
   font-size: 13px;
   color: #5d6d88;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
-
 .qr-box {
   background: white;
   padding: 16px;
   border-radius: 18px;
   width: fit-content;
-  margin: 16px auto 0;
+  margin: 18px auto 0;
 }
-
 #qr {
-  width: 180px;
-  height: 180px;
+  width: 190px;
+  height: 190px;
   display: block;
 }
-
+.right p {
+  color: rgba(255,255,255,0.82);
+  line-height: 1.75;
+}
 .actions {
   margin-top: 18px;
   text-align: center;
 }
-
 .actions a,
 .actions button {
   display: inline-block;
@@ -104,22 +124,18 @@ body {
   padding: 12px 16px;
   border-radius: 999px;
   border: none;
-  background: white;
+  background: rgba(255,255,255,0.92);
   color: #102c5c;
   text-decoration: none;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 800;
 }
-
 @media (max-width: 820px) {
-  .ticket {
-    grid-template-columns: 1fr;
-  }
+  .ticket { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-
 <div class="wrapper">
   <div class="ticket" id="ticket">Loading ticket...</div>
   <div class="actions">
@@ -150,7 +166,7 @@ async function loadTicket() {
       <div class="left">
         <span class="pill">TrendCart Cinema Pass</span>
         <h1>${ticket.movie}</h1>
-        <p>Your booking is confirmed and stored in MySQL.</p>
+        <p>Your booking is confirmed and saved in the database with ticket verification support.</p>
         <div class="meta">
           <div class="meta-box"><strong>Ticket ID</strong>#${ticket.id}</div>
           <div class="meta-box"><strong>Theatre</strong>${ticket.theatre}</div>
@@ -162,9 +178,9 @@ async function loadTicket() {
       </div>
       <div class="right">
         <h2>Scan at entry</h2>
-        <p>Scan this QR code to verify movie name, timing, seats, and payment status.</p>
+        <p>Use this QR code to verify movie name, timing, seats, payment reference, and booking state.</p>
         <div class="qr-box">
-          <img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrText}" alt="Ticket QR code">
+          <img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${qrText}" alt="Ticket QR code">
         </div>
         <p><strong>Booked At:</strong> ${ticket.date}</p>
         <p><strong>UPI Ref:</strong> ${ticket.paymentReference || "Not entered"}</p>

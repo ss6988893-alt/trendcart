@@ -4,92 +4,211 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrendCart Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --line: rgba(154, 210, 255, 0.14);
+  --text: #eef5ff;
+  --muted: #95a7c7;
+  --accent: #89f8d6;
+  --accent-2: #6db8ff;
+  --shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #1a4fb8, #fe7a36);
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
   display: grid;
   place-items: center;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(109, 184, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 82% 22%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #07101f 46%, #050816);
 }
-
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
+.shell {
+  width: min(1100px, calc(100vw - 32px));
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+}
+.info,
 .card {
-  width: min(420px, calc(100vw - 32px));
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: var(--shadow);
+}
+.info {
+  padding: 34px;
+  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
+}
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.info h1 {
+  margin: 18px 0 12px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 0.95;
+}
+.info p {
+  margin: 0;
+  max-width: 520px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.bullets {
+  display: grid;
+  gap: 12px;
+  margin-top: 26px;
+}
+.bullet {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.bullet strong {
+  display: block;
+  margin-bottom: 6px;
+}
+.bullet span {
+  color: var(--muted);
+}
+.card {
   padding: 32px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(9, 17, 34, 0.9);
   backdrop-filter: blur(18px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  color: white;
 }
-
-h1 {
+.card h2 {
   margin: 0 0 8px;
-  font-size: 32px;
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
 }
-
-p {
+.card p {
   margin: 0 0 18px;
-  color: #f5f5f5;
+  color: var(--muted);
 }
-
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
 input {
   width: 100%;
   padding: 14px;
-  margin-bottom: 12px;
-  border: none;
-  border-radius: 12px;
-  box-sizing: border-box;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
   font-size: 15px;
 }
-
 button {
   width: 100%;
   padding: 14px;
   margin-top: 10px;
   border: none;
-  border-radius: 999px;
-  background: #101820;
-  color: white;
+  border-radius: 16px;
   cursor: pointer;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 800;
 }
-
+button.primary {
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
+}
 button.secondary {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
 .hint {
   margin-top: 16px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
   font-size: 13px;
-  color: #fce7d8;
+  line-height: 1.7;
 }
-
 #message {
   min-height: 20px;
   margin-top: 12px;
   font-size: 14px;
 }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
+<div class="shell">
+  <section class="info">
+    <span class="eyebrow">Secure Access</span>
+    <h1>Enter the full TrendCart system.</h1>
+    <p>
+      Login or create an account to unlock products, food ordering, movie booking, profile
+      tracking, history pages, and backend-powered checkout.
+    </p>
+    <div class="bullets">
+      <div class="bullet">
+        <strong>Session-based login</strong>
+        <span>Your account is handled through the Node.js backend and stored in MySQL.</span>
+      </div>
+      <div class="bullet">
+        <strong>Order and ticket history</strong>
+        <span>After login, your activity is saved and can be viewed from profile and history pages.</span>
+      </div>
+      <div class="bullet">
+        <strong>Demo access ready</strong>
+        <span>Use the demo account below if you want a quick way to test the full flow.</span>
+      </div>
+    </div>
+  </section>
 
-<div class="card">
-  <h1>TrendCart</h1>
-  <p>Login or create a new account for the full MySQL version of your project.</p>
+  <section class="card">
+    <h2>TrendCart Login</h2>
+    <p>Login or create a new account for the full backend-connected project.</p>
 
-  <input type="text" id="name" placeholder="Name for signup only">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Name for signup only">
 
-  <button id="loginBtn">Login</button>
-  <button id="registerBtn" class="secondary">Create Account</button>
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email">
 
-  <div id="message"></div>
-  <div class="hint">Demo account: <strong>demo@trendcart.com</strong> / <strong>123456</strong></div>
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter your password">
+
+    <button id="loginBtn" class="primary">Login</button>
+    <button id="registerBtn" class="secondary">Create Account</button>
+
+    <div id="message"></div>
+    <div class="hint">Demo account: <strong>demo@trendcart.com</strong> / <strong>123456</strong></div>
+  </section>
 </div>
 
 <script src="Assests/api.js"></script>

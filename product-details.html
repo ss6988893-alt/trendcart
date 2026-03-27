@@ -4,98 +4,205 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Product Details</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --line: rgba(154, 210, 255, 0.12);
+  --text: #eef5ff;
+  --muted: #95a8c7;
+  --accent: #89f8d6;
+  --accent-2: #6db8ff;
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+}
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #eef2f9;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #081020 44%, #050816);
 }
-
-.container {
-  max-width: 1100px;
-  margin: 40px auto;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
+.page {
+  position: relative;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 24px 20px 42px;
+}
+.hero,
+.panel {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.hero {
+  margin-bottom: 18px;
   padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
+}
+.eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 0.98;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+.container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 18px;
 }
-
 .panel {
-  background: white;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 16px 32px rgba(12, 29, 58, 0.08);
+  border-radius: 26px;
+  padding: 22px;
+  background: rgba(10, 18, 36, 0.84);
 }
-
 img {
   width: 100%;
-  height: 380px;
+  height: 420px;
   object-fit: cover;
   border-radius: 18px;
 }
-
+.tag {
+  display: inline-block;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: var(--accent-2);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.details h1 {
+  margin: 14px 0 10px;
+  font-family: "Syne", sans-serif;
+}
+.details p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+.price {
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
+  margin: 18px 0 8px;
+}
+.rating {
+  color: #ffd978;
+  letter-spacing: 0.08em;
+}
+label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 700;
+}
+input {
+  width: 100%;
+  max-width: 180px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
 button,
 a {
   display: inline-block;
-  margin-top: 12px;
-  margin-right: 12px;
   padding: 12px 16px;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   text-decoration: none;
   cursor: pointer;
+  font-weight: 800;
 }
-
 button {
-  background: #1758d7;
-  color: white;
+  background: linear-gradient(135deg, var(--accent), #c5fff0);
+  color: #041520;
 }
-
-a {
-  background: #ff8a00;
-  color: white;
-}
-
+a,
 button.secondary {
-  background: #ff8a00;
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
 #message {
   margin-top: 16px;
-  color: #1758d7;
+  color: var(--accent-2);
 }
-
 @media (max-width: 860px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
+  .container { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
+<div class="page">
+  <section class="hero">
+    <span class="eyebrow">Product Insight</span>
+    <h1>Review the item before checkout.</h1>
+    <p>
+      Check the product, adjust quantity, add it to the cart, or go directly into the
+      payment flow from this detail screen.
+    </p>
+  </section>
 
-<div class="container">
-  <div class="panel">
-    <img id="image" alt="Product image">
-  </div>
-
-  <div class="panel">
-    <h1 id="name">Loading...</h1>
-    <p id="category"></p>
-    <p id="description"></p>
-    <h2 id="price"></h2>
-    <div id="rating"></div>
-
-    <label for="quantity">Quantity</label>
-    <input id="quantity" type="number" min="1" value="1">
-
-    <div>
-      <button id="addBtn">Add to Cart</button>
-      <button id="buyBtn" class="secondary">Buy Now</button>
-      <a href="Cart.html">Go to Cart</a>
+  <div class="container">
+    <div class="panel">
+      <img id="image" alt="Product image">
     </div>
 
-    <div id="message"></div>
+    <div class="panel details">
+      <span class="tag" id="category">Loading...</span>
+      <h1 id="name">Loading...</h1>
+      <p id="description"></p>
+      <div class="price" id="price"></div>
+      <div class="rating" id="rating"></div>
+
+      <label for="quantity">Quantity</label>
+      <input id="quantity" type="number" min="1" value="1">
+
+      <div class="actions">
+        <button id="addBtn">Add to Cart</button>
+        <button id="buyBtn" class="secondary">Buy Now</button>
+        <a href="Cart.html">Go to Cart</a>
+      </div>
+
+      <div id="message"></div>
+    </div>
   </div>
 </div>
 
@@ -110,7 +217,7 @@ async function loadProduct() {
     const product = await TrendCartAPI.getProduct(productId);
     document.getElementById("image").src = product.image;
     document.getElementById("name").textContent = product.name;
-    document.getElementById("category").textContent = `Category: ${product.category}`;
+    document.getElementById("category").textContent = product.category;
     document.getElementById("description").textContent = product.description;
     document.getElementById("price").textContent = TrendCartAPI.formatCurrency(product.price);
     document.getElementById("rating").textContent = "Rating: " + "★".repeat(product.rating);

@@ -4,30 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secure Payment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Manrope", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.14), transparent 30%),
-    linear-gradient(135deg, #07142e, #1649a3 55%, #18a7ff);
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(137, 248, 214, 0.12), transparent 18%),
+    linear-gradient(180deg, #040814, #07101f 44%, #050816);
   min-height: 100vh;
   color: white;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
+
 .page {
+  position: relative;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 28px 20px 42px;
 }
 
 .hero {
   margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid rgba(154, 210, 255, 0.12);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(10, 18, 38, 0.92), rgba(8, 16, 34, 0.76));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
 }
 
 .hero p {
   color: rgba(255, 255, 255, 0.82);
   max-width: 720px;
+  line-height: 1.8;
+}
+
+.hero h1 {
+  margin: 16px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 0.98;
 }
 
 .grid {
@@ -37,18 +67,19 @@ body {
 }
 
 .panel {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 24px;
+  background: rgba(10, 18, 36, 0.84);
+  border: 1px solid rgba(154, 210, 255, 0.12);
+  border-radius: 26px;
   padding: 24px;
   backdrop-filter: blur(16px);
-  box-shadow: 0 18px 40px rgba(4, 18, 43, 0.24);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
 }
 
 .summary-card,
 .payment-card {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 22px;
   padding: 18px;
   margin-top: 14px;
 }
@@ -64,15 +95,19 @@ body {
 .big {
   font-size: 34px;
   font-weight: 700;
+  font-family: "Syne", sans-serif;
 }
 
 .badge {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #89f8d6;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .qr-wrap {
@@ -126,13 +161,14 @@ button {
 }
 
 button.primary {
-  background: #ffffff;
-  color: #0f244f;
+  background: linear-gradient(135deg, #89f8d6, #c5fff0);
+  color: #041520;
 }
 
 button.secondary {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
   color: white;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .hint {
