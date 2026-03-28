@@ -1,45 +1,71 @@
 # Deploy TrendCart
 
-## GitHub
+## Local run
 
-1. Create an empty GitHub repository.
-2. Push this project to that repository.
+1. Copy `.env.example` to `.env`.
+2. Set your MySQL and Razorpay values.
+3. Start the app with:
 
-## Railway
+```bash
+npm start
+```
 
-This project is prepared for Railway deployment.
+4. Open `http://localhost:5000`.
 
-### Web service
+## Required environment variables
 
-1. Create a new Railway project.
-2. Add a service from the GitHub repository.
-3. Railway should detect the Node app and run `npm start`.
+- `PORT`
+- `NODE_ENV`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+- `SESSION_SECRET`
+- `APP_BASE_URL`
+- `RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET`
 
-### MySQL service
+## Default admin bootstrap
 
-1. In the same Railway project, add a MySQL database service.
-2. Railway provides these variables to the app service:
+On startup, the app ensures an admin account exists. You can control it with:
+
+- `ADMIN_NAME`
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+
+If you do not override them, the fallback admin is:
+
+- email: `admin@trendcart.com`
+- password: `Admin@123`
+
+Change these values before production deployment.
+
+## Railway deployment
+
+1. Push the project to GitHub.
+2. Create a Railway project and add the GitHub repo as a service.
+3. Add a MySQL service in the same Railway project.
+4. Set these app variables in Railway:
+   - `NODE_ENV=production`
+   - `SESSION_SECRET`
+   - `APP_BASE_URL`
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `RAZORPAY_KEY_ID`
+   - `RAZORPAY_KEY_SECRET`
+5. Railway MySQL variables are also supported automatically:
    - `MYSQLHOST`
    - `MYSQLPORT`
    - `MYSQLUSER`
    - `MYSQLPASSWORD`
    - `MYSQLDATABASE`
-3. The backend already supports those variables.
 
-### Public URL
+The app already exposes `/api/health` for a simple deployment smoke check.
 
-1. Generate a Railway public domain for the web service.
-2. The app can use `RAILWAY_PUBLIC_DOMAIN` automatically for QR ticket links.
+## Production notes
 
-## Razorpay
-
-After deployment, use the Railway public URL for Razorpay onboarding.
-
-Then set these variables in Railway or local `.env`:
-
-- `RAZORPAY_KEY_ID`
-- `RAZORPAY_KEY_SECRET`
-
-## Local secrets
-
-Do not commit `.env`.
+- Use a strong `SESSION_SECRET`.
+- Replace the default admin credentials.
+- Use your deployed HTTPS URL for `APP_BASE_URL`.
+- Keep `.env` out of git.

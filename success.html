@@ -104,8 +104,28 @@ a {
   color: var(--text);
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255,255,255,0.94);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+}
+</style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="box">
   <span class="eyebrow">Payment Complete</span>
   <h1>Order successful.</h1>
@@ -139,9 +159,10 @@ async function loadDetails() {
     details.innerHTML = `
       <p><strong>Order ID:</strong> #${order.id}</p>
       <p><strong>Type:</strong> ${type}</p>
+      <p><strong>Order Status:</strong> ${order.order_status || "Placed"}</p>
       <p><strong>Status:</strong> ${order.payment_status}</p>
       <p><strong>Payment Method:</strong> ${order.payment_method}</p>
-      <p><strong>UPI Ref:</strong> ${order.payment_reference || "Not entered"}</p>
+      <p><strong>Razorpay Ref:</strong> ${order.payment_reference || "Not available"}</p>
       <p><strong>Total:</strong> ${TrendCartAPI.formatCurrency(order.total_amount)}</p>
       <p><strong>Items:</strong></p>
       <ul>${itemsHtml}</ul>

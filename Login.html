@@ -13,7 +13,6 @@
   --text: #1a2c42;
   --muted: #697f98;
   --accent: #1ea7fd;
-  --accent-2: #6d78ff;
   --shadow: 0 20px 48px rgba(45, 79, 128, 0.14);
 }
 * { box-sizing: border-box; }
@@ -25,9 +24,9 @@ body {
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 20% 18%, rgba(109, 184, 255, 0.2), transparent 22%),
-    radial-gradient(circle at 82% 22%, rgba(156, 197, 255, 0.18), transparent 18%),
-    linear-gradient(180deg, #f8fbff, #eef4ff 46%, #f4f8ff);
+    radial-gradient(circle at 16% 16%, rgba(30, 167, 253, 0.18), transparent 22%),
+    radial-gradient(circle at 84% 14%, rgba(109, 120, 255, 0.18), transparent 20%),
+    linear-gradient(135deg, rgba(250, 252, 255, 0.98), rgba(238, 244, 255, 0.94));
 }
 body::before {
   content: "";
@@ -35,13 +34,12 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(90,119,163,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(90,119,163,0.06) 1px, transparent 1px);
+    linear-gradient(rgba(90,119,163,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,119,163,0.07) 1px, transparent 1px);
   background-size: 48px 48px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
 .shell {
-  width: min(1100px, calc(100vw - 32px));
+  width: min(1120px, calc(100vw - 32px));
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 18px;
@@ -54,14 +52,16 @@ body::before {
 }
 .info {
   padding: 34px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
+  color: #eff7ff;
+  background: linear-gradient(180deg, rgba(14, 33, 58, 0.84), rgba(18, 46, 82, 0.74));
+  backdrop-filter: blur(16px);
 }
 .eyebrow {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(30,167,253,0.1);
-  color: var(--accent);
+  background: rgba(255,255,255,0.1);
+  color: #7fd9ff;
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -70,13 +70,13 @@ body::before {
 .info h1 {
   margin: 18px 0 12px;
   font-family: "Syne", sans-serif;
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
   line-height: 0.95;
 }
 .info p {
   margin: 0;
   max-width: 520px;
-  color: var(--muted);
+  color: rgba(239, 247, 255, 0.82);
   line-height: 1.8;
 }
 .bullets {
@@ -87,19 +87,19 @@ body::before {
 .bullet {
   padding: 14px 16px;
   border-radius: 18px;
-  background: rgba(245,248,255,0.95);
-  border: 1px solid rgba(86,118,170,0.1);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .bullet strong {
   display: block;
   margin-bottom: 6px;
 }
 .bullet span {
-  color: var(--muted);
+  color: rgba(239, 247, 255, 0.72);
 }
 .card {
   padding: 32px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(18px);
 }
 .card h2 {
@@ -146,7 +146,7 @@ button.secondary {
   color: var(--text);
   border: 1px solid rgba(86,118,170,0.14);
 }
-.hint {
+.status {
   margin-top: 16px;
   padding: 14px;
   border-radius: 16px;
@@ -154,70 +154,122 @@ button.secondary {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.7;
+  min-height: 24px;
 }
-#message {
-  min-height: 20px;
-  margin-top: 12px;
-  font-size: 14px;
+.status.error {
+  color: #c53d62;
+  background: rgba(255, 240, 244, 0.95);
+}
+.status.success {
+  color: #14845d;
+  background: rgba(239, 255, 246, 0.95);
+}
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.meta-row a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
 }
 @media (max-width: 900px) {
-  .shell { grid-template-columns: 1fr; }
+  .shell {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255,255,255,0.94);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
 </style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="shell">
   <section class="info">
     <span class="eyebrow">Secure Access</span>
-    <h1>Enter the full TrendCart system.</h1>
+    <h1>Sign in with your TrendCart account.</h1>
     <p>
-      Login or create an account to unlock products, food ordering, movie booking, profile
-      tracking, history pages, and backend-powered checkout.
+      Use your name, email, and password to create an account or log in. Once signed in,
+      you can shop, order food, and book movies from the same session.
     </p>
     <div class="bullets">
       <div class="bullet">
-        <strong>Session-based login</strong>
-        <span>Your account is handled through the Node.js backend and stored in MySQL.</span>
+        <strong>Simple login flow</strong>
+        <span>No OTP step. Just create your account once and log in with email and password.</span>
       </div>
       <div class="bullet">
-        <strong>Order and ticket history</strong>
-        <span>After login, your activity is saved and can be viewed from profile and history pages.</span>
+        <strong>One account everywhere</strong>
+        <span>Your session works across products, food orders, profile access, and movie booking.</span>
       </div>
       <div class="bullet">
-        <strong>Demo access ready</strong>
-        <span>Use the demo account below if you want a quick way to test the full flow.</span>
+        <strong>Backend-backed auth</strong>
+        <span>Credentials are handled by the Node.js backend and stored in the existing database.</span>
       </div>
     </div>
   </section>
 
   <section class="card">
-    <h2>TrendCart Login</h2>
-    <p>Login or create a new account for the full backend-connected project.</p>
+    <h2>Account Login</h2>
+    <p>Enter your details to log in, or fill all fields once to create a new account.</p>
 
     <label for="name">Name</label>
-    <input type="text" id="name" placeholder="Name for signup only">
+    <input type="text" id="name" placeholder="Your full name">
 
     <label for="email">Email</label>
-    <input type="email" id="email" placeholder="Enter your email">
+    <input type="email" id="email" placeholder="you@example.com">
 
     <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Enter your password">
+    <input type="password" id="password" placeholder="At least 6 characters">
 
-    <button id="loginBtn" class="primary">Login</button>
-    <button id="registerBtn" class="secondary">Create Account</button>
-
-    <div id="message"></div>
-    <div class="hint">Demo account: <strong>demo@trendcart.com</strong> / <strong>123456</strong></div>
+    <button id="loginBtn" class="primary" type="button">Login</button>
+    <button id="registerBtn" class="secondary" type="button">Create Account</button>
+    <div id="status" class="status"></div>
+    <div class="meta-row">
+      <span>Use one account for shopping, food, and movies.</span>
+      <a href="index.html">Back to home</a>
+    </div>
   </section>
 </div>
 
 <script src="Assests/api.js"></script>
 <script>
-const messageBox = document.getElementById("message");
+const statusBox = document.getElementById("status");
+const loginBtn = document.getElementById("loginBtn");
+const registerBtn = document.getElementById("registerBtn");
 
-function setMessage(text, isError = false) {
-  messageBox.textContent = text;
-  messageBox.style.color = isError ? "#ffd6d6" : "#d8ffe0";
+function setStatus(text, type = "") {
+  statusBox.textContent = text;
+  statusBox.className = `status${type ? ` ${type}` : ""}`;
+}
+
+function getFormValues() {
+  return {
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    password: document.getElementById("password").value.trim()
+  };
 }
 
 async function redirectIfLoggedIn() {
@@ -227,49 +279,49 @@ async function redirectIfLoggedIn() {
   }
 }
 
-async function handleLogin() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
+loginBtn.addEventListener("click", async () => {
+  const { email, password } = getFormValues();
   if (!email || !password) {
-    setMessage("Please enter email and password.", true);
+    setStatus("Enter your email and password.", "error");
     return;
   }
 
   try {
+    loginBtn.disabled = true;
+    setStatus("Signing you in...", "success");
     await TrendCartAPI.login({ email, password });
-    setMessage("Login successful. Redirecting...");
+    setStatus("Login successful. Redirecting...", "success");
     setTimeout(() => {
       window.location.href = "index.html";
-    }, 800);
+    }, 700);
   } catch (error) {
-    setMessage(error.message, true);
+    setStatus(error.message, "error");
+  } finally {
+    loginBtn.disabled = false;
   }
-}
+});
 
-async function handleRegister() {
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
+registerBtn.addEventListener("click", async () => {
+  const { name, email, password } = getFormValues();
   if (!name || !email || !password) {
-    setMessage("Please enter name, email, and password.", true);
+    setStatus("Enter name, email, and password to create an account.", "error");
     return;
   }
 
   try {
+    registerBtn.disabled = true;
+    setStatus("Creating your account...", "success");
     await TrendCartAPI.register({ name, email, password });
-    setMessage("Account created. Redirecting...");
+    setStatus("Account created. Redirecting...", "success");
     setTimeout(() => {
       window.location.href = "index.html";
-    }, 800);
+    }, 700);
   } catch (error) {
-    setMessage(error.message, true);
+    setStatus(error.message, "error");
+  } finally {
+    registerBtn.disabled = false;
   }
-}
-
-document.getElementById("loginBtn").addEventListener("click", handleLogin);
-document.getElementById("registerBtn").addEventListener("click", handleRegister);
+});
 
 redirectIfLoggedIn().catch(() => {});
 </script>

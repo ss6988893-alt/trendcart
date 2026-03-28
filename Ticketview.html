@@ -97,18 +97,6 @@ body::before {
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-.qr-box {
-  background: white;
-  padding: 16px;
-  border-radius: 18px;
-  width: fit-content;
-  margin: 18px auto 0;
-}
-#qr {
-  width: 190px;
-  height: 190px;
-  display: block;
-}
 .right p {
   color: #697f98;
   line-height: 1.75;
@@ -134,12 +122,31 @@ body::before {
   .ticket { grid-template-columns: 1fr; }
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255,255,255,0.94);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+}
+</style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="wrapper">
   <div class="ticket" id="ticket">Loading ticket...</div>
   <div class="actions">
-    <a href="Tickethistory.html">Ticket History</a>
     <a href="Movies.html">Book Another</a>
     <button id="printBtn" type="button">Print Ticket</button>
   </div>
@@ -159,14 +166,11 @@ async function loadTicket() {
 
   try {
     const ticket = await TrendCartAPI.getMovieTicket(id);
-    const serverInfo = await TrendCartAPI.getServerInfo();
-    const scanUrl = `${serverInfo.baseUrl}/Ticketscan.html?id=${ticket.id}`;
-    const qrText = encodeURIComponent(scanUrl);
     box.innerHTML = `
       <div class="left">
         <span class="pill">TrendCart Cinema Pass</span>
         <h1>${ticket.movie}</h1>
-        <p>Your booking is confirmed and saved in the database with ticket verification support.</p>
+        <p>Your booking is confirmed and saved in the database for your account.</p>
         <div class="meta">
           <div class="meta-box"><strong>Ticket ID</strong>#${ticket.id}</div>
           <div class="meta-box"><strong>Theatre</strong>${ticket.theatre}</div>
@@ -177,14 +181,11 @@ async function loadTicket() {
         </div>
       </div>
       <div class="right">
-        <h2>Scan at entry</h2>
-        <p>Use this QR code to verify movie name, timing, seats, payment reference, and booking state.</p>
-        <div class="qr-box">
-          <img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${qrText}" alt="Ticket QR code">
-        </div>
+        <h2>Booking details</h2>
+        <p>This page keeps your movie summary, seats, snacks, and Razorpay reference in one printable ticket view.</p>
         <p><strong>Booked At:</strong> ${ticket.date}</p>
-        <p><strong>UPI Ref:</strong> ${ticket.paymentReference || "Not entered"}</p>
-        <p><strong>Status:</strong> Confirmed</p>
+        <p><strong>Razorpay Ref:</strong> ${ticket.paymentReference || "Not available"}</p>
+        <p><strong>Status:</strong> ${ticket.bookingStatus || "Confirmed"}</p>
       </div>
     `;
   } catch (error) {

@@ -32,8 +32,27 @@ a {
   text-decoration: none;
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.94);
+  color: #6b1010;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+}
+</style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="box">
   <h1>Payment Failed</h1>
   <p id="message">Please try again.</p>

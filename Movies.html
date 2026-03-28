@@ -15,6 +15,7 @@
   --muted: #697f98;
   --accent: #1ea7fd;
   --accent-2: #6d78ff;
+  --danger: #d94f70;
   --shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
 * { box-sizing: border-box; }
@@ -98,15 +99,8 @@ body::before {
   border-radius: 22px;
   background: rgba(255,255,255,0.98);
   cursor: pointer;
-  transform: translateY(18px);
-  opacity: 0;
-  animation: rise 0.55s ease forwards;
   transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
-.movie:nth-child(2) { animation-delay: 0.06s; }
-.movie:nth-child(3) { animation-delay: 0.12s; }
-.movie:nth-child(4) { animation-delay: 0.18s; }
-.movie:nth-child(5) { animation-delay: 0.24s; }
 .movie:hover { transform: translateY(-4px); }
 .movie.selected {
   border-color: rgba(30,167,253,0.45);
@@ -195,6 +189,42 @@ body::before {
   color: #ffffff;
   border-color: rgba(30,167,253,0.45);
 }
+.seat.unavailable {
+  background: rgba(217, 79, 112, 0.1);
+  color: var(--danger);
+  border-color: rgba(217, 79, 112, 0.35);
+  cursor: not-allowed;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.legend i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.legend .available i {
+  background: #f7faff;
+  border: 1px solid rgba(86,118,170,0.2);
+}
+.legend .selected i {
+  background: linear-gradient(135deg, var(--accent), #8fd1ff);
+}
+.legend .locked i {
+  background: rgba(217, 79, 112, 0.14);
+  border: 1px solid rgba(217, 79, 112, 0.35);
+}
 .snacks {
   display: grid;
   gap: 12px;
@@ -258,6 +288,7 @@ body::before {
   background: #f7faff;
   color: var(--accent-2);
   border: 1px solid rgba(86,118,170,0.1);
+  min-height: 56px;
 }
 .modal {
   position: fixed;
@@ -288,23 +319,40 @@ body::before {
   background: linear-gradient(135deg, var(--accent), #8fd1ff);
   color: #ffffff;
 }
-@keyframes rise {
-  to { opacity: 1; transform: translateY(0); }
-}
 @media (max-width: 980px) {
   .layout { grid-template-columns: 1fr; }
   .summary { position: static; }
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255,255,255,0.94);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+}
+</style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <div class="hero">
     <span class="eyebrow">Cinema Flow</span>
-    <h1>Book shows in a more cinematic interface.</h1>
+    <h1>Book shows with live seat availability.</h1>
     <p>
-      Select movies, theatre, timing, seats, and snacks in a bright premium layout that
-      feels cleaner, easier to present, and more polished.
+      Movies now use the backend catalog and session-based seat locks, so booked or reserved
+      seats stay unavailable while you complete checkout.
     </p>
   </div>
 
@@ -326,6 +374,11 @@ body::before {
 
       <h2 style="margin-top: 26px;">Select Seats</h2>
       <div class="seat-grid" id="seats"></div>
+      <div class="legend">
+        <span class="available"><i></i>Available</span>
+        <span class="selected"><i></i>Your seats</span>
+        <span class="locked"><i></i>Locked or booked</span>
+      </div>
 
       <h2 style="margin-top: 26px;">Snacks</h2>
       <div class="snacks" id="snacks"></div>
@@ -338,11 +391,12 @@ body::before {
         <div class="line"><span>Theatre</span><strong id="summaryTheatre">PVR</strong></div>
         <div class="line"><span>Show Time</span><strong id="summaryTime">10AM</strong></div>
         <div class="line"><span>Seats</span><strong id="summarySeats">0</strong></div>
+        <div class="line"><span>Lock Timer</span><strong id="lockTimer">Not started</strong></div>
         <div class="line"><span>Snacks</span><strong id="summarySnacks">None</strong></div>
         <div class="line"><span>Total</span><strong id="summaryTotal">Rs. 0</strong></div>
       </div>
       <button id="bookBtn">Proceed To Payment</button>
-      <div id="status">Choose a movie and seats to continue.</div>
+      <div id="status">Choose a movie, then lock your seats to continue.</div>
     </aside>
   </div>
 </div>
@@ -356,14 +410,6 @@ body::before {
 
 <script src="Assests/api.js"></script>
 <script>
-const movies = [
-  { name: "Leo", img: "Assests/LEO.jpg", rating: 4, trailer: "https://www.youtube.com/embed/Po3jStA673E" },
-  { name: "Jailer", img: "Assests/JAiler.jpg", rating: 5, trailer: "https://www.youtube.com/embed/Y5BeWdODPqo" },
-  { name: "Vikram", img: "Assests/Vikram.jpg", rating: 5, trailer: "https://www.youtube.com/embed/OKBMCL-frPU" },
-  { name: "Salaar", img: "Assests/SALAR.jpg", rating: 4, trailer: "https://www.youtube.com/embed/4GPvYMKtrtI" },
-  { name: "Dune 2", img: "Assests/DUNE2.jpg", rating: 5, trailer: "https://www.youtube.com/embed/U2Qp5pL3ovA" }
-];
-
 const theatres = ["PVR", "INOX", "AGS", "Sathyam"];
 const showTimes = ["10AM", "2PM", "6PM", "10PM"];
 const snackItems = [
@@ -381,21 +427,69 @@ const statusBox = document.getElementById("status");
 const trailerModal = document.getElementById("trailerModal");
 const trailerFrame = document.getElementById("trailerFrame");
 
+let movies = [];
+let currentUser = null;
 let selectedMovie = null;
 let selectedTheatre = theatres[0];
 let selectedTime = showTimes[0];
 let selectedSeats = [];
+let unavailableSeats = [];
 let snacks = {};
+let currentLockContext = null;
+let lockExpiresAt = null;
+let lockCountdownHandle = null;
 
 function formatCurrency(value) {
   return TrendCartAPI.formatCurrency(value);
+}
+
+function setStatus(text) {
+  statusBox.textContent = text;
+}
+
+function clearLockCountdown() {
+  if (lockCountdownHandle) {
+    clearInterval(lockCountdownHandle);
+    lockCountdownHandle = null;
+  }
+}
+
+function updateLockCountdownLabel() {
+  const timer = document.getElementById("lockTimer");
+  if (!lockExpiresAt || !selectedSeats.length) {
+    timer.textContent = "Not started";
+    return;
+  }
+
+  const remainingMs = new Date(lockExpiresAt).getTime() - Date.now();
+  if (remainingMs <= 0) {
+    timer.textContent = "Expired";
+    clearLockCountdown();
+    lockExpiresAt = null;
+    loadSeatAvailability().catch(() => {});
+    return;
+  }
+
+  const totalSeconds = Math.ceil(remainingMs / 1000);
+  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  timer.textContent = `${minutes}:${seconds}`;
+}
+
+function syncLockCountdown(expiresAt) {
+  lockExpiresAt = expiresAt || null;
+  clearLockCountdown();
+  updateLockCountdownLabel();
+
+  if (lockExpiresAt && selectedSeats.length) {
+    lockCountdownHandle = setInterval(updateLockCountdownLabel, 1000);
+  }
 }
 
 function updateSummary() {
   const snackList = Object.entries(snacks)
     .filter(([, value]) => value.qty > 0)
     .map(([name, value]) => `${name} x${value.qty}`);
-
   const totalSeatAmount = selectedSeats.length * 180;
   const totalSnackAmount = Object.values(snacks).reduce((sum, item) => sum + (item.price * item.qty), 0);
   const total = totalSeatAmount + totalSnackAmount;
@@ -406,29 +500,32 @@ function updateSummary() {
   document.getElementById("summarySeats").textContent = selectedSeats.length ? selectedSeats.join(", ") : "0";
   document.getElementById("summarySnacks").textContent = snackList.length ? snackList.join(", ") : "None";
   document.getElementById("summaryTotal").textContent = formatCurrency(total);
+  if (!selectedSeats.length) {
+    syncLockCountdown(null);
+  }
 }
 
 function renderMovies() {
   moviesBox.innerHTML = movies.map((movie) => `
-    <div class="movie ${selectedMovie && selectedMovie.name === movie.name ? "selected" : ""}" data-movie="${movie.name}">
-      <img src="${movie.img}" alt="${movie.name}">
+    <div class="movie ${selectedMovie && selectedMovie.id === movie.id ? "selected" : ""}">
+      <img src="${movie.image}" alt="${movie.name}">
       <div class="movie-content">
         <h3>${movie.name}</h3>
         <div class="movie-rating">${"★".repeat(movie.rating)}</div>
         <div class="movie-actions">
           <button class="trailer" data-trailer="${movie.trailer}" type="button">Trailer</button>
-          <button class="select" data-select="${movie.name}" type="button">Select</button>
+          <button class="select" data-select="${movie.id}" type="button">Select</button>
         </div>
       </div>
     </div>
   `).join("");
 
   document.querySelectorAll("[data-select]").forEach((button) => {
-    button.addEventListener("click", () => {
-      selectedMovie = movies.find((movie) => movie.name === button.dataset.select);
-      statusBox.textContent = `${selectedMovie.name} selected. Continue with seats and snacks.`;
-      renderMovies();
-      updateSummary();
+    button.addEventListener("click", async () => {
+      await changeShowContext({
+        movie: movies.find((movie) => movie.id === Number(button.dataset.select))
+      });
+      setStatus(`${selectedMovie.name} selected. Choose your show and seats.`);
     });
   });
 
@@ -447,8 +544,8 @@ function renderChips(container, values, selectedValue, onSelect) {
   `).join("");
 
   container.querySelectorAll(".chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      onSelect(chip.dataset.value);
+    chip.addEventListener("click", async () => {
+      await onSelect(chip.dataset.value);
       renderChips(container, values, chip.dataset.value, onSelect);
       updateSummary();
     });
@@ -461,16 +558,12 @@ function renderSeats() {
     const seatNo = `S${index}`;
     const seat = document.createElement("button");
     seat.type = "button";
-    seat.className = `seat ${selectedSeats.includes(seatNo) ? "selected" : ""}`;
+    const unavailable = unavailableSeats.includes(seatNo);
+    seat.className = `seat ${selectedSeats.includes(seatNo) ? "selected" : ""} ${unavailable ? "unavailable" : ""}`.trim();
     seat.textContent = seatNo;
-    seat.addEventListener("click", () => {
-      if (selectedSeats.includes(seatNo)) {
-        selectedSeats = selectedSeats.filter((value) => value !== seatNo);
-      } else {
-        selectedSeats.push(seatNo);
-      }
-      renderSeats();
-      updateSummary();
+    seat.disabled = unavailable;
+    seat.addEventListener("click", async () => {
+      await toggleSeat(seatNo);
     });
     seatsBox.appendChild(seat);
   }
@@ -513,26 +606,132 @@ function changeSnackQty(name, change) {
   updateSummary();
 }
 
+async function loadSeatAvailability() {
+  if (!selectedMovie || !currentUser) {
+    unavailableSeats = [];
+    renderSeats();
+    return;
+  }
+
+  const data = await TrendCartAPI.getMovieSeatAvailability(selectedMovie.id, {
+    theatre: selectedTheatre,
+    time: selectedTime
+  });
+
+  unavailableSeats = [...new Set([...(data.bookedSeats || []), ...(data.lockedSeats || [])])];
+  selectedSeats = (data.mine || []).slice().sort((left, right) => Number(left.slice(1)) - Number(right.slice(1)));
+  currentLockContext = {
+    movieId: selectedMovie.id,
+    theatre: selectedTheatre,
+    time: selectedTime
+  };
+  syncLockCountdown(data.expiresAt || null);
+  renderSeats();
+  updateSummary();
+}
+
+async function releaseCurrentLocks() {
+  if (!currentUser || !currentLockContext) {
+    return;
+  }
+
+  try {
+    await TrendCartAPI.syncMovieSeatLocks({
+      movieId: currentLockContext.movieId,
+      theatre: currentLockContext.theatre,
+      time: currentLockContext.time,
+      seats: []
+    });
+  } catch {
+    return;
+  }
+}
+
+async function changeShowContext({ movie = selectedMovie, theatre = selectedTheatre, time = selectedTime } = {}) {
+  const contextChanged =
+    (selectedMovie && movie && selectedMovie.id !== movie.id) ||
+    selectedTheatre !== theatre ||
+    selectedTime !== time;
+
+  if (contextChanged) {
+    await releaseCurrentLocks();
+    selectedSeats = [];
+    unavailableSeats = [];
+    syncLockCountdown(null);
+  }
+
+  selectedMovie = movie;
+  selectedTheatre = theatre;
+  selectedTime = time;
+
+  renderMovies();
+  await loadSeatAvailability();
+  updateSummary();
+}
+
+async function toggleSeat(seatNo) {
+  if (!currentUser) {
+    window.location.href = "Login.html";
+    return;
+  }
+
+  if (!selectedMovie) {
+    setStatus("Please select a movie first.");
+    return;
+  }
+
+  const nextSeats = selectedSeats.includes(seatNo)
+    ? selectedSeats.filter((value) => value !== seatNo)
+    : [...selectedSeats, seatNo];
+
+  try {
+    const data = await TrendCartAPI.syncMovieSeatLocks({
+      movieId: selectedMovie.id,
+      theatre: selectedTheatre,
+      time: selectedTime,
+      seats: nextSeats
+    });
+    unavailableSeats = [...new Set([...(data.bookedSeats || []), ...(data.lockedSeats || [])])];
+    selectedSeats = (data.mine || []).slice().sort((left, right) => Number(left.slice(1)) - Number(right.slice(1)));
+    syncLockCountdown(data.expiresAt || null);
+    renderSeats();
+    updateSummary();
+    setStatus(selectedSeats.length ? "Seats locked for your session. Complete payment before the countdown ends." : "Seat lock released.");
+  } catch (error) {
+    setStatus(error.message);
+    await loadSeatAvailability();
+  }
+}
+
 document.getElementById("closeTrailer").addEventListener("click", () => {
   trailerFrame.src = "";
   trailerModal.classList.remove("open");
 });
 
+window.addEventListener("beforeunload", () => {
+  clearLockCountdown();
+});
+
 document.getElementById("bookBtn").addEventListener("click", async () => {
+  if (!currentUser) {
+    window.location.href = "Login.html";
+    return;
+  }
+
   if (!selectedMovie) {
-    statusBox.textContent = "Please select a movie.";
+    setStatus("Please select a movie.");
     return;
   }
 
   if (selectedSeats.length === 0) {
-    statusBox.textContent = "Please select at least one seat.";
+    setStatus("Please lock at least one seat.");
     return;
   }
 
   try {
-    const { user } = await TrendCartAPI.getCurrentUser();
-    if (!user) {
-      window.location.href = "Login.html";
+    await loadSeatAvailability();
+    if (!selectedSeats.length) {
+      setStatus("Your seat lock expired. Please select seats again.");
       return;
     }
 
@@ -545,8 +744,9 @@ document.getElementById("bookBtn").addEventListener("click", async () => {
     TrendCartAPI.setPendingPayment({
       type: "movie",
       title: selectedMovie.name,
-      subtitle: `${selectedTheatre} • ${selectedTime}`,
+      subtitle: `${selectedTheatre} - ${selectedTime}`,
       amount: total,
+      movieId: selectedMovie.id,
       movie: selectedMovie.name,
       theatre: selectedTheatre,
       time: selectedTime,
@@ -560,20 +760,38 @@ document.getElementById("bookBtn").addEventListener("click", async () => {
 
     window.location.href = "Payment.html?type=movie";
   } catch (error) {
-    if (error.message.includes("login")) {
-      window.location.href = "Login.html";
-      return;
-    }
-    statusBox.textContent = error.message;
+    setStatus(error.message);
   }
 });
 
-renderMovies();
-renderChips(theatreBox, theatres, selectedTheatre, (value) => { selectedTheatre = value; });
-renderChips(timeBox, showTimes, selectedTime, (value) => { selectedTime = value; });
-renderSeats();
-renderSnacks();
-updateSummary();
+async function init() {
+  try {
+    const session = await TrendCartAPI.getCurrentUser();
+    currentUser = session.user;
+  } catch {
+    currentUser = null;
+  }
+
+  movies = await TrendCartAPI.listMovies();
+  selectedMovie = movies[0] || null;
+  renderMovies();
+  renderChips(theatreBox, theatres, selectedTheatre, async (value) => {
+    await changeShowContext({ theatre: value });
+  });
+  renderChips(timeBox, showTimes, selectedTime, async (value) => {
+    await changeShowContext({ time: value });
+  });
+  renderSnacks();
+  await loadSeatAvailability();
+  updateSummary();
+  setStatus(currentUser
+    ? "Pick your seats. Locked seats stay reserved for your session before payment."
+    : "Login first if you want to lock seats and continue to payment.");
+}
+
+init().catch((error) => {
+  setStatus(error.message || "Unable to load the movie experience.");
+});
 </script>
 </body>
 </html>

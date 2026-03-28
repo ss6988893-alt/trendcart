@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Payment</title>
+<title>TrendCart Payment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -18,7 +18,6 @@ body {
   min-height: 100vh;
   color: #1a2c42;
 }
-
 body::before {
   content: "";
   position: fixed;
@@ -30,74 +29,35 @@ body::before {
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
-
 .page {
   position: relative;
-  max-width: 1120px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 28px 20px 42px;
 }
-
-.hero {
-  margin-bottom: 24px;
-  padding: 24px;
+.hero,
+.panel {
   border: 1px solid rgba(86, 118, 170, 0.14);
   border-radius: 28px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
   box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
-
-.hero p {
-  color: #697f98;
-  max-width: 720px;
-  line-height: 1.8;
+.hero {
+  margin-bottom: 22px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
 }
-
 .hero h1 {
   margin: 16px 0 10px;
   font-family: "Syne", sans-serif;
   font-size: clamp(2rem, 5vw, 3.6rem);
   line-height: 0.98;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 22px;
-}
-
-.panel {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(86, 118, 170, 0.14);
-  border-radius: 26px;
-  padding: 24px;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
-}
-
-.summary-card,
-.payment-card {
-  background: #f7faff;
-  border: 1px solid rgba(86, 118, 170, 0.1);
-  border-radius: 22px;
-  padding: 18px;
-  margin-top: 14px;
-}
-
-.line {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 10px 0;
+.hero p {
+  margin: 0;
+  max-width: 760px;
   color: #697f98;
+  line-height: 1.75;
 }
-
-.big {
-  font-size: 34px;
-  font-weight: 700;
-  font-family: "Syne", sans-serif;
-}
-
 .badge {
   display: inline-block;
   padding: 8px 12px;
@@ -109,43 +69,44 @@ body::before {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
-.qr-wrap {
-  background: white;
-  border-radius: 24px;
-  padding: 20px;
-  width: fit-content;
-  margin: 18px auto 10px;
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 22px;
 }
-
-#qrImage {
-  width: 240px;
-  height: 240px;
-  display: block;
+.panel {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 24px;
+  backdrop-filter: blur(16px);
 }
-
-label {
-  display: block;
+.panel h2 {
+  margin-top: 0;
+  font-family: "Syne", sans-serif;
+}
+.summary-card,
+.payment-card {
+  background: #f7faff;
+  border: 1px solid rgba(86, 118, 170, 0.1);
+  border-radius: 22px;
+  padding: 18px;
   margin-top: 14px;
-  margin-bottom: 6px;
-  font-size: 14px;
-  font-weight: 600;
 }
-
-input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid rgba(86, 118, 170, 0.14);
-  border-radius: 14px;
-  background: #ffffff;
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0;
+  color: #697f98;
+}
+.line strong {
   color: #1a2c42;
-  box-sizing: border-box;
+  text-align: right;
 }
-
-input::placeholder {
-  color: #8ea0b8;
+.big {
+  font-size: 34px;
+  font-weight: 700;
+  font-family: "Syne", sans-serif;
 }
-
 button {
   display: inline-block;
   width: 100%;
@@ -154,72 +115,79 @@ button {
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  text-align: center;
-  box-sizing: border-box;
   font-size: 15px;
   font-weight: 700;
 }
-
 button.primary {
   background: linear-gradient(135deg, #1ea7fd, #8fd1ff);
   color: #ffffff;
 }
-
 button.secondary {
   background: #f7faff;
   color: #1a2c42;
   border: 1px solid rgba(86,118,170,0.14);
 }
-
-.hint {
-  font-size: 14px;
-  color: #697f98;
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
-
-.fine-print {
-  font-size: 12px;
-  color: #7d91aa;
-  margin-top: 10px;
-}
-
-.mode-note {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: #f7faff;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #697f98;
-}
-
+.note,
 #message {
-  min-height: 24px;
   margin-top: 16px;
-  font-size: 15px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #f7faff;
+  color: #697f98;
+  line-height: 1.7;
 }
-
+#message.error {
+  color: #c23d61;
+  background: rgba(255, 242, 245, 0.96);
+}
+#message.success {
+  color: #14845d;
+  background: rgba(239, 255, 246, 0.96);
+}
 ul {
   padding-left: 18px;
 }
-
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
   }
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255,255,255,0.94);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+}
+</style>
 </head>
 <body>
-
+<a class="home-link" href="index.html">Home</a>
 <div class="page">
-  <div class="hero">
-    <span class="badge">TrendCart Secure Checkout</span>
-    <h1>Complete your payment</h1>
+  <section class="hero">
+    <span class="badge">TrendCart Razorpay Checkout</span>
+    <h1>Complete your payment securely.</h1>
     <p>
-      Review the booking summary, scan the QR code, or use Razorpay test checkout.
-      Product, food, and movie data are saved in MySQL only after payment success.
+      Razorpay is the only payment method in this flow. Once payment is verified, your product
+      order, food order, or movie ticket is saved instantly.
     </p>
-  </div>
+  </section>
 
   <div class="grid">
     <section class="panel">
@@ -228,35 +196,16 @@ ul {
     </section>
 
     <section class="panel">
-      <h2>Checkout Options</h2>
+      <h2>Payment</h2>
       <div class="payment-card">
-        <div class="qr-wrap">
-          <img id="qrImage" alt="Payment QR code">
-        </div>
-        <p class="hint">Scan this QR with PhonePe, Google Pay, Paytm, or any UPI app.</p>
-        <div class="line">
-          <span>Payable amount</span>
-          <strong id="amount">Rs. 0</strong>
-        </div>
-        <div class="line">
-          <span>UPI ID</span>
-          <strong>ss6988893@okicici</strong>
-        </div>
-        <div class="line">
-          <span>Razorpay Test</span>
-          <strong id="razorpayStatus">Checking...</strong>
-        </div>
-        <label for="utr">UPI Reference No. (optional for QR payment)</label>
-        <input id="utr" type="text" placeholder="Example: 435678901234">
-        <div class="fine-print">
-          Automatic verification works only in Razorpay test mode when you add test keys.
-          QR payment remains user-confirmed with optional UPI reference capture.
-        </div>
+        <div class="line"><span>Gateway</span><strong>Razorpay</strong></div>
+        <div class="line"><span>Status</span><strong id="razorpayStatus">Checking...</strong></div>
+        <div class="line"><span>Payable amount</span><strong id="amount" class="big">Rs. 0</strong></div>
+        <div class="line"><span>Mode</span><strong id="modeLabel">Checking...</strong></div>
       </div>
-      <button class="primary" id="razorpayBtn" disabled>Pay With Razorpay Test</button>
-      <button class="secondary" id="confirmBtn">I Have Paid With QR</button>
+      <button class="primary" id="razorpayBtn" disabled>Pay With Razorpay</button>
       <button class="secondary" id="cancelBtn">Cancel Payment</button>
-      <div class="mode-note" id="modeNote">Checking payment gateway status...</div>
+      <div class="note" id="modeNote">Checking payment gateway status...</div>
       <div id="message"></div>
     </section>
   </div>
@@ -270,22 +219,18 @@ const type = params.get("type") || "product";
 const summaryBox = document.getElementById("summary");
 const amountBox = document.getElementById("amount");
 const messageBox = document.getElementById("message");
-const qrImage = document.getElementById("qrImage");
-const utrInput = document.getElementById("utr");
 const razorpayBtn = document.getElementById("razorpayBtn");
 const razorpayStatus = document.getElementById("razorpayStatus");
+const modeLabel = document.getElementById("modeLabel");
 const modeNote = document.getElementById("modeNote");
 let paymentData = null;
-let serverInfo = null;
 
-function setMessage(text, isError = false) {
+function setMessage(text, type = "") {
   messageBox.textContent = text;
-  messageBox.style.color = isError ? "#d64769" : "#14946c";
-}
-
-function getQrUrl(amount, note) {
-  const upiLink = `upi://pay?pa=ss6988893@okicici&pn=TrendCart&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-  return `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiLink)}`;
+  messageBox.className = type ? type : "";
+  if (type) {
+    messageBox.classList.add(type);
+  }
 }
 
 async function buildProductPayment() {
@@ -320,12 +265,11 @@ function renderSummary(data) {
   `;
 
   amountBox.textContent = TrendCartAPI.formatCurrency(data.amount);
-  qrImage.src = getQrUrl(data.amount, `${data.type} payment`);
 }
 
 async function finalizeSuccess(paymentReference = "") {
   if (type === "product") {
-    const result = await TrendCartAPI.placeOrder("UPI", paymentReference);
+    const result = await TrendCartAPI.placeOrder("Razorpay", paymentReference);
     window.location.href = `success.html?type=product&id=${result.orderId}`;
     return;
   }
@@ -343,6 +287,7 @@ async function finalizeSuccess(paymentReference = "") {
 
   if (type === "movie") {
     const result = await TrendCartAPI.saveMovieTicket({
+      movieId: paymentData.movieId,
       movie: paymentData.movie,
       theatre: paymentData.theatre,
       time: paymentData.time,
@@ -359,7 +304,7 @@ async function finalizeSuccess(paymentReference = "") {
 
 async function openRazorpayCheckout() {
   try {
-    setMessage("Creating Razorpay test order...");
+    setMessage("Creating Razorpay order...", "success");
     const order = await TrendCartAPI.createRazorpayOrder({
       amount: paymentData.amount,
       type
@@ -374,42 +319,39 @@ async function openRazorpayCheckout() {
       order_id: order.orderId,
       handler: async function (response) {
         try {
-          setMessage("Verifying Razorpay payment...");
+          setMessage("Verifying payment...", "success");
           const verification = await TrendCartAPI.verifyRazorpayPayment(response);
           await finalizeSuccess(verification.paymentReference);
         } catch (error) {
-          setMessage(error.message, true);
+          setMessage(error.message, "error");
         }
       },
-      prefill: {},
       theme: {
-        color: "#1758d7"
+        color: "#1ea7fd"
       }
     };
 
     const rzp = new Razorpay(options);
     rzp.on("payment.failed", function (response) {
-      setMessage(response.error.description || "Razorpay payment failed.", true);
+      setMessage(response.error.description || "Razorpay payment failed.", "error");
     });
     rzp.open();
   } catch (error) {
-    setMessage(error.message, true);
+    setMessage(error.message, "error");
   }
 }
 
 async function loadPayment() {
   try {
-    serverInfo = await TrendCartAPI.getServerInfo();
+    const serverInfo = await TrendCartAPI.getServerInfo();
     razorpayStatus.textContent = serverInfo.razorpayEnabled
-      ? `${serverInfo.razorpayMode === "live" ? "Live" : "Test"} mode ready`
+      ? `${serverInfo.razorpayMode === "live" ? "Live" : "Test"} gateway ready`
       : "Not configured";
+    modeLabel.textContent = serverInfo.razorpayMode === "live" ? "Live mode" : "Test mode";
     razorpayBtn.disabled = !serverInfo.razorpayEnabled;
-    razorpayBtn.textContent = serverInfo.razorpayMode === "live"
-      ? "Pay With Razorpay"
-      : "Pay With Razorpay Test";
     modeNote.textContent = serverInfo.razorpayEnabled
-      ? `Razorpay ${serverInfo.razorpayMode} mode is enabled for this deployment.`
-      : "Razorpay is not configured, so QR payment is the active checkout option.";
+      ? "Your payment is processed through Razorpay and saved only after verification."
+      : "Add valid Razorpay keys in .env to enable checkout.";
 
     if (type === "product") {
       paymentData = await buildProductPayment();
@@ -426,24 +368,12 @@ async function loadPayment() {
       window.location.href = "Login.html";
       return;
     }
-    setMessage(error.message, true);
-    modeNote.textContent = "Unable to check payment gateway status right now.";
+    setMessage(error.message, "error");
     razorpayBtn.disabled = true;
-    document.getElementById("confirmBtn").disabled = true;
   }
 }
 
 razorpayBtn.addEventListener("click", openRazorpayCheckout);
-
-document.getElementById("confirmBtn").addEventListener("click", async () => {
-  try {
-    const paymentReference = utrInput.value.trim();
-    setMessage("Saving payment and creating your booking...");
-    await finalizeSuccess(paymentReference);
-  } catch (error) {
-    setMessage(error.message, true);
-  }
-});
 
 document.getElementById("cancelBtn").addEventListener("click", () => {
   TrendCartAPI.clearPendingPayment();

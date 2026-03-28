@@ -76,6 +76,20 @@ body::before {
   gap: 12px;
   flex-wrap: wrap;
 }
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.quick-links a {
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font-weight: 800;
+}
 .toolbar input {
   width: min(340px, 100%);
   padding: 12px 14px;
@@ -258,6 +272,15 @@ body::before {
   color: var(--text);
   border: 1px solid rgba(86,118,170,0.14);
 }
+.footer-panel {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--muted);
+  box-shadow: var(--shadow);
+}
 @keyframes rise {
   to { opacity: 1; transform: translateY(0); }
 }
@@ -266,8 +289,28 @@ body::before {
   .sidebar { position: static; }
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255,255,255,0.94);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+}
+</style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <header class="topbar">
     <div class="brand">
@@ -276,6 +319,10 @@ body::before {
     </div>
     <div class="toolbar">
       <input id="search" type="text" placeholder="Search products...">
+      <div class="quick-links">
+        <a href="index.html">Home</a>
+        <a href="Orderhistory.html">Orders</a>
+      </div>
       <a href="Cart.html">Go to Cart</a>
     </div>
   </header>
@@ -292,12 +339,8 @@ body::before {
   <div class="layout">
     <aside class="sidebar">
       <h3>Categories</h3>
-      <p>Filter the product feed and focus on the items you want to demo or buy.</p>
-      <button class="active" data-category="All">All Products</button>
-      <button data-category="Mobiles">Mobiles</button>
-      <button data-category="Laptops">Laptops</button>
-      <button data-category="Shoes">Shoes</button>
-      <button data-category="Headphones">Headphones</button>
+      <p>Browse 10 clean categories with 30 products in each collection.</p>
+      <div id="categoryFilters"></div>
     </aside>
 
     <main>
@@ -305,14 +348,37 @@ body::before {
       <div class="products" id="products"></div>
     </main>
   </div>
+
+  <section class="footer-panel">
+    Products stay connected to the same TrendCart account, cart, payment, and order history flow.
+  </section>
 </div>
 
 <script src="Assests/api.js"></script>
 <script>
 const productBox = document.getElementById("products");
 const statusBox = document.getElementById("status");
+const categoryFilters = document.getElementById("categoryFilters");
 let selectedCategory = "All";
 let searchText = "";
+let categories = [];
+
+function renderCategoryFilters() {
+  const list = ["All", ...categories];
+  categoryFilters.innerHTML = list.map((category) => `
+    <button class="${category === selectedCategory ? "active" : ""}" data-category="${category}">
+      ${category === "All" ? "All Products" : category}
+    </button>
+  `).join("");
+
+  categoryFilters.querySelectorAll("[data-category]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedCategory = button.dataset.category;
+      renderCategoryFilters();
+      loadProducts();
+    });
+  });
+}
 
 function renderProducts(list) {
   productBox.innerHTML = list.map((product) => `
@@ -350,26 +416,23 @@ function renderProducts(list) {
 
 async function loadProducts() {
   try {
+    if (!categories.length) {
+      const allProducts = await TrendCartAPI.listProducts();
+      categories = [...new Set(allProducts.map((product) => product.category))];
+      renderCategoryFilters();
+    }
+
     const products = await TrendCartAPI.listProducts({
       category: selectedCategory,
       search: searchText
     });
     renderProducts(products);
-    statusBox.textContent = `${products.length} product(s) loaded and ready to explore.`;
+    statusBox.textContent = `${products.length} product(s) loaded from ${categories.length} categories.`;
   } catch (error) {
     productBox.innerHTML = "";
     statusBox.textContent = error.message;
   }
 }
-
-document.querySelectorAll("[data-category]").forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedCategory = button.dataset.category;
-    document.querySelectorAll("[data-category]").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    loadProducts();
-  });
-});
 
 document.getElementById("search").addEventListener("input", (event) => {
   searchText = event.target.value.trim();

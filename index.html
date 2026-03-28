@@ -33,9 +33,10 @@ body {
   margin: 0;
   font-family: "Manrope", sans-serif;
   background:
-    radial-gradient(circle at 15% 18%, rgba(90, 145, 255, 0.18), transparent 24%),
-    radial-gradient(circle at 82% 20%, rgba(122, 214, 255, 0.18), transparent 22%),
-    radial-gradient(circle at 50% 80%, rgba(164, 196, 255, 0.18), transparent 26%),
+    radial-gradient(circle at 14% 14%, rgba(90, 145, 255, 0.24), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(84, 208, 225, 0.18), transparent 18%),
+    radial-gradient(circle at 74% 78%, rgba(109, 120, 255, 0.14), transparent 20%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(238, 244, 255, 0.92)),
     linear-gradient(180deg, #f8fbff 0%, #eef4ff 44%, #f4f8ff 100%);
   color: var(--text);
 }
@@ -253,6 +254,25 @@ body::before {
   margin-top: 8px;
   font-family: "Syne", sans-serif;
   font-size: 2.3rem;
+}
+
+.system-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(30, 167, 253, 0.08);
+  color: var(--accent-3);
+  font-size: 0.84rem;
+  font-weight: 800;
 }
 
 .signal p {
@@ -482,9 +502,8 @@ body::before {
       <a href="Movies.html">Movies</a>
       <a href="Cart.html">Cart</a>
       <a href="Orderhistory.html">Orders</a>
-      <a href="Tickethistory.html">Tickets</a>
       <a href="Profile.html">Profile</a>
-      <a href="Admin.html">Admin</a>
+      <a href="Admin.html" id="adminLink">Admin</a>
       <a href="Login.html" id="loginLink">Login</a>
       <button id="logoutBtn" hidden>Logout</button>
     </nav>
@@ -495,9 +514,8 @@ body::before {
       <div class="eyebrow">Next Generation Commerce</div>
       <h1>One system for shopping, food delivery, and cinema bookings.</h1>
       <p>
-        TrendCart combines a polished frontend with a real backend, MySQL database, secure
-        login flow, checkout handling, ticket generation, order history, and admin controls
-        in a single full-stack experience.
+        TrendCart brings together curated shopping, hotel-style food menus, movie seat booking,
+        secure account login, and Razorpay payments in one polished experience.
       </p>
 
       <div class="cta-row">
@@ -509,17 +527,21 @@ body::before {
     <div class="hero-panel">
       <div class="signal">
         <small>System Status</small>
-        <strong>Backend Active</strong>
+        <strong id="systemHeadline">Backend Active</strong>
         <p>
-          Real authentication, order persistence, ticket storage, QR verification,
-          deployment, and history tracking are all wired into the live TrendCart flow.
+          Real account authentication, Razorpay checkout, order persistence, and movie
+          booking are wired into the live TrendCart flow.
         </p>
+        <div class="system-pills">
+          <span class="pill" id="deployPill">Ready for local run</span>
+          <span class="pill" id="paymentPill">Checking payment mode</span>
+        </div>
       </div>
 
       <div class="metric-grid">
         <div class="metric">
-          <small>Stack</small>
-          <strong>Node + MySQL</strong>
+          <small>Login</small>
+          <strong>Email + Password</strong>
         </div>
         <div class="metric">
           <small>Modules</small>
@@ -527,11 +549,11 @@ body::before {
         </div>
         <div class="metric">
           <small>Checkout</small>
-          <strong>QR + Gateway Ready</strong>
+          <strong>Razorpay Only</strong>
         </div>
         <div class="metric">
-          <small>Deployment</small>
-          <strong>GitHub + Railway</strong>
+          <small>Data</small>
+          <strong>MySQL Backed</strong>
         </div>
       </div>
     </div>
@@ -543,8 +565,7 @@ body::before {
         <h2>Core Experiences</h2>
       </div>
       <p>
-        Each part of the platform follows a complete flow: selection, payment, database save,
-        confirmation, and history access.
+        The platform is focused on the essentials: browse, pay, confirm, and continue quickly.
       </p>
     </div>
 
@@ -553,8 +574,7 @@ body::before {
         <small>01</small>
         <h3>Products</h3>
         <p>
-          Browse catalog items from MySQL, add products to cart, move through checkout,
-          and store completed orders in the backend.
+          Browse 10 categories with richer inventory, save products to cart, and check out with Razorpay.
         </p>
         <a href="Product.html">Explore products</a>
       </article>
@@ -563,8 +583,7 @@ body::before {
         <small>02</small>
         <h3>Food Orders</h3>
         <p>
-          Select food items, continue to payment, and track food purchases in the order
-          history section with payment reference details.
+          Explore five hotel menus with broader item lists and move into the same fast payment flow.
         </p>
         <a href="Food.html">Order food</a>
       </article>
@@ -573,98 +592,16 @@ body::before {
         <small>03</small>
         <h3>Movie Tickets</h3>
         <p>
-          Choose theatre, show time, seats, and snacks, then generate a verified ticket
-          with QR-based entry view after successful payment.
+          Choose theatre, show time, seats, and snacks, then save a confirmed movie pass after payment.
         </p>
         <a href="Movies.html">Book tickets</a>
-      </article>
-
-      <article class="feature-card">
-        <small>04</small>
-        <h3>Profile + Admin</h3>
-        <p>
-          Users can view profile and history, while admins get visibility into platform
-          users, orders, tickets, and revenue snapshots.
-        </p>
-        <a href="Profile.html">Open profile</a>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="showcase-grid">
-      <article class="showcase">
-        <small class="eyebrow">Flow Design</small>
-        <h3>Built for a clean end-to-end demo</h3>
-        <p>
-          TrendCart is structured so that every important action can be shown clearly in a
-          presentation: account login, product selection, payment, database storage, ticket
-          generation, order history, and administrative monitoring.
-        </p>
-
-        <div class="timeline">
-          <div class="step">
-            <div class="step-index">1</div>
-            <div>
-              <strong>Login and session</strong>
-              <p>User accounts are authenticated through the backend and maintained with sessions.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-index">2</div>
-            <div>
-              <strong>Checkout and payment</strong>
-              <p>Users move from product, food, or movie selection into a shared payment experience.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-index">3</div>
-            <div>
-              <strong>Database persistence</strong>
-              <p>Orders, tickets, cart items, and user details are stored in MySQL-backed tables.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="showcase">
-        <small class="eyebrow">Live Access</small>
-        <h3>Ready for testing and presentation</h3>
-        <p>
-          The project is prepared for GitHub-based deployment and public access, so the UI,
-          backend, and data flow can be shown as a proper deployed full-stack application.
-        </p>
-
-        <div class="timeline">
-          <div class="step">
-            <div class="step-index">A</div>
-            <div>
-              <strong>History tracking</strong>
-              <p>Product and food orders are visible from order history, and ticket bookings are stored separately.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-index">B</div>
-            <div>
-              <strong>QR verification</strong>
-              <p>Movie tickets include a QR route that can display movie name, timing, seats, and booking state.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-index">C</div>
-            <div>
-              <strong>Admin oversight</strong>
-              <p>Admin mode helps demonstrate platform usage, recent orders, and overall application metrics.</p>
-            </div>
-          </div>
-        </div>
       </article>
     </div>
   </section>
 
   <section class="footer-panel">
-    <strong>TrendCart Overview:</strong> a full-stack e-commerce, food, and movie booking system
-    built with HTML, CSS, JavaScript, Node.js, Express, MySQL, GitHub, and Railway deployment.
+    <strong>TrendCart Overview:</strong> a polished shopping, food, and cinema booking system
+    with account login, Razorpay checkout, and MySQL-backed data handling.
   </section>
 </div>
 
@@ -673,6 +610,7 @@ body::before {
 async function loadSession() {
   const { user } = await TrendCartAPI.getCurrentUser();
   const welcome = document.getElementById("welcome");
+  const adminLink = document.getElementById("adminLink");
   const loginLink = document.getElementById("loginLink");
   const logoutBtn = document.getElementById("logoutBtn");
 
@@ -680,8 +618,10 @@ async function loadSession() {
     welcome.textContent = `Welcome, ${user.name} (${user.role})`;
     loginLink.hidden = true;
     logoutBtn.hidden = false;
+    adminLink.hidden = user.role !== "admin";
   } else {
     welcome.textContent = "Login to save cart, orders, and movie bookings";
+    adminLink.hidden = true;
   }
 
   logoutBtn.addEventListener("click", async () => {
@@ -690,7 +630,23 @@ async function loadSession() {
   });
 }
 
-loadSession();
+async function loadServerInfo() {
+  try {
+    const info = await TrendCartAPI.getServerInfo();
+    document.getElementById("systemHeadline").textContent = info.razorpayEnabled
+      ? "Backend + Razorpay Active"
+      : "Backend Active";
+    document.getElementById("deployPill").textContent = info.localhostUrl;
+    document.getElementById("paymentPill").textContent = info.razorpayEnabled
+      ? `Razorpay ${String(info.razorpayMode || "ready").toUpperCase()}`
+      : "Razorpay keys pending";
+  } catch {
+    document.getElementById("deployPill").textContent = "Server info unavailable";
+    document.getElementById("paymentPill").textContent = "Check backend connection";
+  }
+}
+
+Promise.all([loadSession(), loadServerInfo()]).catch(() => {});
 </script>
 </body>
 </html>

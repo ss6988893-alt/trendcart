@@ -67,6 +67,26 @@ body::before {
   color: var(--muted);
   font-size: 0.92rem;
 }
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.quick-links a {
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-weight: 800;
+}
 .topbar input {
   width: min(340px, 100%);
   padding: 12px 14px;
@@ -117,6 +137,34 @@ body::before {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 18px;
 }
+.hotel-list {
+  display: grid;
+  gap: 24px;
+}
+.hotel-section {
+  padding: 20px;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: rgba(8, 11, 22, 0.7);
+  box-shadow: var(--shadow);
+}
+.hotel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.hotel-head h2 {
+  margin: 0 0 6px;
+  font-family: "Syne", sans-serif;
+}
+.hotel-head p,
+.hotel-head span {
+  margin: 0;
+  color: var(--muted);
+}
 .card {
   overflow: hidden;
   border-radius: 24px;
@@ -160,32 +208,71 @@ button {
   cursor: pointer;
   font-weight: 800;
 }
+.footer-panel {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: rgba(8, 11, 22, 0.72);
+  color: var(--muted);
+  box-shadow: var(--shadow);
+}
 @keyframes rise {
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
+<style>
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(8,11,22,0.84);
+  color: #f5f7ff;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
+}
+</style>
 </head>
 <body>
+<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <header class="topbar">
     <div class="brand">
       <strong>TrendCart Food</strong>
       <span>Fast ordering with payment-first flow and saved order history</span>
     </div>
-    <input id="search" type="text" placeholder="Search food...">
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Search food...">
+      <div class="quick-links">
+        <a href="index.html">Home</a>
+        <a href="Orderhistory.html">Orders</a>
+      </div>
+    </div>
   </header>
 
   <section class="hero">
     <span class="eyebrow">Food Delivery</span>
-    <h1>Order food in a sharper, warmer interface.</h1>
+    <h1>Choose from five hotel menus in one place.</h1>
     <p>
-      Browse your food menu, move to checkout, save orders in the backend, and keep the
-      overall TrendCart experience aligned with the new premium landing-page mood.
+      Each hotel now carries a broader menu, so you can browse deeper collections without
+      losing the fast order-to-payment flow.
     </p>
   </section>
 
   <div id="status"></div>
-  <div class="grid" id="foods"></div>
+  <div class="hotel-list" id="foods"></div>
+
+  <section class="footer-panel">
+    Food orders move through the same account, payment, and order tracking flow as the rest of TrendCart.
+  </section>
 </div>
 
 <script src="Assests/api.js"></script>
@@ -194,19 +281,41 @@ const foodsBox = document.getElementById("foods");
 const statusBox = document.getElementById("status");
 
 function renderFood(list) {
-  foodsBox.innerHTML = list.map((food) => `
-    <div class="card">
-      <img src="${food.image}" alt="${food.name}">
-      <div class="content">
-        <h3>${food.name}</h3>
-        <div class="meta">
-          <span>${food.restaurant}</span>
-          <span>${food.time}</span>
+  const grouped = list.reduce((accumulator, item) => {
+    if (!accumulator[item.restaurant]) {
+      accumulator[item.restaurant] = [];
+    }
+    accumulator[item.restaurant].push(item);
+    return accumulator;
+  }, {});
+
+  foodsBox.innerHTML = Object.entries(grouped).map(([restaurant, items]) => `
+    <section class="hotel-section">
+      <div class="hotel-head">
+        <div>
+          <h2>${restaurant}</h2>
+          <p>${items[0].cuisine || "Curated signature menu"}</p>
         </div>
-        <div class="price">${TrendCartAPI.formatCurrency(food.price)}</div>
-        <button data-order="${food.id}">Order Now</button>
+        <span>${items.length} items • ${items[0].time}</span>
       </div>
-    </div>
+      <div class="grid">
+        ${items.map((food) => `
+          <div class="card">
+            <img src="${food.image}" alt="${food.name}">
+            <div class="content">
+              <h3>${food.name}</h3>
+              <div class="meta">
+                <span>${food.restaurant}</span>
+                <span>${food.time}</span>
+              </div>
+              <p>${food.description || "Freshly prepared and ready for delivery."}</p>
+              <div class="price">${TrendCartAPI.formatCurrency(food.price)}</div>
+              <button data-order="${food.id}">Order Now</button>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </section>
   `).join("");
 
   document.querySelectorAll("[data-order]").forEach((button) => {
@@ -243,7 +352,8 @@ async function loadFood(search = "") {
   try {
     const foods = await TrendCartAPI.listFoodItems({ search });
     renderFood(foods);
-    statusBox.textContent = `${foods.length} food item(s) are ready to order.`;
+    const hotelCount = new Set(foods.map((food) => food.restaurant)).size;
+    statusBox.textContent = `${foods.length} food item(s) from ${hotelCount} hotel menus are ready to order.`;
   } catch (error) {
     statusBox.textContent = error.message;
   }
