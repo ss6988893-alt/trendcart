@@ -63,6 +63,27 @@ Change these values before production deployment.
 
 The app already exposes `/api/health` for a simple deployment smoke check.
 
+The repo also includes `railway.json` so Railway can use the app start command and health check automatically.
+
+## Render deployment
+
+1. Push the project to GitHub.
+2. Create a new Blueprint in Render using this repository.
+3. Render will read `render.yaml` and create the Node web service.
+4. Provide these environment variables for the web service:
+   - `APP_BASE_URL`
+   - `DB_HOST`
+   - `DB_PORT`
+   - `DB_USER`
+   - `DB_PASSWORD`
+   - `DB_NAME`
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `RAZORPAY_KEY_ID`
+   - `RAZORPAY_KEY_SECRET`
+
+Render will use `/api/health` for the health check path.
+
 ## Production notes
 
 - Use a strong `SESSION_SECRET`.

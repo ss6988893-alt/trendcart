@@ -95,6 +95,56 @@ Change these before using the app in production.
 - Razorpay should use test keys for safe local testing.
 - The `uploads/` folder is runtime-generated and ignored by git.
 
+## Deploy on Railway
+
+This repo now includes [railway.json](/C:/Users/ss698/OneDrive/Desktop/New%20project/railway.json).
+
+Steps:
+
+1. Push the repo to GitHub.
+2. In Railway, create a new project from your GitHub repo.
+3. Add a MySQL service in the same Railway project.
+4. Set these variables for the web service:
+   - `NODE_ENV=production`
+   - `SESSION_SECRET`
+   - `APP_BASE_URL`
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `RAZORPAY_KEY_ID`
+   - `RAZORPAY_KEY_SECRET`
+5. Railway MySQL variables are also supported automatically:
+   - `MYSQLHOST`
+   - `MYSQLPORT`
+   - `MYSQLUSER`
+   - `MYSQLPASSWORD`
+   - `MYSQLDATABASE`
+
+The app will start with `npm start` and use `/api/health` as a health check.
+
+## Deploy on Render
+
+This repo now includes [render.yaml](/C:/Users/ss698/OneDrive/Desktop/New%20project/render.yaml).
+
+Steps:
+
+1. Push the repo to GitHub.
+2. In Render, create a new Blueprint from this repository.
+3. Render will create the Node web service from `render.yaml`.
+4. Create a MySQL database separately and copy its values into these environment variables for the web service:
+   - `DB_HOST`
+   - `DB_PORT`
+   - `DB_USER`
+   - `DB_PASSWORD`
+   - `DB_NAME`
+5. Also set:
+   - `APP_BASE_URL`
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `RAZORPAY_KEY_ID`
+   - `RAZORPAY_KEY_SECRET`
+
+Render will start the app with `npm start` and use `/api/health` as a health check.
+
 ## Scripts
 
 - `npm start` - start the server
