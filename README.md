@@ -1,13 +1,54 @@
 # TrendCart
 
-TrendCart is a full-stack shopping, food ordering, and movie booking project built with:
+TrendCart is a full-stack web application that brings together three user flows in one project:
+
+- product shopping
+- food ordering
+- movie ticket booking
+
+It is built with Node.js, Express, MySQL, session-based authentication, and Razorpay payment integration.
+
+## Features
+
+- User registration and login with name, email, and password
+- Product catalog with categories, search, cart, and checkout
+- Food ordering flow with hotel-based menus
+- Movie booking with seat selection and seat locking
+- Razorpay payment integration
+- Admin dashboard with CRUD tools and analytics
+- Order tracking and movie ticket history
+
+## Tech Stack
 
 - Node.js
 - Express
 - MySQL
+- HTML, CSS, JavaScript
 - Razorpay
 
-## Run From GitHub On Your PC
+## Project Structure
+
+```text
+.
+├── Assests/
+│   ├── Foods/
+│   ├── movies/
+│   ├── products/
+│   └── api.js
+├── data/
+│   └── catalog.js
+├── uploads/
+├── server.js
+├── index.html
+├── Product.html
+├── Food.html
+├── Movies.html
+├── Payment.html
+├── Admin.html
+└── README.md
+```
+
+## Run Locally
 
 ### 1. Clone the repository
 
@@ -22,21 +63,18 @@ cd trendcart
 npm install
 ```
 
-### 3. Create your `.env` file
-
-Copy `.env.example` to `.env`.
-
-In PowerShell:
+### 3. Create the environment file
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Then open `.env` and update these values:
+Then update `.env` with your own values.
+
+Example:
 
 ```env
 PORT=5000
-NODE_ENV=development
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
@@ -51,107 +89,70 @@ RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 ```
 
-## 4. Make sure MySQL is running
+### 4. Make sure MySQL is running
 
-This project needs a local MySQL server.
+The app creates the database, tables, seed data, and default admin account automatically on startup.
 
-The app will automatically:
-
-- create the `trendcart` database if needed
-- create the required tables
-- seed the product, food, and movie data
-- ensure an admin account exists
-
-## 5. Start the app
+### 5. Start the server
 
 ```powershell
 npm start
 ```
 
-Or for watch mode:
+If port `5000` is already used on your machine, run on another port:
 
 ```powershell
-npm run dev
+$env:PORT=5050
+node server.js
 ```
 
-## 6. Open the app
+### 6. Open the app
 
-Open:
+- Home: `http://localhost:5000`
+- Products: `http://localhost:5000/Product.html`
+- Food: `http://localhost:5000/Food.html`
+- Movies: `http://localhost:5000/Movies.html`
 
-[http://localhost:5000](http://localhost:5000)
+## Default Admin
 
-## Default admin login
-
-If you keep the default admin values from `.env.example`, use:
+If you keep the default admin values:
 
 - Email: `admin@trendcart.com`
 - Password: `Admin@123`
 
-Change these before using the app in production.
+Change these before real deployment.
 
-## Important notes
+## Payment Notes
 
-- GitHub Pages cannot run this project because it needs a Node.js backend and MySQL.
-- Razorpay should use test keys for safe local testing.
-- The `uploads/` folder is runtime-generated and ignored by git.
+- Razorpay is the only payment option in this project.
+- Use Razorpay **test keys** for safe local testing.
+- If you use **live keys**, real money can be charged.
 
-## Deploy on Railway
+## Deployment
 
-This repo now includes [railway.json](/C:/Users/ss698/OneDrive/Desktop/New%20project/railway.json).
+This repository includes deployment config for:
 
-Steps:
+- Railway: `railway.json`
+- Render: `render.yaml`
 
-1. Push the repo to GitHub.
-2. In Railway, create a new project from your GitHub repo.
-3. Add a MySQL service in the same Railway project.
-4. Set these variables for the web service:
-   - `NODE_ENV=production`
-   - `SESSION_SECRET`
-   - `APP_BASE_URL`
-   - `ADMIN_EMAIL`
-   - `ADMIN_PASSWORD`
-   - `RAZORPAY_KEY_ID`
-   - `RAZORPAY_KEY_SECRET`
-5. Railway MySQL variables are also supported automatically:
-   - `MYSQLHOST`
-   - `MYSQLPORT`
-   - `MYSQLUSER`
-   - `MYSQLPASSWORD`
-   - `MYSQLDATABASE`
+The app needs:
 
-The app will start with `npm start` and use `/api/health` as a health check.
+- a running Node.js server
+- a MySQL database
+- valid environment variables
 
-## Deploy on Render
+GitHub Pages alone cannot run this project because it requires a backend and database.
 
-This repo now includes [render.yaml](/C:/Users/ss698/OneDrive/Desktop/New%20project/render.yaml).
+## Main Pages
 
-Steps:
+- `index.html` - landing page
+- `Product.html` - product catalog
+- `Food.html` - food ordering
+- `Movies.html` - movie booking
+- `Payment.html` - Razorpay checkout
+- `Admin.html` - admin dashboard
 
-1. Push the repo to GitHub.
-2. In Render, create a new Blueprint from this repository.
-3. Render will create the Node web service from `render.yaml`.
-4. Create a MySQL database separately and copy its values into these environment variables for the web service:
-   - `DB_HOST`
-   - `DB_PORT`
-   - `DB_USER`
-   - `DB_PASSWORD`
-   - `DB_NAME`
-5. Also set:
-   - `APP_BASE_URL`
-   - `ADMIN_EMAIL`
-   - `ADMIN_PASSWORD`
-   - `RAZORPAY_KEY_ID`
-   - `RAZORPAY_KEY_SECRET`
+## Repository
 
-Render will start the app with `npm start` and use `/api/health` as a health check.
+- GitHub: https://github.com/ss6988893-alt/trendcart
 
-## Scripts
-
-- `npm start` - start the server
-- `npm run dev` - start the server in watch mode
-
-## Node version
-
-Recommended:
-
-- Node.js `20` to `25`
