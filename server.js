@@ -28,31 +28,31 @@ const TICKET_STATUSES = ["Confirmed", "Checked in", "Cancelled"];
 const DEFAULT_MOVIES = [
   {
     name: "Leo",
-    image_url: "Assests/LEO.jpg",
+    image_url: "Assests/movies/LEO.jpg",
     rating: 4,
     trailer_url: "https://www.youtube.com/embed/Po3jStA673E"
   },
   {
     name: "Jailer",
-    image_url: "Assests/JAiler.jpg",
+    image_url: "Assests/movies/JAiler.jpg",
     rating: 5,
     trailer_url: "https://www.youtube.com/embed/Y5BeWdODPqo"
   },
   {
     name: "Vikram",
-    image_url: "Assests/Vikram.jpg",
+    image_url: "Assests/movies/Vikram.jpg",
     rating: 5,
     trailer_url: "https://www.youtube.com/embed/OKBMCL-frPU"
   },
   {
     name: "Salaar",
-    image_url: "Assests/SALAR.jpg",
+    image_url: "Assests/movies/SALAR.jpg",
     rating: 4,
     trailer_url: "https://www.youtube.com/embed/4GPvYMKtrtI"
   },
   {
     name: "Dune 2",
-    image_url: "Assests/DUNE2.jpg",
+    image_url: "Assests/movies/DUNE2.jpg",
     rating: 5,
     trailer_url: "https://www.youtube.com/embed/U2Qp5pL3ovA"
   }
@@ -242,8 +242,7 @@ async function backfillCatalogImageAssignments() {
     await pool.query(
       `UPDATE products
        SET image_url = ?
-       WHERE name = ?
-         AND (image_url LIKE 'https://images.unsplash.com/%' OR image_url = '' OR image_url IS NULL)`,
+       WHERE name = ?`,
       [product.image_url, product.name]
     );
   }
@@ -253,9 +252,45 @@ async function backfillCatalogImageAssignments() {
       `UPDATE food_items
        SET image_url = ?
        WHERE name = ?
-         AND restaurant = ?
-         AND (image_url LIKE 'https://images.unsplash.com/%' OR image_url = '' OR image_url IS NULL)`,
+         AND restaurant = ?`,
       [foodItem.image_url, foodItem.name, foodItem.restaurant]
+    );
+  }
+}
+
+async function ensureDefaultMovies() {
+  const [rows] = await pool.query(
+    "SELECT id, name, is_active FROM movies"
+  );
+  const movieMap = new Map(rows.map((row) => [String(row.name).toLowerCase(), row]));
+
+  for (const movie of DEFAULT_MOVIES) {
+    const existing = movieMap.get(movie.name.toLowerCase());
+
+    if (!existing) {
+      await pool.query(
+        `INSERT INTO movies (name, image_url, trailer_url, rating, is_active)
+         VALUES (?, ?, ?, ?, 1)`,
+        [movie.name, movie.image_url, movie.trailer_url, movie.rating]
+      );
+      continue;
+    }
+
+    await pool.query(
+      `UPDATE movies
+       SET image_url = ?, trailer_url = ?, rating = ?
+       WHERE id = ?`,
+      [movie.image_url, movie.trailer_url, movie.rating, existing.id]
+    );
+  }
+
+  const [[activeCount]] = await pool.query("SELECT COUNT(*) AS total FROM movies WHERE is_active = 1");
+  if (Number(activeCount.total) === 0) {
+    await pool.query(
+      `UPDATE movies
+       SET is_active = 1
+       WHERE LOWER(name) IN (${DEFAULT_MOVIES.map(() => "?").join(", ")})`,
+      DEFAULT_MOVIES.map((movie) => movie.name.toLowerCase())
     );
   }
 }
@@ -611,17 +646,7 @@ async function initializeDatabase() {
     }
   }
 
-  const [[movieCounts]] = await pool.query("SELECT COUNT(*) AS total FROM movies");
-  if (movieCounts.total === 0) {
-    for (const movie of DEFAULT_MOVIES) {
-      await pool.query(
-        `INSERT INTO movies (name, image_url, trailer_url, rating, is_active)
-         VALUES (?, ?, ?, ?, ?)`,
-        [movie.name, movie.image_url, movie.trailer_url, movie.rating, 1]
-      );
-    }
-  }
-
+  await ensureDefaultMovies();
   await backfillCatalogImageAssignments();
   await ensureDefaultAdmin();
 }

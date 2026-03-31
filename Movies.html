@@ -102,6 +102,15 @@ body::before {
   transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .movie:hover { transform: translateY(-4px); }
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 28px;
+  border-radius: 22px;
+  border: 1px dashed rgba(86, 118, 170, 0.24);
+  background: #f7faff;
+  color: var(--muted);
+  line-height: 1.7;
+}
 .movie.selected {
   border-color: rgba(30,167,253,0.45);
   box-shadow: 0 0 0 2px rgba(30,167,253,0.12), var(--shadow);
@@ -506,6 +515,15 @@ function updateSummary() {
 }
 
 function renderMovies() {
+  if (!movies.length) {
+    moviesBox.innerHTML = `
+      <div class="empty-state">
+        No active movies are available right now. Restart the server once so the default movie catalog can be restored.
+      </div>
+    `;
+    return;
+  }
+
   moviesBox.innerHTML = movies.map((movie) => `
     <div class="movie ${selectedMovie && selectedMovie.id === movie.id ? "selected" : ""}">
       <img src="${movie.image}" alt="${movie.name}">
@@ -775,6 +793,10 @@ async function init() {
   movies = await TrendCartAPI.listMovies();
   selectedMovie = movies[0] || null;
   renderMovies();
+  if (!movies.length) {
+    setStatus("No movies are active right now. Restart the server to restore the default movie list.");
+    return;
+  }
   renderChips(theatreBox, theatres, selectedTheatre, async (value) => {
     await changeShowContext({ theatre: value });
   });

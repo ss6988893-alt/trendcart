@@ -9,16 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f4f8ff;
+  --bg: #eff4fb;
   --panel: rgba(255, 255, 255, 0.88);
-  --panel-strong: rgba(255, 255, 255, 0.96);
-  --line: rgba(77, 111, 166, 0.14);
-  --text: #18283d;
-  --muted: #67809d;
-  --accent: #1ea7fd;
-  --accent-2: #6d78ff;
-  --accent-3: #22529a;
-  --shadow: 0 24px 54px rgba(45, 79, 128, 0.14);
+  --panel-solid: #ffffff;
+  --line: rgba(42, 77, 126, 0.12);
+  --text: #16253b;
+  --muted: #68809f;
+  --accent: #0f8bff;
+  --accent-deep: #1f3e76;
+  --accent-soft: #dbeaff;
+  --glow: rgba(15, 139, 255, 0.18);
+  --shadow: 0 26px 64px rgba(34, 65, 112, 0.14);
 }
 
 * {
@@ -32,13 +33,12 @@ html {
 body {
   margin: 0;
   font-family: "Manrope", sans-serif;
-  background:
-    radial-gradient(circle at 14% 14%, rgba(90, 145, 255, 0.24), transparent 22%),
-    radial-gradient(circle at 82% 18%, rgba(84, 208, 225, 0.18), transparent 18%),
-    radial-gradient(circle at 74% 78%, rgba(109, 120, 255, 0.14), transparent 20%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(238, 244, 255, 0.92)),
-    linear-gradient(180deg, #f8fbff 0%, #eef4ff 44%, #f4f8ff 100%);
   color: var(--text);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(44, 161, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 88% 18%, rgba(138, 214, 255, 0.28), transparent 22%),
+    radial-gradient(circle at 82% 76%, rgba(102, 127, 255, 0.12), transparent 20%),
+    linear-gradient(180deg, #f7fbff 0%, #eef4fb 46%, #f4f7fc 100%);
 }
 
 body::before {
@@ -46,34 +46,33 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(90, 119, 163, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(90, 119, 163, 0.06) 1px, transparent 1px);
-  background-size: 56px 56px;
+    linear-gradient(rgba(97, 128, 170, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(97, 128, 170, 0.05) 1px, transparent 1px);
+  background-size: 58px 58px;
   pointer-events: none;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 88%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent 88%);
 }
 
-.shell {
+.page {
   position: relative;
-  max-width: 1260px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 22px 20px 64px;
+  padding: 24px 20px 48px;
 }
 
 .navbar {
   position: sticky;
-  top: 14px;
-  z-index: 10;
+  top: 16px;
+  z-index: 20;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-bottom: 26px;
+  justify-content: space-between;
+  gap: 16px;
   padding: 16px 18px;
+  margin-bottom: 26px;
   border: 1px solid var(--line);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow);
 }
@@ -81,528 +80,728 @@ body::before {
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .brand strong {
   font-family: "Syne", sans-serif;
-  font-size: 1.2rem;
-  letter-spacing: 0.04em;
+  font-size: 1.26rem;
+  letter-spacing: 0.03em;
 }
 
 .brand span {
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: 0.92rem;
 }
 
 .nav-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
   gap: 10px;
 }
 
-.nav-links a,
-.nav-links button {
-  border: 1px solid rgba(86, 118, 170, 0.14);
-  background: rgba(255, 255, 255, 0.78);
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 102px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(42, 77, 126, 0.12);
+  background: rgba(255, 255, 255, 0.8);
   color: var(--text);
   text-decoration: none;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  cursor: pointer;
+  font-size: 0.94rem;
+  font-weight: 800;
   transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
 
 .nav-links a:hover,
-.nav-links button:hover {
+.nav-links a:focus-visible {
   transform: translateY(-1px);
-  border-color: rgba(30, 167, 253, 0.35);
-  background: rgba(30, 167, 253, 0.08);
+  border-color: rgba(15, 139, 255, 0.34);
+  background: rgba(15, 139, 255, 0.08);
+  outline: none;
 }
 
 .hero {
-  position: relative;
-  overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
   gap: 22px;
-  padding: 34px;
-  border: 1px solid var(--line);
-  border-radius: 34px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 246, 255, 0.94)),
-    radial-gradient(circle at top right, rgba(108, 182, 255, 0.16), transparent 28%);
-  box-shadow: var(--shadow);
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  right: -100px;
-  top: -70px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(140, 247, 215, 0.2), transparent 64%);
-  filter: blur(8px);
+  align-items: stretch;
 }
 
 .hero-copy,
-.hero-panel {
+.hero-visual,
+.section-card,
+.mini-panel,
+.footer-shell {
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  box-shadow: var(--shadow);
+}
+
+.hero-copy {
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+  padding: 34px;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.98), rgba(242, 247, 255, 0.9)),
+    radial-gradient(circle at top right, rgba(15, 139, 255, 0.16), transparent 34%);
+}
+
+.hero-copy::after {
+  content: "";
+  position: absolute;
+  inset: auto -80px -110px auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15, 139, 255, 0.2), transparent 68%);
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(30, 167, 253, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 139, 255, 0.08);
   color: var(--accent);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.hero h1 {
+.hero-copy h1 {
+  position: relative;
+  z-index: 1;
   margin: 18px 0 14px;
-  max-width: 760px;
   font-family: "Syne", sans-serif;
-  font-size: clamp(2.7rem, 7vw, 5.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
+  font-size: clamp(2.8rem, 6.6vw, 5.3rem);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
 }
 
-.hero p {
-  max-width: 620px;
+.hero-copy p {
+  position: relative;
+  z-index: 1;
+  max-width: 580px;
   margin: 0;
   color: var(--muted);
-  font-size: 1.02rem;
+  font-size: 1rem;
   line-height: 1.8;
 }
 
-.cta-row {
+.hero-actions {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-top: 28px;
 }
 
-.cta-row a {
-  text-decoration: none;
+.hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 14px 18px;
   border-radius: 16px;
+  text-decoration: none;
   font-weight: 800;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.cta-row a:hover {
+.hero-actions a:hover,
+.hero-actions a:focus-visible {
   transform: translateY(-2px);
+  outline: none;
 }
 
-.cta-primary {
-  background: linear-gradient(135deg, var(--accent), #8fd1ff);
+.primary-link {
+  background: linear-gradient(135deg, #0f8bff, #6bc6ff);
   color: #ffffff;
-  box-shadow: 0 18px 30px rgba(30, 167, 253, 0.2);
+  box-shadow: 0 18px 32px rgba(15, 139, 255, 0.24);
 }
 
-.cta-secondary {
-  border: 1px solid rgba(86, 118, 170, 0.14);
-  background: rgba(255, 255, 255, 0.82);
+.secondary-link {
+  border: 1px solid rgba(42, 77, 126, 0.12);
+  background: rgba(255, 255, 255, 0.84);
   color: var(--text);
 }
 
-.hero-panel {
-  display: grid;
-  gap: 14px;
-}
-
-.signal,
-.metric,
-.info-card,
-.feature-card,
-.showcase {
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--panel);
-  box-shadow: var(--shadow);
-}
-
-.signal {
-  padding: 20px;
-}
-
-.signal small,
-.metric small,
-.feature-card small {
-  display: block;
-  color: var(--muted);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.signal strong {
-  display: block;
-  margin-top: 8px;
-  font-family: "Syne", sans-serif;
-  font-size: 2.3rem;
-}
-
-.system-pills {
+.hero-meta {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 26px;
 }
 
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.hero-meta span {
   padding: 10px 12px;
   border-radius: 999px;
-  background: rgba(30, 167, 253, 0.08);
-  color: var(--accent-3);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--accent-deep);
   font-size: 0.84rem;
   font-weight: 800;
 }
 
-.signal p {
-  margin: 10px 0 0;
-  color: var(--muted);
+.hero-visual {
+  padding: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(235, 243, 255, 0.88)),
+    linear-gradient(130deg, rgba(15, 139, 255, 0.08), transparent);
+}
+
+.visual-stack {
+  display: grid;
+  gap: 14px;
+  height: 100%;
+}
+
+.status-panel {
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #14233b, #223c68);
+  color: #f4f8ff;
+}
+
+.status-panel small,
+.preview-card small {
+  display: block;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-panel strong {
+  display: block;
+  margin: 10px 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
+}
+
+.status-panel p {
+  margin: 0;
+  color: rgba(240, 246, 255, 0.8);
   line-height: 1.7;
 }
 
-.metric-grid {
+.preview-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-.metric {
+.preview-card {
+  min-height: 200px;
   padding: 18px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
 }
 
-.metric strong {
+.preview-card strong {
   display: block;
   margin-top: 8px;
-  font-size: 1.7rem;
+  font-size: 1.38rem;
+  line-height: 1.1;
+}
+
+.preview-card p {
+  margin: 0;
+  max-width: 220px;
+  color: rgba(248, 251, 255, 0.88);
+  line-height: 1.65;
+  font-size: 0.94rem;
+}
+
+.products-card {
+  background-image:
+    linear-gradient(180deg, rgba(15, 24, 42, 0.08), rgba(15, 24, 42, 0.72)),
+    linear-gradient(145deg, rgba(15, 139, 255, 0.42), rgba(26, 50, 88, 0.7));
+}
+
+.foods-card {
+  background-image:
+    linear-gradient(180deg, rgba(15, 24, 42, 0.08), rgba(15, 24, 42, 0.72)),
+    linear-gradient(145deg, rgba(26, 190, 151, 0.42), rgba(35, 70, 96, 0.72));
 }
 
 .section {
   margin-top: 24px;
 }
 
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.section-head h2 {
-  margin: 0;
-  font-family: "Syne", sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-}
-
-.section-head p {
-  margin: 0;
-  max-width: 600px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.feature-grid {
+.section-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
-.feature-card {
-  position: relative;
-  overflow: hidden;
+.section-card {
   padding: 24px;
-  min-height: 250px;
+  background: var(--panel);
 }
 
-.feature-card::after {
-  content: "";
-  position: absolute;
-  inset: auto -40px -55px auto;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(108, 182, 255, 0.26), transparent 70%);
-}
-
-.feature-card h3 {
-  margin: 12px 0 12px;
-  font-size: 1.35rem;
-}
-
-.feature-card p {
-  margin: 0;
+.section-card small {
+  display: block;
   color: var(--muted);
-  line-height: 1.75;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.feature-card a {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 18px;
-  color: var(--accent-3);
-  text-decoration: none;
-  font-weight: 800;
-}
-
-.showcase-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-  gap: 18px;
-}
-
-.showcase {
-  padding: 26px;
-}
-
-.showcase h3 {
-  margin: 8px 0 10px;
+.section-card h2 {
+  margin: 12px 0 10px;
   font-family: "Syne", sans-serif;
   font-size: 1.55rem;
 }
 
-.showcase p {
+.section-card p {
   margin: 0;
   color: var(--muted);
-  line-height: 1.75;
+  line-height: 1.76;
 }
 
-.timeline {
-  margin-top: 22px;
-  display: grid;
-  gap: 12px;
-}
-
-.step {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 14px;
-  align-items: start;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(241, 246, 255, 0.92);
-}
-
-.step-index {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: rgba(30, 167, 253, 0.12);
-  color: var(--accent);
+.section-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--accent-deep);
+  text-decoration: none;
   font-weight: 800;
 }
 
-.step strong {
+.support-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 18px;
+}
+
+.support-summary {
+  display: grid;
+  gap: 18px;
+}
+
+.mini-panel {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.mini-panel h3 {
+  margin: 0 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.45rem;
+}
+
+.mini-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.76;
+}
+
+.support-list {
+  display: grid;
+  gap: 14px;
+}
+
+.support-item {
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(219, 234, 255, 0.46);
+}
+
+.support-item span {
   display: block;
+  color: var(--muted);
+  font-size: 0.84rem;
   margin-bottom: 6px;
 }
 
-.step p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.65;
+.support-item a,
+.support-item strong {
+  color: var(--accent-deep);
+  text-decoration: none;
+  font-size: 1.02rem;
 }
 
-.footer-panel {
+.footer-shell {
   margin-top: 24px;
-  padding: 22px 24px;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--panel-strong);
-  color: var(--muted);
+  padding: 34px 30px 24px;
+  background: linear-gradient(180deg, rgba(241, 244, 250, 0.98), rgba(233, 238, 246, 0.96));
 }
 
-.footer-panel strong {
-  color: var(--text);
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) repeat(4, minmax(140px, 0.9fr));
+  gap: 28px;
+}
+
+.footer-shell h4 {
+  margin: 0 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.12rem;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0f8bff, #6bc6ff);
+  color: #ffffff;
+  font-family: "Syne", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  box-shadow: 0 16px 30px rgba(15, 139, 255, 0.2);
+}
+
+.footer-logo strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.45rem;
+}
+
+.footer-logo span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.footer-shell p,
+.footer-shell a,
+.footer-shell span {
+  color: var(--muted);
+  line-height: 1.7;
+  text-decoration: none;
+}
+
+.footer-links {
+  display: grid;
+  gap: 8px;
+}
+
+.footer-links a {
+  width: fit-content;
+}
+
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.footer-socials a {
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(42, 77, 126, 0.12);
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--accent-deep);
+  font-weight: 800;
+}
+
+.footer-bottom {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(42, 77, 126, 0.12);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-shell a:hover,
+.footer-shell a:focus-visible {
+  color: var(--accent);
+  outline: none;
 }
 
 @media (max-width: 1080px) {
   .hero,
-  .showcase-grid,
-  .feature-grid {
+  .support-grid,
+  .footer-grid,
+  .section-grid {
     grid-template-columns: 1fr;
-  }
-
-  .metric-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 680px) {
-  .shell {
-    padding: 14px 14px 44px;
+@media (max-width: 720px) {
+  .page {
+    padding: 14px 14px 32px;
   }
 
   .navbar,
-  .hero,
-  .feature-card,
-  .showcase,
-  .footer-panel {
-    border-radius: 22px;
+  .hero-copy,
+  .hero-visual,
+  .section-card,
+  .mini-panel,
+  .footer-shell {
+    border-radius: 24px;
   }
 
-  .hero {
-    padding: 24px 20px;
+  .navbar {
+    position: static;
+    padding: 14px;
   }
 
   .nav-links {
-    justify-content: flex-start;
+    width: 100%;
   }
 
-  .metric-grid {
+  .nav-links a {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .hero-copy,
+  .hero-visual,
+  .section-card,
+  .mini-panel,
+  .footer-shell {
+    padding: 20px;
+  }
+
+  .preview-grid {
     grid-template-columns: 1fr;
   }
 
-  .cta-row a {
+  .hero-actions a {
     width: 100%;
-    text-align: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
   }
 }
 </style>
 </head>
 <body>
-
-<div class="shell">
+<div class="page">
   <header class="navbar">
     <div class="brand">
       <strong>TrendCart</strong>
-      <span id="welcome">Smart shopping, food, and movie bookings</span>
+      <span id="welcome">A refined hub for shopping, food, and movie plans</span>
     </div>
 
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="Product.html">Products</a>
-      <a href="Food.html">Food</a>
+      <a href="Food.html">Foods</a>
       <a href="Movies.html">Movies</a>
-      <a href="Cart.html">Cart</a>
-      <a href="Orderhistory.html">Orders</a>
-      <a href="Profile.html">Profile</a>
-      <a href="Admin.html" id="adminLink">Admin</a>
-      <a href="Login.html" id="loginLink">Login</a>
-      <button id="logoutBtn" hidden>Logout</button>
     </nav>
   </header>
 
   <section class="hero">
     <div class="hero-copy">
-      <div class="eyebrow">Next Generation Commerce</div>
-      <h1>One system for shopping, food delivery, and cinema bookings.</h1>
+      <span class="eyebrow">Everyday Lifestyle Platform</span>
+      <h1>Everything your users need, without the homepage clutter.</h1>
       <p>
-        TrendCart brings together curated shopping, hotel-style food menus, movie seat booking,
-        secure account login, and Razorpay payments in one polished experience.
+        TrendCart now opens with a cleaner, more premium first impression: a focused entry point
+        for shopping, food delivery, and movie bookings with just the sections that matter.
       </p>
 
-      <div class="cta-row">
-        <a class="cta-primary" href="Product.html">Enter Store</a>
-        <a class="cta-secondary" href="Movies.html">Book a Show</a>
+      <div class="hero-actions">
+        <a class="primary-link" href="Product.html">Browse Products</a>
+        <a class="secondary-link" href="Food.html">Order Foods</a>
+      </div>
+
+      <div class="hero-meta">
+        <span>Professional storefront</span>
+        <span>Razorpay-ready checkout</span>
+        <span>Movies with seat booking</span>
       </div>
     </div>
 
-    <div class="hero-panel">
-      <div class="signal">
-        <small>System Status</small>
-        <strong id="systemHeadline">Backend Active</strong>
-        <p>
-          Real account authentication, Razorpay checkout, order persistence, and movie
-          booking are wired into the live TrendCart flow.
-        </p>
-        <div class="system-pills">
-          <span class="pill" id="deployPill">Ready for local run</span>
-          <span class="pill" id="paymentPill">Checking payment mode</span>
+    <div class="hero-visual">
+      <div class="visual-stack">
+        <div class="status-panel">
+          <small>Live Platform</small>
+          <strong id="systemHeadline">TrendCart Ready</strong>
+          <p>
+            A sharper home experience for discovery, with direct paths into products, foods, and movies.
+          </p>
         </div>
-      </div>
 
-      <div class="metric-grid">
-        <div class="metric">
-          <small>Login</small>
-          <strong>Email + Password</strong>
-        </div>
-        <div class="metric">
-          <small>Modules</small>
-          <strong>Shop / Food / Movies</strong>
-        </div>
-        <div class="metric">
-          <small>Checkout</small>
-          <strong>Razorpay Only</strong>
-        </div>
-        <div class="metric">
-          <small>Data</small>
-          <strong>MySQL Backed</strong>
+        <div class="preview-grid">
+          <article class="preview-card products-card">
+            <div>
+              <small>Shopping</small>
+              <strong>Curated Product Collections</strong>
+            </div>
+            <p>Move into broader categories, better visuals, and cleaner product browsing.</p>
+          </article>
+
+          <article class="preview-card foods-card">
+            <div>
+              <small>Dining</small>
+              <strong>Menus From Multiple Hotels</strong>
+            </div>
+            <p>Keep food discovery quick, polished, and easy to order from one place.</p>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-head">
-      <div>
-        <h2>Core Experiences</h2>
-      </div>
-      <p>
-        The platform is focused on the essentials: browse, pay, confirm, and continue quickly.
-      </p>
-    </div>
-
-    <div class="feature-grid">
-      <article class="feature-card">
+    <div class="section-grid">
+      <article class="section-card">
         <small>01</small>
-        <h3>Products</h3>
+        <h2>Products</h2>
         <p>
-          Browse 10 categories with richer inventory, save products to cart, and check out with Razorpay.
+          Explore a richer product catalog with cleaner card layouts, better browsing flow, and faster access to purchase-ready items.
         </p>
-        <a href="Product.html">Explore products</a>
+        <a href="Product.html">Open product catalog</a>
       </article>
 
-      <article class="feature-card">
+      <article class="section-card">
         <small>02</small>
-        <h3>Food Orders</h3>
+        <h2>Foods</h2>
         <p>
-          Explore five hotel menus with broader item lists and move into the same fast payment flow.
+          Browse food menus grouped by hotel, review item details faster, and move into checkout without extra distractions.
         </p>
-        <a href="Food.html">Order food</a>
+        <a href="Food.html">Open food section</a>
       </article>
 
-      <article class="feature-card">
+      <article class="section-card">
         <small>03</small>
-        <h3>Movie Tickets</h3>
+        <h2>Movies</h2>
         <p>
-          Choose theatre, show time, seats, and snacks, then save a confirmed movie pass after payment.
+          Let visitors jump straight into theatre selection, seat booking, and a more focused movie-ticket experience.
         </p>
-        <a href="Movies.html">Book tickets</a>
+        <a href="Movies.html">Open movies</a>
       </article>
     </div>
   </section>
 
-  <section class="footer-panel">
-    <strong>TrendCart Overview:</strong> a polished shopping, food, and cinema booking system
-    with account login, Razorpay checkout, and MySQL-backed data handling.
+  <section class="section">
+    <div class="support-grid">
+      <div class="support-summary">
+        <article class="mini-panel">
+          <h3>Designed to feel lighter and more professional</h3>
+          <p>
+            The home page now acts like a polished landing page instead of a dashboard. It highlights only the core paths,
+            keeps the copy brief, and leaves the deeper actions to the inner pages where they belong.
+          </p>
+        </article>
+
+        <article class="mini-panel">
+          <h3>Ready for your product and food image pack</h3>
+          <p>
+            Once you send the folder path for the downloaded images, I can map them into the catalog with proper titles,
+            descriptions, and unique placement on the product and food pages.
+          </p>
+        </article>
+      </div>
+
+      <aside class="mini-panel">
+        <h3>Support</h3>
+        <div class="support-list">
+          <div class="support-item">
+            <span>Support Mail</span>
+            <a href="mailto:support@trendcart.in">support@trendcart.in</a>
+          </div>
+          <div class="support-item">
+            <span>Contact Number</span>
+            <strong>+91 98765 43210</strong>
+          </div>
+          <div class="support-item">
+            <span>About TrendCart</span>
+            <a href="About.html">Open About Page</a>
+          </div>
+        </div>
+      </aside>
+    </div>
   </section>
+
+  <footer class="footer-shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-mark">TC</div>
+          <div>
+            <strong>TrendCart</strong>
+            <span>Shopping, foods, and movies</span>
+          </div>
+        </div>
+        <p>
+          A cleaner storefront for products, food ordering, and movie bookings with a more focused first impression.
+        </p>
+        <span>&copy; 2026 TrendCart Limited</span>
+      </div>
+
+      <div>
+        <h4>Company</h4>
+        <div class="footer-links">
+          <a href="About.html">About</a>
+          <a href="index.html">Home</a>
+          <a href="Login.html">Login</a>
+          <a href="Admin.html">Admin</a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Explore</h4>
+        <div class="footer-links">
+          <a href="Product.html">Products</a>
+          <a href="Food.html">Foods</a>
+          <a href="Movies.html">Movies</a>
+          <a href="Orderhistory.html">Orders</a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Contact Us</h4>
+        <div class="footer-links">
+          <a href="mailto:support@trendcart.in">support@trendcart.in</a>
+          <span>+91 98765 43210</span>
+          <a href="mailto:partner@trendcart.in">partner@trendcart.in</a>
+          <span>Mon - Sat, 9 AM - 8 PM</span>
+        </div>
+      </div>
+
+      <div>
+        <h4>Social Links</h4>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="LinkedIn">IN</a>
+          <a href="#" aria-label="Twitter">X</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>Built for smoother browsing, faster ordering, and cleaner movie booking.</span>
+      <span>Razorpay-secured checkout across the TrendCart experience.</span>
+    </div>
+  </footer>
 </div>
 
 <script src="Assests/api.js"></script>
@@ -610,39 +809,22 @@ body::before {
 async function loadSession() {
   const { user } = await TrendCartAPI.getCurrentUser();
   const welcome = document.getElementById("welcome");
-  const adminLink = document.getElementById("adminLink");
-  const loginLink = document.getElementById("loginLink");
-  const logoutBtn = document.getElementById("logoutBtn");
 
   if (user) {
-    welcome.textContent = `Welcome, ${user.name} (${user.role})`;
-    loginLink.hidden = true;
-    logoutBtn.hidden = false;
-    adminLink.hidden = user.role !== "admin";
+    welcome.textContent = `Welcome back, ${user.name}`;
   } else {
-    welcome.textContent = "Login to save cart, orders, and movie bookings";
-    adminLink.hidden = true;
+    welcome.textContent = "A refined hub for shopping, food, and movie plans";
   }
-
-  logoutBtn.addEventListener("click", async () => {
-    await TrendCartAPI.logout();
-    window.location.href = "Login.html";
-  });
 }
 
 async function loadServerInfo() {
   try {
     const info = await TrendCartAPI.getServerInfo();
     document.getElementById("systemHeadline").textContent = info.razorpayEnabled
-      ? "Backend + Razorpay Active"
-      : "Backend Active";
-    document.getElementById("deployPill").textContent = info.localhostUrl;
-    document.getElementById("paymentPill").textContent = info.razorpayEnabled
-      ? `Razorpay ${String(info.razorpayMode || "ready").toUpperCase()}`
-      : "Razorpay keys pending";
+      ? `TrendCart ${String(info.razorpayMode || "ready").toUpperCase()}`
+      : "TrendCart Ready";
   } catch {
-    document.getElementById("deployPill").textContent = "Server info unavailable";
-    document.getElementById("paymentPill").textContent = "Check backend connection";
+    document.getElementById("systemHeadline").textContent = "TrendCart Ready";
   }
 }
 

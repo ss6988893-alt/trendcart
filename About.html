@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About TrendCart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #eff4fb;
+  --panel: rgba(255, 255, 255, 0.9);
+  --line: rgba(42, 77, 126, 0.12);
+  --text: #16253b;
+  --muted: #6c83a1;
+  --accent: #0f8bff;
+  --accent-deep: #1f3e76;
+  --shadow: 0 26px 64px rgba(34, 65, 112, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 12%, rgba(44, 161, 255, 0.16), transparent 24%),
+    radial-gradient(circle at 84% 20%, rgba(138, 214, 255, 0.22), transparent 24%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 54%, #f7faff 100%);
+}
+
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.navbar,
+.hero,
+.content-grid article,
+.footer-shell {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  margin-bottom: 26px;
+}
+
+.brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.2rem;
+}
+
+.brand span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav-links a {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(42, 77, 126, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.hero {
+  padding: 34px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(240, 246, 255, 0.88)),
+    radial-gradient(circle at top right, rgba(15, 139, 255, 0.12), transparent 34%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(15, 139, 255, 0.08);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 18px 0 14px;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.hero p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.content-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.content-grid article {
+  padding: 24px;
+}
+
+.content-grid h2 {
+  margin: 0 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.38rem;
+}
+
+.content-grid p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.76;
+}
+
+.footer-shell {
+  margin-top: 24px;
+  padding: 34px 30px 24px;
+  background: linear-gradient(180deg, rgba(241, 244, 250, 0.98), rgba(233, 238, 246, 0.96));
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) repeat(4, minmax(140px, 0.9fr));
+  gap: 28px;
+}
+
+.footer-shell h3 {
+  margin: 0 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.08rem;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0f8bff, #6bc6ff);
+  color: #ffffff;
+  font-family: "Syne", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  box-shadow: 0 16px 30px rgba(15, 139, 255, 0.2);
+}
+
+.footer-logo strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.45rem;
+}
+
+.footer-logo span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.footer-shell p,
+.footer-shell a,
+.footer-shell span {
+  color: var(--muted);
+  line-height: 1.72;
+  text-decoration: none;
+}
+
+.footer-links {
+  display: grid;
+  gap: 8px;
+}
+
+.footer-links a {
+  width: fit-content;
+}
+
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.footer-socials a {
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(42, 77, 126, 0.12);
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--accent-deep);
+  font-weight: 800;
+}
+
+.footer-bottom {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(42, 77, 126, 0.12);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 920px) {
+  .content-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 14px 14px 32px;
+  }
+
+  .navbar,
+  .hero,
+  .content-grid article,
+  .footer-shell {
+    border-radius: 22px;
+  }
+
+  .navbar,
+  .hero,
+  .content-grid article,
+  .footer-shell {
+    padding: 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="navbar">
+    <div class="brand">
+      <strong>TrendCart</strong>
+      <span>About the platform</span>
+    </div>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="eyebrow">About TrendCart</span>
+    <h1>A multi-service platform built for shopping, food ordering, and movie booking.</h1>
+    <p>
+      TrendCart brings together three everyday flows into one streamlined experience. The platform is designed
+      to help users discover products, place food orders from multiple hotels, and book movie tickets with a
+      cleaner interface and faster movement between browsing and checkout.
+    </p>
+  </section>
+
+  <section class="content-grid">
+    <article>
+      <h2>Products</h2>
+      <p>
+        The shopping area is designed for category browsing, cleaner visual presentation, and a more polished
+        path from discovery to cart and payment.
+      </p>
+    </article>
+
+    <article>
+      <h2>Foods</h2>
+      <p>
+        The food section groups menus by hotel so users can explore a wider set of dishes while keeping ordering
+        simple and fast.
+      </p>
+    </article>
+
+    <article>
+      <h2>Movies</h2>
+      <p>
+        The movie flow focuses on theatre selection, seat booking, and ticket confirmation so cinema booking
+        feels like a complete part of the platform rather than a separate tool.
+      </p>
+    </article>
+  </section>
+
+  <footer class="footer-shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-mark">TC</div>
+          <div>
+            <strong>TrendCart</strong>
+            <span>Shopping, foods, and movies</span>
+          </div>
+        </div>
+        <p>
+          A cleaner digital experience for products, foods, and movies, built to look presentable and feel easier to navigate.
+        </p>
+        <span>&copy; 2026 TrendCart Limited</span>
+      </div>
+
+      <div>
+        <h3>Company</h3>
+        <div class="footer-links">
+          <a href="About.html">About</a>
+          <a href="index.html">Home</a>
+          <a href="Login.html">Login</a>
+          <a href="Admin.html">Admin</a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="Product.html">Products</a>
+          <a href="Food.html">Foods</a>
+          <a href="Movies.html">Movies</a>
+          <a href="Orderhistory.html">Orders</a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Contact Us</h3>
+        <div class="footer-links">
+          <a href="mailto:support@trendcart.in">support@trendcart.in</a>
+          <span>+91 98765 43210</span>
+          <a href="mailto:partner@trendcart.in">partner@trendcart.in</a>
+          <span>Mon - Sat, 9 AM - 8 PM</span>
+        </div>
+      </div>
+
+      <div>
+        <h3>Social Links</h3>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="LinkedIn">IN</a>
+          <a href="#" aria-label="Twitter">X</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>Made to present TrendCart as a cleaner multi-service platform.</span>
+      <span>Support, discovery, and checkout stay connected in one experience.</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

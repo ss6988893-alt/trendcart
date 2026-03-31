@@ -2,72 +2,62 @@ const productCategories = [
   {
     name: "Mobiles",
     prefix: "Phone",
-    photoTag: "smartphone,mobile,technology",
     description:
       "Balanced performance, dependable cameras, and long battery life for everyday use."
   },
   {
     name: "Laptops",
     prefix: "Laptop",
-    photoTag: "laptop,computer,workspace",
     description:
       "Portable systems tuned for work, study, streaming, and multitasking."
   },
   {
     name: "Headphones",
     prefix: "Audio",
-    photoTag: "headphones,audio,music",
     description:
       "Wireless listening with rich sound, noise reduction, and all-day comfort."
   },
   {
     name: "Watches",
     prefix: "Watch",
-    photoTag: "watch,smartwatch,timepiece",
     description:
       "Smart wearables and classic picks for fitness, alerts, and style."
   },
   {
     name: "Shoes",
     prefix: "Runner",
-    photoTag: "shoes,sneakers,footwear",
     description:
-      "Comfort-first footwear built for walking, training, and daily wear."
+      "Comfort-first essentials built for daily movement, casual wear, and lifestyle styling."
   },
   {
     name: "Fashion",
     prefix: "Style",
-    photoTag: "fashion,clothing,style",
     description:
-      "Modern essentials with clean silhouettes and wearable everyday finishes."
+      "Modern wardrobe pieces with cleaner silhouettes and everyday-ready finishes."
   },
   {
     name: "Beauty",
     prefix: "Glow",
-    photoTag: "beauty,cosmetics,skincare",
     description:
-      "Daily care and grooming products focused on comfort, skin, and finish."
+      "Lifestyle picks presented with a softer premium visual tone for self-care and style shoppers."
   },
   {
     name: "Home",
     prefix: "Home",
-    photoTag: "home,interior,decor",
     description:
-      "Useful pieces for living spaces, organization, lighting, and comfort."
+      "Useful daily picks for a polished setup, comfort, gifting, and versatile household browsing."
   },
   {
     name: "Kitchen",
     prefix: "Kitchen",
-    photoTag: "kitchen,cookware,cooking",
     description:
-      "Cookware and prep tools designed for daily convenience and durability."
+      "Practical everyday selections positioned for frequent-use spaces and daily convenience."
   },
   {
     name: "Gaming",
     prefix: "Game",
-    photoTag: "gaming,console,controller",
     description:
-      "Gear for immersive play, faster response, and comfortable long sessions."
+      "High-energy tech-forward picks suited for entertainment, performance, and immersive sessions."
   }
 ];
 
@@ -83,6 +73,100 @@ const productAdjectives = [
   "Max",
   "Aura"
 ];
+
+const productAssets = {
+  mobiles: [
+    "Assests/products/Product-mobile01.webp",
+    "Assests/products/mobile02.avif",
+    "Assests/products/mobile03.webp",
+    "Assests/products/mobile04.webp",
+    "Assests/products/mobile05.jpg",
+    "Assests/products/mobile06.jpg",
+    "Assests/products/mobile07.jpg",
+    "Assests/products/mobile09.webp",
+    "Assests/products/mobile10.webp"
+  ],
+  laptops: [
+    "Assests/products/laptop01.jpg",
+    "Assests/products/laptop02.jpg",
+    "Assests/products/laptop03.webp",
+    "Assests/products/laptop04.webp",
+    "Assests/products/laptop05.webp",
+    "Assests/products/laptop06.avif",
+    "Assests/products/laptop07.avif"
+  ],
+  headphones: [
+    "Assests/products/headphone01.webp",
+    "Assests/products/headphone02.avif",
+    "Assests/products/headphone03.avif",
+    "Assests/products/headphone04.jpg",
+    "Assests/products/headphone05.webp",
+    "Assests/products/headphone06.webp",
+    "Assests/products/headphone07.webp",
+    "Assests/products/headphone08.webp",
+    "Assests/products/headphone09.webp",
+    "Assests/products/headphone10.webp"
+  ],
+  watches: [
+    "Assests/products/watch01.webp",
+    "Assests/products/watch02.webp",
+    "Assests/products/watch04.jpg",
+    "Assests/products/watch05.avif",
+    "Assests/products/watch06.jpg",
+    "Assests/products/watch07.webp",
+    "Assests/products/watch08.avif",
+    "Assests/products/watch09.jpg",
+    "Assests/products/watch10.jpg"
+  ],
+  mens: [
+    "Assests/products/men01.webp",
+    "Assests/products/mens02.jpg",
+    "Assests/products/mens03.jpg",
+    "Assests/products/mens04.jpg",
+    "Assests/products/mens05.jpg",
+    "Assests/products/mens06.webp",
+    "Assests/products/mens07.jpg",
+    "Assests/products/mens08.jpg",
+    "Assests/products/mens10.jpg"
+  ],
+  womens: [
+    "Assests/products/couples ddress.jpg",
+    "Assests/products/womens01.jpg",
+    "Assests/products/womens02.jpg",
+    "Assests/products/womens03.webp",
+    "Assests/products/womens04.jpg",
+    "Assests/products/womens05.jpg",
+    "Assests/products/womens06.jpg",
+    "Assests/products/womens07.webp",
+    "Assests/products/womens08.webp",
+    "Assests/products/womens09.jpg"
+  ],
+  kids: [
+    "Assests/products/kids01.jpg",
+    "Assests/products/kids02.jpg",
+    "Assests/products/kids03.jpg",
+    "Assests/products/kids04.jpg",
+    "Assests/products/kids05.jpg",
+    "Assests/products/kids06.jpg",
+    "Assests/products/kids07.jpg",
+    "Assests/products/kids08.webp",
+    "Assests/products/kids09.webp",
+    "Assests/products/kids10.webp"
+  ]
+};
+
+const productImagePools = {
+  Mobiles: productAssets.mobiles,
+  Laptops: productAssets.laptops,
+  Headphones: productAssets.headphones,
+  Watches: productAssets.watches,
+  Shoes: [...productAssets.kids, ...productAssets.mens],
+  Fashion: [...productAssets.womens, ...productAssets.mens],
+  Beauty: [...productAssets.womens, ...productAssets.kids],
+  Home: [...productAssets.womens, ...productAssets.kids, ...productAssets.mens],
+  Kitchen: [...productAssets.mens, ...productAssets.womens, ...productAssets.kids],
+  Gaming: [...productAssets.headphones, ...productAssets.mobiles, ...productAssets.laptops]
+};
 
 const hotelCatalog = [
   {
@@ -110,8 +194,7 @@ const hotelCatalog = [
       ["Filter Coffee", 45, "Traditional strong filter coffee."],
       ["Badam Milk", 70, "Warm almond milk with saffron notes."],
       ["Gulab Jamun", 85, "Soft milk dumplings in warm syrup."]
-    ],
-    imageTag: "south-indian,restaurant,dosa"
+    ]
   },
   {
     name: "Chettinad Grill House",
@@ -138,8 +221,7 @@ const hotelCatalog = [
       ["Chicken Fried Rice", 210, "Fried rice with chicken, egg, and sauces."],
       ["Lime Juice", 55, "Fresh sweet-salt lime cooler."],
       ["Elaneer Payasam", 95, "Tender coconut dessert with milk and nuts."]
-    ],
-    imageTag: "chettinad,curry,grill"
+    ]
   },
   {
     name: "Urban Slice Pizza",
@@ -166,8 +248,7 @@ const hotelCatalog = [
       ["Tiramisu Cup", 135, "Coffee dessert layered with cream."],
       ["Cold Coffee", 95, "Chilled coffee with creamy finish."],
       ["Brownie Shake", 145, "Chocolate brownie blended into a thick shake."]
-    ],
-    imageTag: "pizza,pasta,italian-food"
+    ]
   },
   {
     name: "Burger Yard",
@@ -194,8 +275,7 @@ const hotelCatalog = [
       ["Cheesecake Jar", 140, "Jar dessert with cream cheese layers."],
       ["Brownie Fudge", 150, "Dense brownie topped with fudge."],
       ["Combo Meal", 299, "Burger, fries, and drink bundle."]
-    ],
-    imageTag: "burger,fries,fast-food"
+    ]
   },
   {
     name: "Coastal Bowl",
@@ -222,18 +302,89 @@ const hotelCatalog = [
       ["Kesari", 75, "Classic semolina sweet."],
       ["Fried Nethili", 180, "Crispy anchovy fry."],
       ["Seafood Platter", 399, "Mixed fish, prawn, and calamari sampler."]
-    ],
-    imageTag: "seafood,fish,coastal-food"
+    ]
   }
 ];
 
-function buildPhotoUrl(tag, seed) {
-  const query = String(tag || "product")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ",")
-    .replace(/^,+|,+$/g, "");
+const foodAssets = {
+  mains: [
+    "Assests/Foods/food01.jpg",
+    "Assests/Foods/food02.webp",
+    "Assests/Foods/food03.webp",
+    "Assests/Foods/food04.avif",
+    "Assests/Foods/food05.webp",
+    "Assests/Foods/food06.jpg",
+    "Assests/Foods/food07.jpg",
+    "Assests/Foods/food08.jpg",
+    "Assests/Foods/food09.webp",
+    "Assests/Foods/food10.jpeg"
+  ],
+  chinese: [
+    "Assests/Foods/chinese01.jpg",
+    "Assests/Foods/chinese02.jpg",
+    "Assests/Foods/chinese03.jpg",
+    "Assests/Foods/chinese04.jpg",
+    "Assests/Foods/chinese05.jpg",
+    "Assests/Foods/chinese06.jpg",
+    "Assests/Foods/chinese07.jpg",
+    "Assests/Foods/chinese08.jpg",
+    "Assests/Foods/chinese09.jpg",
+    "Assests/Foods/chinese10.jpg"
+  ],
+  drinks: [
+    "Assests/Foods/drinks01.avif",
+    "Assests/Foods/drinks02.png",
+    "Assests/Foods/drinks04.jpg",
+    "Assests/Foods/drinks05.jpg",
+    "Assests/Foods/drinks06.jpg",
+    "Assests/Foods/drinks07.avif",
+    "Assests/Foods/drinks08.png",
+    "Assests/Foods/drinks09.png",
+    "Assests/Foods/drinks10.png"
+  ],
+  desserts: [
+    "Assests/Foods/icecream01.jpg",
+    "Assests/Foods/icecream02.jpg",
+    "Assests/Foods/icecream03.jpg",
+    "Assests/Foods/icecream04.jpg",
+    "Assests/Foods/icecream05.avif",
+    "Assests/Foods/icecream06.webp",
+    "Assests/Foods/icecream07.png",
+    "Assests/Foods/icecream08.png"
+  ]
+};
 
-  return `https://loremflickr.com/900/700/${query}?lock=${seed}`;
+function pickFromPool(pool, seed) {
+  return pool[seed % pool.length];
+}
+
+function pickProductImage(categoryName, itemIndex) {
+  const pool = productImagePools[categoryName] || productAssets.mobiles;
+  return pickFromPool(pool, itemIndex);
+}
+
+function selectFoodPool(itemName) {
+  const value = String(itemName || "").toLowerCase();
+
+  if (
+    /(coffee|milk|juice|shake|mojito|cooler|water|payasam|drink)/.test(value)
+  ) {
+    return foodAssets.drinks;
+  }
+
+  if (
+    /(ice|cake|tiramisu|cheesecake|brownie|pudding|jamun|dessert|kesari)/.test(value)
+  ) {
+    return foodAssets.desserts;
+  }
+
+  if (
+    /(fried rice|noodles|manchurian|szechuan|chilli|wok|burger|wrap|fries|pizza|pasta)/.test(value)
+  ) {
+    return [...foodAssets.chinese, ...foodAssets.mains];
+  }
+
+  return [...foodAssets.mains, ...foodAssets.chinese];
 }
 
 function buildProducts() {
@@ -245,7 +396,7 @@ function buildProducts() {
         name: `${category.prefix} ${adjective} ${number}`,
         category: category.name,
         description: `${category.description} ${category.name} pick ${number} brings a polished finish with dependable quality for everyday shoppers.`,
-        image_url: buildPhotoUrl(`${category.photoTag},${category.prefix},${adjective}`, `${categoryIndex + 1}${number}`),
+        image_url: pickProductImage(category.name, categoryIndex * 30 + itemIndex),
         price: 899 + categoryIndex * 425 + itemIndex * 119,
         rating: 4 + ((categoryIndex + itemIndex) % 2)
       };
@@ -255,16 +406,19 @@ function buildProducts() {
 
 function buildFoodItems() {
   return hotelCatalog.flatMap((hotel, hotelIndex) =>
-    hotel.items.map(([name, price, description], itemIndex) => ({
-      name,
-      restaurant: hotel.name,
-      delivery_time: hotel.deliveryTime,
-      image_url: buildPhotoUrl(`${hotel.imageTag},${name},${hotel.cuisine}`, `${hotelIndex + 1}${itemIndex + 1}`),
-      price,
-      rating: 4 + ((hotelIndex + itemIndex) % 2),
-      description,
-      cuisine: hotel.cuisine
-    }))
+    hotel.items.map(([name, price, description], itemIndex) => {
+      const pool = selectFoodPool(name);
+      return {
+        name,
+        restaurant: hotel.name,
+        delivery_time: hotel.deliveryTime,
+        image_url: pickFromPool(pool, hotelIndex * 20 + itemIndex),
+        price,
+        rating: 4 + ((hotelIndex + itemIndex) % 2),
+        description,
+        cuisine: hotel.cuisine
+      };
+    })
   );
 }
 
