@@ -604,15 +604,35 @@ async function initializeDatabase() {
     )
   `);
 
-  const [[productCounts]] = await pool.query("SELECT COUNT(*) AS total FROM products");
-  const [existingProductCategories] = await pool.query("SELECT DISTINCT category FROM products");
+  const [existingProducts] = await pool.query(
+    "SELECT name, category, image_url FROM products ORDER BY category, name"
+  );
+  const productCounts = { total: existingProducts.length };
+  const existingProductCategories = existingProducts.map((row) => ({ category: row.category }));
   const allowedProductCategories = new Set(curatedProducts.map((item) => item.category));
   const hasLegacyProductCategories = existingProductCategories.some(
     (row) => !allowedProductCategories.has(row.category)
   );
+  const curatedProductNames = new Set(curatedProducts.map((item) => item.name));
+  const hasLegacyProductNames = existingProducts.some((row) => !curatedProductNames.has(row.name));
+  const hasRemoteProductImages = existingProducts.some(
+    (row) => String(row.image_url || "").startsWith("http")
+  );
+  const hasCatalogCountMismatch = productCounts.total !== curatedProducts.length;
 
-  if (productCounts.total === 0 || hasLegacyProductCategories) {
-    if (hasLegacyProductCategories) {
+  if (
+    productCounts.total === 0 ||
+    hasLegacyProductCategories ||
+    hasLegacyProductNames ||
+    hasRemoteProductImages ||
+    hasCatalogCountMismatch
+  ) {
+    if (
+      hasLegacyProductCategories ||
+      hasLegacyProductNames ||
+      hasRemoteProductImages ||
+      hasCatalogCountMismatch
+    ) {
       await pool.query("DELETE FROM products");
     }
 
