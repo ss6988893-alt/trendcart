@@ -20,7 +20,7 @@ fs.mkdirSync(uploadsDir, { recursive: true });
 const app = express();
 const port = Number(process.env.PORT || 5000);
 const isProduction = process.env.NODE_ENV === "production";
-const PRODUCT_CATEGORY_COUNT = 10;
+const PRODUCT_CATEGORY_COUNT = 8;
 const FOOD_HOTEL_COUNT = 5;
 const SEAT_LOCK_MINUTES = 5;
 const ORDER_STATUSES = ["Placed", "Preparing", "Out for delivery", "Completed", "Cancelled"];
@@ -241,9 +241,9 @@ async function backfillCatalogImageAssignments() {
   for (const product of curatedProducts) {
     await pool.query(
       `UPDATE products
-       SET image_url = ?
+       SET image_url = ?, description = ?
        WHERE name = ?`,
-      [product.image_url, product.name]
+      [product.image_url, product.description, product.name]
     );
   }
 
@@ -605,7 +605,17 @@ async function initializeDatabase() {
   `);
 
   const [[productCounts]] = await pool.query("SELECT COUNT(*) AS total FROM products");
-  if (productCounts.total === 0) {
+  const [existingProductCategories] = await pool.query("SELECT DISTINCT category FROM products");
+  const allowedProductCategories = new Set(curatedProducts.map((item) => item.category));
+  const hasLegacyProductCategories = existingProductCategories.some(
+    (row) => !allowedProductCategories.has(row.category)
+  );
+
+  if (productCounts.total === 0 || hasLegacyProductCategories) {
+    if (hasLegacyProductCategories) {
+      await pool.query("DELETE FROM products");
+    }
+
     for (let index = 0; index < curatedProducts.length; index += 40) {
       const batch = curatedProducts.slice(index, index + 40);
       const placeholders = batch.map(() => "(?, ?, ?, ?, ?, ?)").join(", ");

@@ -1,0 +1,177 @@
+# Product List Reference
+
+## Mobiles
+- vivo V29 Pro
+- iPhone SE
+- Samsung Galaxy A54
+- OnePlus Nord CE 4
+- Redmi Note 13 Pro
+- Realme 12 Pro+
+- iQOO Neo 9 Pro
+- Motorola Edge 50 Fusion
+- OPPO Reno 11
+- Samsung Galaxy S23 FE
+- Nothing Phone (2a)
+- OnePlus 12R
+- Xiaomi 14 Civi
+- POCO X6 Pro
+- Google Pixel 7a
+- vivo T3 5G
+- Redmi 13 5G
+- Realme Narzo 70 Pro
+- Samsung Galaxy M35
+- iPhone 13
+
+## Laptops
+- MacBook Air M2
+- HP Pavilion 15
+- Dell Inspiron 14
+- Lenovo IdeaPad Slim 5
+- ASUS VivoBook 15
+- Acer Aspire 7
+- HP Victus 15
+- Dell XPS 13
+- Lenovo LOQ 15
+- ASUS TUF Gaming F15
+- MSI Modern 14
+- Acer Nitro V
+- MacBook Pro 14
+- Lenovo Yoga Slim 7
+- Dell Latitude 5440
+- HP Envy x360
+- ASUS Zenbook 14
+- Samsung Galaxy Book4
+- MSI Cyborg 15
+- Acer Swift Go 14
+
+## Headphones
+- Sony WH-1000XM5
+- Apple AirPods Pro (2nd Gen)
+- JBL Tune 770NC
+- boAt Nirvana 751 ANC
+- Realme Buds Air 5 Pro
+- OnePlus Buds 3
+- Samsung Galaxy Buds FE
+- Sony WF-C700N
+- JBL Wave Beam
+- boAt Airdopes 141
+- Noise Buds X Prime
+- Nothing Ear (a)
+- Apple AirPods (3rd Gen)
+- Skullcandy Hesh ANC
+- Bose QuietComfort Ultra
+- Sennheiser Accentum
+- Oppo Enco Air 3 Pro
+- Redmi Buds 5
+- Anker Soundcore Life Q30
+- Marshall Major IV
+
+## Watches
+- Apple Watch SE
+- Apple Watch Series 9
+- Samsung Galaxy Watch6
+- OnePlus Watch 2
+- Noise ColorFit Pro 5
+- Fire-Boltt Ninja Call Pro
+- boAt Wave Elevate
+- Amazfit GTR 4
+- Fastrack Revoltt FS1
+- Titan Smart 3
+- Garmin Forerunner 165
+- Huawei Watch GT 4
+- NoiseFit Halo
+- Pebble Cosmos Luxe
+- Fire-Boltt Phoenix Ultra
+- Amazfit Bip 5
+- Samsung Galaxy Watch4
+- Apple Watch Ultra 2
+- Realme Watch 3 Pro
+- Titan Neo Splash
+
+## Shoes
+- Nike Air Max Alpha Trainer
+- Adidas Ultraboost Light
+- Puma Velocity Nitro
+- Skechers Go Walk 6
+- Reebok Floatride Energy
+- ASICS Gel-Contend 8
+- New Balance 574
+- Converse Chuck Taylor All Star
+- Vans Old Skool
+- Crocs Classic Clog
+- Nike Revolution 7
+- Adidas Grand Court 2.0
+- Puma Smashic
+- Skechers Arch Fit
+- Woodland Leather Boots
+- Red Tape Sports Sneakers
+- Bata Power Running Shoes
+- Campus Oxyfit
+- Liberty Gliders
+- Sparx Running Shoes
+
+## Fashion
+- Levi's 511 Slim Jeans
+- H&M Regular Fit T-Shirt
+- Allen Solly Polo T-Shirt
+- Van Heusen Formal Shirt
+- W for Woman Printed Kurta
+- Biba Anarkali Kurta Set
+- ZARA Solid Blazer
+- U.S. Polo Assn. Casual Shirt
+- Jack & Jones Slim Fit Jeans
+- ONLY Ribbed Top
+- Forever New Midi Dress
+- Roadster Denim Jacket
+- MAX Cotton Hoodie
+- Fabindia Kurta Set
+- Peter England Trousers
+- Pantaloons Ethnic Dress
+- Mango Satin Shirt
+- Vero Moda Skater Dress
+- Louis Philippe Formal Shirt
+- Marks & Spencer Chinos
+
+## Beauty
+- Lakme 9to5 Primer + Matte Lipstick
+- Maybelline Fit Me Foundation
+- L'Oreal Paris Hyaluron Moisture Serum
+- Mamaearth Ubtan Face Wash
+- Cetaphil Gentle Skin Cleanser
+- Plum Green Tea Night Gel
+- Dot & Key Sunscreen SPF 50
+- Minimalist 10% Vitamin C Serum
+- The Derma Co 1% Hyaluronic Sunscreen
+- Nivea Soft Light Moisturizer
+- Dove Intense Repair Shampoo
+- Tresemme Keratin Smooth Conditioner
+- Garnier Micellar Cleansing Water
+- M.A.C Studio Fix Powder Foundation
+- Biotique Bio Cucumber Toner
+- Neutrogena Hydro Boost Gel
+- Nykaa Wanderlust Body Lotion
+- Aqualogica Glow+ Dewy Sunscreen
+- Himalaya Neem Face Pack
+- BBlunt Hot Shot Hair Spray
+
+## Home
+- Philips LED Smart Bulb
+- Prestige Electric Kettle
+- Havells Dry Iron
+- Usha Mist Air Icy Fan
+- Wakefit Memory Foam Pillow
+- Sleepyhead Bedsheet Set
+- Home Centre Table Lamp
+- IKEA Storage Basket
+- Milton Thermosteel Bottle
+- Cello Plastic Drawer Unit
+- Dyson V8 Vacuum Cleaner
+- Kent Gold Water Purifier
+- Amazon Basics Foldable Study Table
+- Solimo Laundry Basket
+- Urban Ladder Wall Shelf
+- Borosil Glass Storage Jar Set
+- Atomberg Renesa Ceiling Fan
+- Syska LED Desk Lamp
+- Nilkamal Plastic Cabinet
+- Eureka Forbes Wet & Dry Vacuum

@@ -1,172 +1,211 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const productAssetsRoot = path.join(__dirname, "..", "Assests", "products");
+
 const productCategories = [
   {
     name: "Mobiles",
-    prefix: "Phone",
+    folder: "mobiles",
     description:
-      "Balanced performance, dependable cameras, and long battery life for everyday use."
+      "Balanced performance, dependable cameras, and long battery life for everyday use.",
+    basePrice: 19999
   },
   {
     name: "Laptops",
-    prefix: "Laptop",
+    folder: "laptops",
     description:
-      "Portable systems tuned for work, study, streaming, and multitasking."
+      "Portable systems tuned for work, study, streaming, and multitasking.",
+    basePrice: 52999
   },
   {
     name: "Headphones",
-    prefix: "Audio",
+    folder: "headphones",
     description:
-      "Wireless listening with rich sound, noise reduction, and all-day comfort."
+      "Wireless listening with rich sound, noise reduction, and all-day comfort.",
+    basePrice: 2499
   },
   {
     name: "Watches",
-    prefix: "Watch",
+    folder: "watches",
     description:
-      "Smart wearables and classic picks for fitness, alerts, and style."
+      "Smart wearables and classic picks for fitness, alerts, and style.",
+    basePrice: 1999
   },
   {
     name: "Shoes",
-    prefix: "Runner",
+    folder: "shoes",
     description:
-      "Comfort-first essentials built for daily movement, casual wear, and lifestyle styling."
+      "Comfort-first essentials built for daily movement, casual wear, and lifestyle styling.",
+    basePrice: 1799
   },
   {
     name: "Fashion",
-    prefix: "Style",
+    folder: "fashion",
     description:
-      "Modern wardrobe pieces with cleaner silhouettes and everyday-ready finishes."
+      "Modern wardrobe pieces with cleaner silhouettes and everyday-ready finishes.",
+    basePrice: 999
   },
   {
     name: "Beauty",
-    prefix: "Glow",
+    folder: "beauty",
     description:
-      "Lifestyle picks presented with a softer premium visual tone for self-care and style shoppers."
+      "Self-care essentials and premium daily-use products with polished presentation.",
+    basePrice: 399
   },
   {
     name: "Home",
-    prefix: "Home",
+    folder: "home",
     description:
-      "Useful daily picks for a polished setup, comfort, gifting, and versatile household browsing."
-  },
-  {
-    name: "Kitchen",
-    prefix: "Kitchen",
-    description:
-      "Practical everyday selections positioned for frequent-use spaces and daily convenience."
-  },
-  {
-    name: "Gaming",
-    prefix: "Game",
-    description:
-      "High-energy tech-forward picks suited for entertainment, performance, and immersive sessions."
+      "Useful daily picks for a polished setup, comfort, gifting, and versatile household browsing.",
+    basePrice: 899
   }
 ];
 
-const productAdjectives = [
-  "Prime",
-  "Ultra",
-  "Neo",
-  "Edge",
-  "Pulse",
-  "Core",
-  "Elite",
-  "Nova",
-  "Max",
-  "Aura"
-];
+const supportedProductImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
-const productAssets = {
-  mobiles: [
-    "Assests/products/Product-mobile01.webp",
-    "Assests/products/mobile02.avif",
-    "Assests/products/mobile03.webp",
-    "Assests/products/mobile04.webp",
-    "Assests/products/mobile05.jpg",
-    "Assests/products/mobile06.jpg",
-    "Assests/products/mobile07.jpg",
-    "Assests/products/mobile09.webp",
-    "Assests/products/mobile10.webp"
-  ],
-  laptops: [
-    "Assests/products/laptop01.jpg",
-    "Assests/products/laptop02.jpg",
-    "Assests/products/laptop03.webp",
-    "Assests/products/laptop04.webp",
-    "Assests/products/laptop05.webp",
-    "Assests/products/laptop06.avif",
-    "Assests/products/laptop07.avif"
-  ],
-  headphones: [
-    "Assests/products/headphone01.webp",
-    "Assests/products/headphone02.avif",
-    "Assests/products/headphone03.avif",
-    "Assests/products/headphone04.jpg",
-    "Assests/products/headphone05.webp",
-    "Assests/products/headphone06.webp",
-    "Assests/products/headphone07.webp",
-    "Assests/products/headphone08.webp",
-    "Assests/products/headphone09.webp",
-    "Assests/products/headphone10.webp"
-  ],
-  watches: [
-    "Assests/products/watch01.webp",
-    "Assests/products/watch02.webp",
-    "Assests/products/watch04.jpg",
-    "Assests/products/watch05.avif",
-    "Assests/products/watch06.jpg",
-    "Assests/products/watch07.webp",
-    "Assests/products/watch08.avif",
-    "Assests/products/watch09.jpg",
-    "Assests/products/watch10.jpg"
-  ],
-  mens: [
-    "Assests/products/men01.webp",
-    "Assests/products/mens02.jpg",
-    "Assests/products/mens03.jpg",
-    "Assests/products/mens04.jpg",
-    "Assests/products/mens05.jpg",
-    "Assests/products/mens06.webp",
-    "Assests/products/mens07.jpg",
-    "Assests/products/mens08.jpg",
-    "Assests/products/mens10.jpg"
-  ],
-  womens: [
-    "Assests/products/couples ddress.jpg",
-    "Assests/products/womens01.jpg",
-    "Assests/products/womens02.jpg",
-    "Assests/products/womens03.webp",
-    "Assests/products/womens04.jpg",
-    "Assests/products/womens05.jpg",
-    "Assests/products/womens06.jpg",
-    "Assests/products/womens07.webp",
-    "Assests/products/womens08.webp",
-    "Assests/products/womens09.jpg"
-  ],
-  kids: [
-    "Assests/products/kids01.jpg",
-    "Assests/products/kids02.jpg",
-    "Assests/products/kids03.jpg",
-    "Assests/products/kids04.jpg",
-    "Assests/products/kids05.jpg",
-    "Assests/products/kids06.jpg",
-    "Assests/products/kids07.jpg",
-    "Assests/products/kids08.webp",
-    "Assests/products/kids09.webp",
-    "Assests/products/kids10.webp"
-  ]
+const productNameFixes = {
+  "Apple AirPods Pro (2nd Gen": "Apple AirPods Pro (2nd Gen)",
+  "HP Envy x360HP Envy x360": "HP Envy x360"
 };
 
-const productImagePools = {
-  Mobiles: productAssets.mobiles,
-  Laptops: productAssets.laptops,
-  Headphones: productAssets.headphones,
-  Watches: productAssets.watches,
-  Shoes: [...productAssets.kids, ...productAssets.mens],
-  Fashion: [...productAssets.womens, ...productAssets.mens],
-  Beauty: [...productAssets.womens, ...productAssets.kids],
-  Home: [...productAssets.womens, ...productAssets.kids, ...productAssets.mens],
-  Kitchen: [...productAssets.mens, ...productAssets.womens, ...productAssets.kids],
-  Gaming: [...productAssets.headphones, ...productAssets.mobiles, ...productAssets.laptops]
+const productDescriptionProfiles = {
+  Mobiles: {
+    openings: [
+      "delivers a smooth everyday smartphone experience with a polished design and dependable battery life.",
+      "is built for users who want fast performance, strong cameras, and reliable all-day usability.",
+      "balances modern styling with practical speed, display clarity, and day-to-day comfort."
+    ],
+    features: [
+      "It suits social media, photos, streaming, and gaming without feeling heavy in hand.",
+      "The overall setup feels ideal for calls, content watching, quick multitasking, and travel use.",
+      "It is a strong pick for users upgrading to a cleaner, more capable Android or iPhone experience."
+    ]
+  },
+  Laptops: {
+    openings: [
+      "offers a reliable notebook setup for work, study, browsing, and entertainment.",
+      "is designed for productive daily use with strong portability and a clean professional finish.",
+      "brings the kind of laptop performance that works well for office tasks, meetings, and everyday creative work."
+    ],
+    features: [
+      "It fits students, professionals, and home users who want smooth multitasking without unnecessary complexity.",
+      "The combination of display size, keyboard comfort, and battery balance makes it easy to use for long sessions.",
+      "It is a practical option for documents, classes, streaming, and light editing on the go."
+    ]
+  },
+  Headphones: {
+    openings: [
+      "delivers a comfortable listening experience with clearer audio and everyday convenience.",
+      "is tuned for music, calls, and travel with a strong balance of comfort and sound quality.",
+      "brings a modern audio setup that feels easy to carry, connect, and enjoy throughout the day."
+    ],
+    features: [
+      "It works well for commuting, calls, workout sessions, and long playlists without feeling tiring.",
+      "The overall sound profile feels suitable for movies, focused work, and casual listening alike.",
+      "It is a dependable choice for people who want better audio quality with simple everyday usability."
+    ]
+  },
+  Watches: {
+    openings: [
+      "combines a smart wearable feel with stylish day-to-day usability.",
+      "is designed to support fitness tracking, notifications, and a cleaner modern wrist presence.",
+      "offers the right mix of smartwatch convenience and everyday style."
+    ],
+    features: [
+      "It is well suited for activity tracking, quick alerts, and routine health-focused use.",
+      "The look stays versatile enough for workouts, office use, and casual daily wear.",
+      "It makes sense for users who want an easy wearable upgrade without losing comfort."
+    ]
+  },
+  Shoes: {
+    openings: [
+      "is built for daily comfort with a style that works across casual and active settings.",
+      "offers a dependable footwear option for walking, commuting, and everyday movement.",
+      "brings a clean sporty look with comfort-focused support for regular wear."
+    ],
+    features: [
+      "It works well for long days outside, casual outfits, and easy all-round use.",
+      "The overall feel is suited for walking comfort, stable grip, and versatile styling.",
+      "It is a practical pair for users who want comfort first without giving up a modern look."
+    ]
+  },
+  Fashion: {
+    openings: [
+      "adds a polished wardrobe update with a modern retail-ready look.",
+      "is styled for day-to-day wear with an easy balance of comfort and presentation.",
+      "brings a cleaner fashion-forward touch to casual, work, or occasion dressing."
+    ],
+    features: [
+      "It pairs well with simple everyday styling while still looking put together.",
+      "The fit and finish make it a flexible piece for repeating across different looks.",
+      "It is a strong option for shoppers who want wearable style without overcomplicating the outfit."
+    ]
+  },
+  Beauty: {
+    openings: [
+      "supports a cleaner self-care routine with a premium everyday feel.",
+      "is chosen for users who want beauty essentials that feel modern, effective, and easy to use.",
+      "brings a polished personal-care option into the catalog with strong daily-use appeal."
+    ],
+    features: [
+      "It fits well into a practical skincare, makeup, or haircare routine without feeling excessive.",
+      "The product is positioned as an easy upgrade for users building a more complete beauty shelf.",
+      "It works well for everyday use, gifting, and users looking for trusted personal-care picks."
+    ]
+  },
+  Home: {
+    openings: [
+      "adds useful comfort and function to everyday home life with a cleaner product finish.",
+      "is designed for practical household use while still feeling presentable and well chosen.",
+      "brings a simple but effective improvement to daily home setup and convenience."
+    ],
+    features: [
+      "It is a good fit for users who want reliable essentials that are easy to place and use.",
+      "The overall value comes from making everyday spaces feel more organised, comfortable, or efficient.",
+      "It works well as a household essential, upgrade item, or practical gifting option."
+    ]
+  }
 };
+
+function isProductImageAsset(fileName) {
+  return supportedProductImageExtensions.has(path.extname(fileName).toLowerCase());
+}
+
+function normaliseProductName(fileName) {
+  const baseName = path.parse(fileName).name.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
+  return productNameFixes[baseName] || baseName;
+}
+
+function readProductAssets(folderName) {
+  const absoluteFolder = path.join(productAssetsRoot, folderName);
+  if (!fs.existsSync(absoluteFolder)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(absoluteFolder)
+    .filter(isProductImageAsset)
+    .sort((left, right) => normaliseProductName(left).localeCompare(normaliseProductName(right)))
+    .map((fileName) => ({
+      name: normaliseProductName(fileName),
+      image_url: `Assests/products/${folderName}/${fileName}`
+    }));
+}
+
+function buildProductDescription(category, productName, itemIndex) {
+  const profile = productDescriptionProfiles[category.name];
+  if (!profile) {
+    return `${productName} is a curated ${category.name.toLowerCase()} pick selected for a cleaner catalog experience.`;
+  }
+
+  const opening = profile.openings[itemIndex % profile.openings.length];
+  const feature = profile.features[itemIndex % profile.features.length];
+  return `${productName} ${opening} ${feature}`;
+}
 
 const hotelCatalog = [
   {
@@ -354,13 +393,121 @@ const foodAssets = {
   ]
 };
 
+const hotelFoodImageMap = {
+  "A2B Signature": {
+    "Mini Tiffin": "Assests/Foods/A2B Signature/minitiffin.jpg",
+    "Ghee Roast Dosa": "Assests/Foods/A2B Signature/ghee roast.jpg",
+    "Masala Dosa": "Assests/Foods/A2B Signature/masala dosa.jpg",
+    "Rava Onion Dosa": "Assests/Foods/A2B Signature/onion rava dosa.jpg",
+    "Idli Plate": "Assests/Foods/A2B Signature/idli plate.webp",
+    "Mini Idli Sambar": "Assests/Foods/A2B Signature/mini idli sambar.jpg",
+    "Pongal Vada Combo": "Assests/Foods/A2B Signature/pongal vada.avif",
+    "Poori Masala": "Assests/Foods/A2B Signature/poorimasala.jpg",
+    "Curd Rice": "Assests/Foods/A2B Signature/curd rice.jpg",
+    "Tomato Rice": "Assests/Foods/A2B Signature/tomoto rice.jpg",
+    "Lemon Rice": "Assests/Foods/A2B Signature/lemon rice.jpg",
+    "Veg Meals": "Assests/Foods/A2B Signature/veg meals.avif",
+    "Sambar Rice": "Assests/Foods/A2B Signature/sambar rice.jpg",
+    "Bisibelabath": "Assests/Foods/A2B Signature/bisbellabth.jpg",
+    "Paneer Butter Masala": "Assests/Foods/A2B Signature/Paneer Butter Masala.jpg",
+    "Butter Naan": "Assests/Foods/A2B Signature/Butter Naan.jpg",
+    "Chapati Kurma": "Assests/Foods/A2B Signature/Chapati Kurma.jpg",
+    "Filter Coffee": "Assests/Foods/A2B Signature/Filter Coffee.avif",
+    "Badam Milk": "Assests/Foods/A2B Signature/Badam Milk.webp",
+    "Gulab Jamun": "Assests/Foods/A2B Signature/Gulab Jamun.jpg"
+  },
+  "Chettinad Grill House": {
+    "Chicken Biryani": "Assests/Foods/Chettinad Grill House/Chicken Biryani.jpg",
+    "Mutton Biryani": "Assests/Foods/Chettinad Grill House/Mutton Biryani.jpg",
+    "Chicken 65": "Assests/Foods/Chettinad Grill House/Chicken 65.jpg",
+    "Pepper Chicken": "Assests/Foods/Chettinad Grill House/Pepper Chicken.jpg",
+    "Grill Chicken Half": "Assests/Foods/Chettinad Grill House/Grill Chicken Half.webp",
+    "Parotta": "Assests/Foods/Chettinad Grill House/Parotta.jpg",
+    "Kothu Parotta": "Assests/Foods/Chettinad Grill House/Kothu Parotta.jpg",
+    "Egg Kothu Parotta": "Assests/Foods/Chettinad Grill House/Egg Kothu Parotta.jpg",
+    "Mutton Chukka": "Assests/Foods/Chettinad Grill House/Mutton Chukka.avif",
+    "Fish Fry": "Assests/Foods/Chettinad Grill House/Fish Fry.jpg",
+    "Prawn Masala": "Assests/Foods/Chettinad Grill House/Prawn Masala.avif",
+    "Plain Naan": "Assests/Foods/Chettinad Grill House/plain naan.png",
+    "Butter Chicken": "Assests/Foods/Chettinad Grill House/Butter Chicken.jpg",
+    "Chicken Curry": "Assests/Foods/Chettinad Grill House/Chicken Curry.jpg",
+    "Mutton Curry": "Assests/Foods/Chettinad Grill House/Mutton.jpg",
+    "Jeera Rice": "Assests/Foods/Chettinad Grill House/Jeera Rice.jpg",
+    "Veg Fried Rice": "Assests/Foods/Chettinad Grill House/Veg Fried Rice.jpg",
+    "Chicken Fried Rice": "Assests/Foods/Chettinad Grill House/Chicken Fried Rice.jpg",
+    "Lime Juice": "Assests/Foods/Chettinad Grill House/Lime Juice.jpg",
+    "Elaneer Payasam": "Assests/Foods/Chettinad Grill House/Elaneer Payasam.webp"
+  },
+  "Urban Slice Pizza": {
+    "Margherita Pizza": "Assests/Foods/Urban Slice Pizza/Margherita Pizza.jpg",
+    "Farmhouse Pizza": "Assests/Foods/Urban Slice Pizza/Farmhouse Pizza.jpg",
+    "Paneer Tikka Pizza": "Assests/Foods/Urban Slice Pizza/Paneer Tikka Pizza.jpeg",
+    "Pepperoni Pizza": "Assests/Foods/Urban Slice Pizza/Pepperoni pizza.avif",
+    "Chicken Supreme Pizza": "Assests/Foods/Urban Slice Pizza/Chicken Supreme Pizza.jpg",
+    "White Sauce Pasta": "Assests/Foods/Urban Slice Pizza/White Sauce Pasta.jpg",
+    "Red Sauce Pasta": "Assests/Foods/Urban Slice Pizza/Red Sauce Pasta.webp",
+    "Lasagna": "Assests/Foods/Urban Slice Pizza/Lasagna.jpg",
+    "Garlic Breadsticks": "Assests/Foods/Urban Slice Pizza/Garlic Breadsticks.jpg",
+    "Cheese Garlic Bread": "Assests/Foods/Urban Slice Pizza/Cheese Garlic Bread.jpg",
+    "Stuffed Veg Pocket": "Assests/Foods/Urban Slice Pizza/Stuffed Veg Pocket.jpg",
+    "Stuffed Chicken Pocket": "Assests/Foods/Urban Slice Pizza/Stuffed Chicken Pocket.webp",
+    "Loaded Fries": "Assests/Foods/Urban Slice Pizza/Loaded Fries.avif",
+    "Peri Peri Fries": "Assests/Foods/Urban Slice Pizza/Peri Peri Fries.jpg",
+    "Veg Burger": "Assests/Foods/Urban Slice Pizza/Veg Burger.avif",
+    "Chicken Burger": "Assests/Foods/Urban Slice Pizza/Chicken Burger.webp",
+    "Choco Lava Cake": "Assests/Foods/Urban Slice Pizza/Choco Lava Cake.jpeg",
+    "Tiramisu Cup": "Assests/Foods/Urban Slice Pizza/Tiramisu Cup.webp",
+    "Cold Coffee": "Assests/Foods/Urban Slice Pizza/Cold Coffee.jpeg",
+    "Brownie Shake": "Assests/Foods/Urban Slice Pizza/Brownie Shake.avif"
+  },
+  "Burger Yard": {
+    "Classic Veg Burger": "Assests/Foods/Burger Yard/Classic Veg Burger.png",
+    "Crispy Chicken Burger": "Assests/Foods/Burger Yard/Crispy Chicken Burger.jpg",
+    "Double Patty Burger": "Assests/Foods/Burger Yard/Double Patty Burger.jpg",
+    "Paneer Crunch Burger": "Assests/Foods/Burger Yard/Paneer Crunch Burger.jpg",
+    "BBQ Chicken Burger": "Assests/Foods/Burger Yard/BBQ Chicken Burger.jpg",
+    "Loaded Chicken Wrap": "Assests/Foods/Burger Yard/Loaded Chicken Wrap.jpg",
+    "Veg Mexican Wrap": "Assests/Foods/Burger Yard/Veg Mexican Wrap.jpg",
+    "Classic Fries": "Assests/Foods/Burger Yard/Classic Fries.jpg",
+    "Cheese Fries": "Assests/Foods/Burger Yard/Cheese Fries.jpg",
+    "Spicy Wings": "Assests/Foods/Burger Yard/Spicy Wings.jpg",
+    "Chicken Nuggets": "Assests/Foods/Burger Yard/Chicken Nuggets.jpg",
+    "Onion Rings": "Assests/Foods/Burger Yard/Onion Rings.avif",
+    "Peri Peri Paneer Pops": "Assests/Foods/Burger Yard/Peri Peri Paneer Pops.jpeg",
+    "Mojito Lime": "Assests/Foods/Burger Yard/Mojito Lime.jpg",
+    "Watermelon Blast": "Assests/Foods/Burger Yard/Watermelon Blast.jpg",
+    "Chocolate Shake": "Assests/Foods/Burger Yard/Chocolate Shake.webp",
+    "Strawberry Shake": "Assests/Foods/Burger Yard/Strawberry Shake.avif",
+    "Cheesecake Jar": "Assests/Foods/Burger Yard/Cheesecake Jar.webp",
+    "Brownie Fudge": "Assests/Foods/Burger Yard/Brownie Fudge.jpg",
+    "Combo Meal": "Assests/Foods/Burger Yard/Combo Meal.jpg"
+  },
+  "Coastal Bowl": {
+    "Prawn Biryani": "Assests/Foods/Coastal Bowl/Prawn Biryani.jpg",
+    "Fish Curry Meal": "Assests/Foods/Coastal Bowl/Fish Curry Meal.jpg",
+    "Crab Masala": "Assests/Foods/Coastal Bowl/Crab Masala.jpg",
+    "Fish Finger Basket": "Assests/Foods/Coastal Bowl/Fish Finger Basket.jpg",
+    "Lemon Fish Rice": "Assests/Foods/Coastal Bowl/Lemon Fish Rice.jpg",
+    "Prawn Fried Rice": "Assests/Foods/Coastal Bowl/Prawn Fried Rice.webp",
+    "Calamari Fry": "Assests/Foods/Coastal Bowl/Calamari Fry.jpg",
+    "Fish Tikka": "Assests/Foods/Coastal Bowl/Fish Tikka.webp",
+    "Neer Dosa Combo": "Assests/Foods/Coastal Bowl/Neer Dosa Combo.jpg",
+    "Appam & Stew": "Assests/Foods/Coastal Bowl/Appam & Stew.jpg",
+    "Malabar Parotta": "Assests/Foods/Coastal Bowl/Malabar Parotta.jpg",
+    "Chicken Roast": "Assests/Foods/Coastal Bowl/Chicken Roast.jpg",
+    "Egg Roast": "Assests/Foods/Coastal Bowl/Egg Roast.jpg",
+    "Veg Kurma": "Assests/Foods/Coastal Bowl/Veg Kurma.jpg",
+    "Tender Coconut Water": "Assests/Foods/Coastal Bowl/Tender Coconut Water.jpg",
+    "Mango Cooler": "Assests/Foods/Coastal Bowl/Mango Cooler.jpg",
+    "Elaneer Pudding": "Assests/Foods/Coastal Bowl/Elaneer Pudding.jpg",
+    "Kesari": "Assests/Foods/Coastal Bowl/Kesari.webp",
+    "Fried Nethili": "Assests/Foods/Coastal Bowl/Fried Nethili.jpg",
+    "Seafood Platter": "Assests/Foods/Coastal Bowl/Seafood Platter.webp"
+  }
+};
+
 function pickFromPool(pool, seed) {
   return pool[seed % pool.length];
-}
-
-function pickProductImage(categoryName, itemIndex) {
-  const pool = productImagePools[categoryName] || productAssets.mobiles;
-  return pickFromPool(pool, itemIndex);
 }
 
 function selectFoodPool(itemName) {
@@ -388,31 +535,29 @@ function selectFoodPool(itemName) {
 }
 
 function buildProducts() {
-  return productCategories.flatMap((category, categoryIndex) =>
-    Array.from({ length: 30 }, (_, itemIndex) => {
-      const number = itemIndex + 1;
-      const adjective = productAdjectives[(categoryIndex + itemIndex) % productAdjectives.length];
-      return {
-        name: `${category.prefix} ${adjective} ${number}`,
-        category: category.name,
-        description: `${category.description} ${category.name} pick ${number} brings a polished finish with dependable quality for everyday shoppers.`,
-        image_url: pickProductImage(category.name, categoryIndex * 30 + itemIndex),
-        price: 899 + categoryIndex * 425 + itemIndex * 119,
-        rating: 4 + ((categoryIndex + itemIndex) % 2)
-      };
-    })
-  );
+  return productCategories.flatMap((category, categoryIndex) => {
+    const assets = readProductAssets(category.folder);
+    return assets.map((product, itemIndex) => ({
+      name: product.name,
+      category: category.name,
+      description: buildProductDescription(category, product.name, itemIndex),
+      image_url: product.image_url,
+      price: category.basePrice + itemIndex * Math.max(99, Math.round(category.basePrice * 0.025)),
+      rating: 4 + ((categoryIndex + itemIndex) % 2)
+    }));
+  });
 }
 
 function buildFoodItems() {
   return hotelCatalog.flatMap((hotel, hotelIndex) =>
     hotel.items.map(([name, price, description], itemIndex) => {
       const pool = selectFoodPool(name);
+      const exactImage = hotelFoodImageMap[hotel.name]?.[name];
       return {
         name,
         restaurant: hotel.name,
         delivery_time: hotel.deliveryTime,
-        image_url: pickFromPool(pool, hotelIndex * 20 + itemIndex),
+        image_url: exactImage || pickFromPool(pool, hotelIndex * 20 + itemIndex),
         price,
         rating: 4 + ((hotelIndex + itemIndex) % 2),
         description,

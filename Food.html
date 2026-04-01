@@ -3,367 +3,1017 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food Order</title>
+<title>TrendCart Food</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --line: rgba(255, 180, 130, 0.15);
-  --text: #f5f7ff;
-  --muted: #a0acc4;
-  --accent: #ffb37b;
-  --accent-2: #ff8b6b;
-  --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+  --bg: #fff7f0;
+  --panel: rgba(255, 255, 255, 0.9);
+  --panel-strong: #ffffff;
+  --line: rgba(200, 112, 44, 0.14);
+  --text: #1d2433;
+  --muted: #7a7f92;
+  --accent: #ff7a36;
+  --accent-deep: #cf4f13;
+  --accent-soft: rgba(255, 122, 54, 0.1);
+  --shadow: 0 24px 60px rgba(139, 77, 25, 0.12);
 }
-* { box-sizing: border-box; }
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Manrope", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(255, 164, 94, 0.18), transparent 22%),
-    radial-gradient(circle at 88% 18%, rgba(255, 111, 89, 0.12), transparent 20%),
-    linear-gradient(180deg, #070914, #111321 44%, #090d18);
+    radial-gradient(circle at 12% 12%, rgba(255, 180, 120, 0.22), transparent 24%),
+    radial-gradient(circle at 85% 18%, rgba(255, 122, 54, 0.12), transparent 22%),
+    linear-gradient(180deg, #fffaf5 0%, #fff3e6 46%, #fff8f1 100%);
 }
+
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+    linear-gradient(rgba(196, 134, 85, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 134, 85, 0.05) 1px, transparent 1px);
+  background-size: 54px 54px;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 88%);
 }
+
 .page {
   position: relative;
-  max-width: 1240px;
+  max-width: 1520px;
   margin: 0 auto;
   padding: 22px 20px 42px;
 }
-.topbar, .hero, .card {
+
+.home-link,
+.topbar,
+.hero,
+.panel,
+.hotel-card,
+.category-block,
+.food-card,
+.cart-card,
+.status-bar {
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
 }
+
+.home-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
 .topbar {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
   align-items: center;
+  gap: 18px;
   flex-wrap: wrap;
   padding: 16px 18px;
   border-radius: 24px;
-  background: rgba(8, 11, 22, 0.74);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(16px);
 }
+
 .brand strong {
   display: block;
   font-family: "Syne", sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.22rem;
 }
+
 .brand span {
   color: var(--muted);
   font-size: 0.92rem;
 }
+
 .toolbar {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 }
-.quick-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.quick-links a {
-  text-decoration: none;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
-  color: var(--text);
-  font-weight: 800;
-}
-.topbar input {
+
+.toolbar input {
   width: min(340px, 100%);
   padding: 12px 14px;
+  border: 1px solid var(--line);
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text);
 }
+
+.toolbar a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+  border: 1px solid var(--line);
+}
+
 .hero {
   margin-top: 18px;
-  padding: 24px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, rgba(18, 22, 40, 0.92), rgba(15, 18, 34, 0.74));
+  padding: 28px;
+  border-radius: 30px;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.96), rgba(255, 243, 232, 0.94)),
+    radial-gradient(circle at top right, rgba(255, 122, 54, 0.12), transparent 34%);
 }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 320px;
+  gap: 20px;
+  align-items: start;
+}
+
 .eyebrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
-  color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
 .hero h1 {
   margin: 16px 0 10px;
   font-family: "Syne", sans-serif;
-  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-size: clamp(2.1rem, 5vw, 4rem);
   line-height: 0.98;
 }
+
 .hero p {
   margin: 0;
-  max-width: 760px;
+  max-width: 720px;
   color: var(--muted);
-  line-height: 1.75;
+  line-height: 1.8;
 }
-#status {
-  margin: 18px 0 14px;
+
+.status-bar {
+  margin-top: 18px;
   padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.04);
-  color: var(--accent);
-  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--accent-deep);
 }
-.grid {
+
+.layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 18px;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 18px;
+  align-items: start;
 }
-.hotel-list {
-  display: grid;
-  gap: 24px;
-}
-.hotel-section {
+
+.panel {
   padding: 20px;
-  border-radius: 28px;
-  border: 1px solid var(--line);
-  background: rgba(8, 11, 22, 0.7);
-  box-shadow: var(--shadow);
+  border-radius: 26px;
+  background: var(--panel);
+  backdrop-filter: blur(16px);
 }
-.hotel-head {
+
+.panel h2 {
+  margin: 0 0 8px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.35rem;
+}
+
+.panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.hotel-list {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.hotel-card {
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.hotel-card:hover,
+.hotel-card.active {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 54, 0.34);
+  background: rgba(255, 248, 242, 0.98);
+}
+
+.hotel-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.02rem;
+}
+
+.hotel-meta,
+.hotel-distance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 122, 54, 0.1);
+  color: var(--accent-deep);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.menu-empty {
+  padding: 26px;
+  border-radius: 22px;
+  border: 1px dashed var(--line);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.menu-header {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
   align-items: flex-end;
+  gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 18px;
 }
-.hotel-head h2 {
+
+.menu-header h2 {
   margin: 0 0 6px;
   font-family: "Syne", sans-serif;
+  font-size: 2rem;
 }
-.hotel-head p,
-.hotel-head span {
+
+.menu-header p,
+.menu-header span {
   margin: 0;
   color: var(--muted);
 }
-.card {
-  overflow: hidden;
-  border-radius: 24px;
-  background: rgba(14, 21, 40, 0.84);
-  transform: translateY(18px);
-  opacity: 0;
-  animation: rise 0.55s ease forwards;
+
+.category-stack {
+  display: grid;
+  gap: 18px;
 }
-.card:nth-child(2) { animation-delay: 0.06s; }
-.card:nth-child(3) { animation-delay: 0.12s; }
-.card:nth-child(4) { animation-delay: 0.18s; }
-.card img {
+
+.category-block {
+  padding: 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.category-header h3 {
+  margin: 0;
+  font-family: "Syne", sans-serif;
+  font-size: 1.34rem;
+}
+
+.category-header span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.food-card {
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--panel-strong);
+}
+
+.food-card img {
   width: 100%;
-  height: 190px;
+  height: 150px;
   object-fit: cover;
 }
-.content {
-  padding: 18px;
+
+.food-content {
+  padding: 14px;
 }
-.meta {
+
+.food-content h4 {
+  margin: 0 0 8px;
+  font-size: 1.06rem;
+}
+
+.food-content p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.food-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin: 10px 0 14px;
-  color: var(--muted);
-  font-size: 0.94rem;
+  margin-top: 12px;
 }
+
 .price {
-  font-size: 1.16rem;
+  font-size: 1.08rem;
   font-weight: 800;
 }
-button {
+
+.food-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.food-actions button {
   width: 100%;
-  margin-top: 10px;
   padding: 12px 14px;
-  border-radius: 14px;
   border: none;
-  background: linear-gradient(135deg, var(--accent-2), #ffbf86);
-  color: #1f0b06;
+  border-radius: 14px;
   cursor: pointer;
   font-weight: 800;
 }
-.footer-panel {
-  margin-top: 22px;
-  padding: 18px 20px;
+
+.add-btn {
+  background: linear-gradient(135deg, #ff7a36, #ffb36b);
+  color: #ffffff;
+}
+
+.quick-btn {
+  background: #fff4eb;
+  color: var(--accent-deep);
+  border: 1px solid rgba(255, 122, 54, 0.14);
+}
+
+.cart-card {
+  padding: 18px;
   border-radius: 22px;
-  border: 1px solid var(--line);
-  background: rgba(8, 11, 22, 0.72);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.cart-card h2 {
+  margin: 0 0 8px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.35rem;
+}
+
+.cart-card > p {
+  margin: 0;
   color: var(--muted);
-  box-shadow: var(--shadow);
+  line-height: 1.7;
 }
-@keyframes rise {
-  to { opacity: 1; transform: translateY(0); }
+
+.cart-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
 }
-</style>
-<style>
-.home-link {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  z-index: 20;
-  display: inline-flex;
+
+.cart-item {
+  padding: 14px;
+  border-radius: 18px;
+  background: #fff4eb;
+}
+
+.cart-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cart-item span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.cart-qty {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(8,11,22,0.84);
-  color: #f5f7ff;
-  text-decoration: none;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cart-qty button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 122, 54, 0.12);
+  color: var(--accent-deep);
   font-weight: 800;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.cart-total {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 800;
+}
+
+.cart-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.cart-empty {
+  margin-top: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.cart-clear {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.menu-top {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.menu-top .badge {
+  background: rgba(255, 122, 54, 0.08);
+}
+
+@media (max-width: 1320px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+
+  .layout {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1080px) {
+  .hero-grid,
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 14px 14px 32px;
+  }
+
+  .topbar,
+  .hero,
+  .panel,
+  .hotel-card,
+  .category-block,
+  .food-card,
+  .cart-card,
+  .status-bar {
+    border-radius: 22px;
+  }
+
+  .hero,
+  .panel {
+    padding: 20px;
+  }
+
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    width: 100%;
+  }
+
+  .toolbar input {
+    width: 100%;
+  }
 }
 </style>
 </head>
 <body>
 <a class="home-link" href="index.html">Home</a>
+
 <div class="page">
   <header class="topbar">
     <div class="brand">
       <strong>TrendCart Food</strong>
-      <span>Fast ordering with payment-first flow and saved order history</span>
+      <span>Select a hotel first, then browse its menu category by category.</span>
     </div>
+
     <div class="toolbar">
-      <input id="search" type="text" placeholder="Search food...">
-      <div class="quick-links">
-        <a href="index.html">Home</a>
-        <a href="Orderhistory.html">Orders</a>
-      </div>
+      <input id="hotelSearch" type="text" placeholder="Search hotels by name...">
+      <a href="Orderhistory.html">Orders</a>
     </div>
   </header>
 
   <section class="hero">
-    <span class="eyebrow">Food Delivery</span>
-    <h1>Choose from five hotel menus in one place.</h1>
-    <p>
-      Each hotel now carries a broader menu, so you can browse deeper collections without
-      losing the fast order-to-payment flow.
-    </p>
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Food Ordering</span>
+        <h1>Discover nearby hotels and browse menus the easy way.</h1>
+        <p>
+          The page starts with hotel selection, requests location only when you open it, and then
+          shows the selected hotel menu in clear category sections such as Starters, Main Course,
+          Desserts, and Beverages.
+        </p>
+      </div>
+
+      <div class="cart-card">
+        <h2>Your Cart</h2>
+        <p>Added items stay here while you browse the selected menu.</p>
+        <div id="cartArea" class="cart-empty">No items added yet.</div>
+        <button id="clearCartBtn" class="cart-clear" type="button" hidden>Clear Cart</button>
+      </div>
+    </div>
   </section>
 
-  <div id="status"></div>
-  <div class="hotel-list" id="foods"></div>
+  <div class="status-bar" id="statusBar">Loading hotels and menu data...</div>
 
-  <section class="footer-panel">
-    Food orders move through the same account, payment, and order tracking flow as the rest of TrendCart.
-  </section>
+  <div class="layout">
+    <aside class="panel">
+      <h2>Hotels</h2>
+      <p>Pick a hotel to open its menu. Nearby hotels are shown first when location is available.</p>
+      <div class="hotel-list" id="hotelList"></div>
+    </aside>
+
+    <main class="panel">
+      <div id="menuArea" class="menu-empty">
+        Select a hotel to view its menu.
+      </div>
+    </main>
+  </div>
 </div>
 
 <script src="Assests/api.js"></script>
 <script>
-const foodsBox = document.getElementById("foods");
-const statusBox = document.getElementById("status");
+const hotelListBox = document.getElementById("hotelList");
+const menuArea = document.getElementById("menuArea");
+const cartArea = document.getElementById("cartArea");
+const statusBar = document.getElementById("statusBar");
+const clearCartBtn = document.getElementById("clearCartBtn");
+const hotelSearch = document.getElementById("hotelSearch");
 
-function renderFood(list) {
-  const grouped = list.reduce((accumulator, item) => {
-    if (!accumulator[item.restaurant]) {
-      accumulator[item.restaurant] = [];
+const FOOD_CART_KEY = "trendcart_food_cart_v2";
+const categoryOrder = ["Starters", "Main Course", "Desserts", "Beverages"];
+
+const hotelLocations = {
+  "A2B Signature": { lat: 13.0827, lng: 80.2707, area: "Chennai Central" },
+  "Chettinad Grill House": { lat: 13.0604, lng: 80.2496, area: "T Nagar" },
+  "Urban Slice Pizza": { lat: 12.9716, lng: 77.5946, area: "Bangalore Hub" },
+  "Burger Yard": { lat: 17.385, lng: 78.4867, area: "Hyderabad Downtown" },
+  "Coastal Bowl": { lat: 15.4909, lng: 73.8278, area: "Coastal Goa" }
+};
+
+let allFoodItems = [];
+let hotelDirectory = [];
+let selectedHotel = null;
+let cart = loadCart();
+
+function loadCart() {
+  try {
+    return JSON.parse(localStorage.getItem(FOOD_CART_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveCart() {
+  localStorage.setItem(FOOD_CART_KEY, JSON.stringify(cart));
+}
+
+function formatCurrency(value) {
+  return TrendCartAPI.formatCurrency(value);
+}
+
+function setStatus(text) {
+  statusBar.textContent = text;
+}
+
+function getDistanceKm(userLat, userLng, hotelLat, hotelLng) {
+  const toRadians = (value) => (value * Math.PI) / 180;
+  const earthRadius = 6371;
+  const dLat = toRadians(hotelLat - userLat);
+  const dLng = toRadians(hotelLng - userLng);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRadians(userLat)) * Math.cos(toRadians(hotelLat)) * Math.sin(dLng / 2) ** 2;
+  return earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function classifyFoodItem(item) {
+  const value = `${item.name} ${item.description || ""}`.toLowerCase();
+
+  if (/(coffee|milk|juice|shake|mojito|cooler|water|blast)/.test(value)) {
+    return "Beverages";
+  }
+
+  if (/(cake|brownie|tiramisu|cheesecake|jamun|pudding|payasam|kesari)/.test(value)) {
+    return "Desserts";
+  }
+
+  if (/(65|fry|wings|nuggets|rings|pops|finger|tikka|pocket|fries)/.test(value)) {
+    return "Starters";
+  }
+
+  return "Main Course";
+}
+
+function buildHotelDirectory(items) {
+  const hotels = new Map();
+
+  items.forEach((item) => {
+    if (!hotels.has(item.restaurant)) {
+      hotels.set(item.restaurant, {
+        name: item.restaurant,
+        cuisine: item.cuisine || "Curated menu",
+        time: item.time,
+        area: hotelLocations[item.restaurant]?.area || "Featured location",
+        nearbyDistance: null,
+        items: []
+      });
     }
-    accumulator[item.restaurant].push(item);
-    return accumulator;
-  }, {});
 
-  foodsBox.innerHTML = Object.entries(grouped).map(([restaurant, items]) => `
-    <section class="hotel-section">
-      <div class="hotel-head">
-        <div>
-          <h2>${restaurant}</h2>
-          <p>${items[0].cuisine || "Curated signature menu"}</p>
-        </div>
-        <span>${items.length} items • ${items[0].time}</span>
+    hotels.get(item.restaurant).items.push({
+      ...item,
+      category: classifyFoodItem(item)
+    });
+  });
+
+  return Array.from(hotels.values()).map((hotel) => ({
+    ...hotel,
+    items: hotel.items.sort((left, right) => left.name.localeCompare(right.name))
+  }));
+}
+
+function renderHotelList() {
+  const query = hotelSearch.value.trim().toLowerCase();
+  const visibleHotels = hotelDirectory
+    .filter((hotel) => hotel.name.toLowerCase().includes(query))
+    .sort((left, right) => {
+      if (left.nearbyDistance == null && right.nearbyDistance == null) {
+        return left.name.localeCompare(right.name);
+      }
+      if (left.nearbyDistance == null) {
+        return 1;
+      }
+      if (right.nearbyDistance == null) {
+        return -1;
+      }
+      return left.nearbyDistance - right.nearbyDistance;
+    });
+
+  if (!visibleHotels.length) {
+    hotelListBox.innerHTML = `<div class="menu-empty">No hotels match your search.</div>`;
+    return;
+  }
+
+  hotelListBox.innerHTML = visibleHotels.map((hotel) => `
+    <article class="hotel-card ${selectedHotel && selectedHotel.name === hotel.name ? "active" : ""}" data-hotel="${hotel.name}">
+      <div class="badge">${hotel.cuisine}</div>
+      <h3>${hotel.name}</h3>
+      <div class="hotel-meta">
+        <span>${hotel.items.length} items</span>
+        <span>${hotel.time}</span>
       </div>
-      <div class="grid">
-        ${items.map((food) => `
-          <div class="card">
-            <img src="${food.image}" alt="${food.name}">
-            <div class="content">
-              <h3>${food.name}</h3>
-              <div class="meta">
-                <span>${food.restaurant}</span>
-                <span>${food.time}</span>
-              </div>
-              <p>${food.description || "Freshly prepared and ready for delivery."}</p>
-              <div class="price">${TrendCartAPI.formatCurrency(food.price)}</div>
-              <button data-order="${food.id}">Order Now</button>
-            </div>
-          </div>
-        `).join("")}
+      <div class="hotel-distance">
+        <span>${hotel.area}</span>
+        ${hotel.nearbyDistance != null ? `<span>Nearby ${hotel.nearbyDistance.toFixed(1)} km</span>` : ""}
       </div>
-    </section>
+    </article>
   `).join("");
 
-  document.querySelectorAll("[data-order]").forEach((button) => {
-    button.addEventListener("click", async () => {
-      try {
-        const { user } = await TrendCartAPI.getCurrentUser();
-        if (!user) {
-          window.location.href = "Login.html";
-          return;
-        }
-
-        const food = list.find((item) => item.id === Number(button.dataset.order));
-        TrendCartAPI.setPendingPayment({
-          type: "food",
-          title: food.name,
-          subtitle: `${food.restaurant} • ${food.time}`,
-          amount: Number(food.price),
-          foodItemId: food.id,
-          quantity: 1
-        });
-        window.location.href = "Payment.html?type=food";
-      } catch (error) {
-        if (error.message.includes("login")) {
-          window.location.href = "Login.html";
-          return;
-        }
-        statusBox.textContent = error.message;
-      }
+  hotelListBox.querySelectorAll("[data-hotel]").forEach((card) => {
+    card.addEventListener("click", () => {
+      selectedHotel = hotelDirectory.find((hotel) => hotel.name === card.dataset.hotel) || null;
+      renderHotelList();
+      renderMenu();
+      setStatus(`${selectedHotel.name} selected. Browse categories and add items to your cart.`);
     });
   });
 }
 
-async function loadFood(search = "") {
+function renderMenu() {
+  if (!selectedHotel) {
+    menuArea.className = "menu-empty";
+    menuArea.innerHTML = "Select a hotel to view its menu.";
+    return;
+  }
+
+  const grouped = selectedHotel.items.reduce((accumulator, item) => {
+    if (!accumulator[item.category]) {
+      accumulator[item.category] = [];
+    }
+    accumulator[item.category].push(item);
+    return accumulator;
+  }, {});
+
+  const orderedCategories = categoryOrder.filter((category) => grouped[category]?.length);
+
+  menuArea.className = "";
+  menuArea.innerHTML = `
+    <div class="menu-header">
+      <div>
+        <h2>${selectedHotel.name}</h2>
+        <p>${selectedHotel.cuisine}</p>
+      </div>
+      <div class="menu-top">
+        <span class="badge">${selectedHotel.items.length} menu items</span>
+        <span class="badge">${selectedHotel.time}</span>
+        <span class="badge">${selectedHotel.area}</span>
+      </div>
+    </div>
+    <div class="category-stack">
+      ${orderedCategories.map((category) => `
+        <section class="category-block">
+          <div class="category-header">
+            <h3>${category}</h3>
+            <span>${grouped[category].length} items</span>
+          </div>
+          <div class="food-grid">
+            ${grouped[category].map((item) => `
+              <article class="food-card">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="food-content">
+                  <h4>${item.name}</h4>
+                  <p>${item.description || "Freshly prepared and ready to order."}</p>
+                  <div class="food-row">
+                    <span class="price">${formatCurrency(item.price)}</span>
+                    <span>${item.time}</span>
+                  </div>
+                  <div class="food-actions">
+                    <button class="add-btn" data-add="${item.id}" type="button">Add to Cart</button>
+                    <button class="quick-btn" data-order="${item.id}" type="button">Order Now</button>
+                  </div>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+      `).join("")}
+    </div>
+  `;
+
+  menuArea.querySelectorAll("[data-add]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const item = selectedHotel.items.find((food) => food.id === Number(button.dataset.add));
+      addToCart(item);
+    });
+  });
+
+  menuArea.querySelectorAll("[data-order]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const item = selectedHotel.items.find((food) => food.id === Number(button.dataset.order));
+      await quickOrder(item);
+    });
+  });
+}
+
+function renderCart() {
+  if (!cart.length) {
+    cartArea.className = "cart-empty";
+    cartArea.innerHTML = "No items added yet.";
+    clearCartBtn.hidden = true;
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  cartArea.className = "";
+  cartArea.innerHTML = `
+    <div class="cart-card">
+      <div class="cart-list">
+        ${cart.map((item) => `
+          <div class="cart-item">
+            <strong>${item.name}</strong>
+            <span>${item.restaurant}</span>
+            <div class="cart-qty">
+              <button data-cart-change="${item.id}" data-change="-1" type="button">-</button>
+              <span>${item.qty}</span>
+              <button data-cart-change="${item.id}" data-change="1" type="button">+</button>
+              <strong>${formatCurrency(item.price * item.qty)}</strong>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="cart-total">
+        <span>Total</span>
+        <span>${formatCurrency(total)}</span>
+      </div>
+      <div class="cart-note">
+        Cart items stay on this page while you browse. Use Order Now on any food item when you want to continue to payment.
+      </div>
+    </div>
+  `;
+
+  clearCartBtn.hidden = false;
+
+  cartArea.querySelectorAll("[data-cart-change]").forEach((button) => {
+    button.addEventListener("click", () => {
+      changeCartQty(Number(button.dataset.cartChange), Number(button.dataset.change));
+    });
+  });
+}
+
+function addToCart(item) {
+  if (!item) {
+    return;
+  }
+
+  const existing = cart.find((entry) => entry.id === item.id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      id: item.id,
+      name: item.name,
+      restaurant: item.restaurant,
+      price: Number(item.price),
+      qty: 1
+    });
+  }
+
+  saveCart();
+  renderCart();
+  setStatus(`${item.name} added to cart.`);
+}
+
+function changeCartQty(id, change) {
+  const item = cart.find((entry) => entry.id === id);
+  if (!item) {
+    return;
+  }
+
+  item.qty += change;
+  cart = cart.filter((entry) => entry.qty > 0);
+  saveCart();
+  renderCart();
+}
+
+async function quickOrder(item) {
   try {
-    const foods = await TrendCartAPI.listFoodItems({ search });
-    renderFood(foods);
-    const hotelCount = new Set(foods.map((food) => food.restaurant)).size;
-    statusBox.textContent = `${foods.length} food item(s) from ${hotelCount} hotel menus are ready to order.`;
+    const { user } = await TrendCartAPI.getCurrentUser();
+    if (!user) {
+      window.location.href = "Login.html";
+      return;
+    }
+
+    TrendCartAPI.setPendingPayment({
+      type: "food",
+      title: item.name,
+      subtitle: `${item.restaurant} - ${item.time}`,
+      amount: Number(item.price),
+      foodItemId: item.id,
+      quantity: 1
+    });
+    window.location.href = "Payment.html?type=food";
   } catch (error) {
-    statusBox.textContent = error.message;
+    if (error.message.includes("login")) {
+      window.location.href = "Login.html";
+      return;
+    }
+    setStatus(error.message);
   }
 }
 
-document.getElementById("search").addEventListener("input", (event) => {
-  loadFood(event.target.value.trim());
+function requestNearbyHotels() {
+  if (!navigator.geolocation) {
+    setStatus("Hotels loaded. Geolocation is not available in this browser.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      hotelDirectory = hotelDirectory.map((hotel) => {
+        const hotelLocation = hotelLocations[hotel.name];
+        if (!hotelLocation) {
+          return { ...hotel, nearbyDistance: null };
+        }
+
+        return {
+          ...hotel,
+          nearbyDistance: getDistanceKm(latitude, longitude, hotelLocation.lat, hotelLocation.lng)
+        };
+      });
+
+      renderHotelList();
+      const nearestHotel = hotelDirectory
+        .filter((hotel) => hotel.nearbyDistance != null)
+        .sort((left, right) => left.nearbyDistance - right.nearbyDistance)[0];
+
+      if (!selectedHotel && nearestHotel) {
+        selectedHotel = nearestHotel;
+        renderHotelList();
+        renderMenu();
+      }
+
+      setStatus(nearestHotel
+        ? `Nearby hotels loaded from your location. Closest option: ${nearestHotel.name}.`
+        : "Hotels loaded. Nearby locations are not available for some hotels.");
+    },
+    () => {
+      renderHotelList();
+      if (!selectedHotel && hotelDirectory.length) {
+        selectedHotel = hotelDirectory[0];
+        renderHotelList();
+        renderMenu();
+      }
+      setStatus("Location permission denied. Hotels are shown in the default order.");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 8000,
+      maximumAge: 300000
+    }
+  );
+}
+
+async function init() {
+  try {
+    allFoodItems = await TrendCartAPI.listFoodItems();
+    hotelDirectory = buildHotelDirectory(allFoodItems);
+    renderCart();
+    renderHotelList();
+    requestNearbyHotels();
+  } catch (error) {
+    setStatus(error.message || "Unable to load food ordering page.");
+  }
+}
+
+hotelSearch.addEventListener("input", () => {
+  renderHotelList();
 });
 
-loadFood();
+clearCartBtn.addEventListener("click", () => {
+  cart = [];
+  saveCart();
+  renderCart();
+  setStatus("Cart cleared.");
+});
+
+init();
 </script>
 </body>
 </html>
