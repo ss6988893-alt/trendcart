@@ -250,10 +250,19 @@ async function backfillCatalogImageAssignments() {
   for (const foodItem of curatedFoodItems) {
     await pool.query(
       `UPDATE food_items
-       SET image_url = ?
+       SET cuisine = ?, description = ?, delivery_time = ?, image_url = ?, price = ?, rating = ?
        WHERE name = ?
          AND restaurant = ?`,
-      [foodItem.image_url, foodItem.name, foodItem.restaurant]
+      [
+        foodItem.cuisine,
+        foodItem.description,
+        foodItem.delivery_time,
+        foodItem.image_url,
+        foodItem.price,
+        foodItem.rating,
+        foodItem.name,
+        foodItem.restaurant
+      ]
     );
   }
 }
@@ -654,8 +663,46 @@ async function initializeDatabase() {
     }
   }
 
-  const [[foodCounts]] = await pool.query("SELECT COUNT(*) AS total FROM food_items");
-  if (foodCounts.total === 0) {
+  const [existingFoodItems] = await pool.query(
+    "SELECT name, restaurant, image_url, cuisine, description FROM food_items ORDER BY restaurant, name"
+  );
+  const foodCounts = { total: existingFoodItems.length };
+  const curatedFoodRestaurants = new Set(curatedFoodItems.map((item) => item.restaurant));
+  const curatedFoodKeys = new Set(
+    curatedFoodItems.map((item) => `${item.restaurant}::${item.name}`)
+  );
+  const hasLegacyFoodRestaurants = existingFoodItems.some(
+    (row) => !curatedFoodRestaurants.has(row.restaurant)
+  );
+  const hasLegacyFoodNames = existingFoodItems.some(
+    (row) => !curatedFoodKeys.has(`${row.restaurant}::${row.name}`)
+  );
+  const hasRemoteFoodImages = existingFoodItems.some(
+    (row) => String(row.image_url || "").startsWith("http")
+  );
+  const hasIncompleteFoodDetails = existingFoodItems.some(
+    (row) => !row.cuisine || !row.description
+  );
+  const hasFoodCatalogCountMismatch = foodCounts.total !== curatedFoodItems.length;
+
+  if (
+    foodCounts.total === 0 ||
+    hasLegacyFoodRestaurants ||
+    hasLegacyFoodNames ||
+    hasRemoteFoodImages ||
+    hasIncompleteFoodDetails ||
+    hasFoodCatalogCountMismatch
+  ) {
+    if (
+      hasLegacyFoodRestaurants ||
+      hasLegacyFoodNames ||
+      hasRemoteFoodImages ||
+      hasIncompleteFoodDetails ||
+      hasFoodCatalogCountMismatch
+    ) {
+      await pool.query("DELETE FROM food_items");
+    }
+
     for (let index = 0; index < curatedFoodItems.length; index += 40) {
       const batch = curatedFoodItems.slice(index, index + 40);
       const placeholders = batch.map(() => "(?, ?, ?, ?, ?, ?, ?, ?)").join(", ");
