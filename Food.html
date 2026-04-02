@@ -25,6 +25,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: "Manrope", sans-serif;
@@ -45,6 +49,21 @@ body::before {
   background-size: 54px 54px;
   pointer-events: none;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 88%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 12%;
+  right: -110px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 122, 54, 0.16), transparent 70%);
+  pointer-events: none;
+  filter: blur(8px);
+  opacity: 0.8;
+  animation: foodFloat 13s ease-in-out infinite;
 }
 
 .page {
@@ -81,6 +100,15 @@ body::before {
   color: var(--text);
   text-decoration: none;
   font-weight: 800;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.home-link:hover,
+.home-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 34px rgba(139, 77, 25, 0.16);
+  border-color: rgba(255, 122, 54, 0.26);
+  outline: none;
 }
 
 .topbar {
@@ -93,7 +121,10 @@ body::before {
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
+.topbar:hover { transform: translateY(-2px); }
 
 .brand strong {
   display: block;
@@ -133,6 +164,15 @@ body::before {
   text-decoration: none;
   font-weight: 800;
   border: 1px solid var(--line);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.toolbar a:hover,
+.toolbar a:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 54, 0.28);
+  box-shadow: 0 18px 28px rgba(139, 77, 25, 0.14);
+  outline: none;
 }
 
 .hero {
@@ -142,6 +182,20 @@ body::before {
   background:
     linear-gradient(140deg, rgba(255, 255, 255, 0.96), rgba(255, 243, 232, 0.94)),
     radial-gradient(circle at top right, rgba(255, 122, 54, 0.12), transparent 34%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -68px;
+  top: -72px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 179, 107, 0.26), transparent 70%);
+  animation: foodPulse 7s ease-in-out infinite;
 }
 
 .hero-grid {
@@ -200,7 +254,10 @@ body::before {
   border-radius: 26px;
   background: var(--panel);
   backdrop-filter: blur(16px);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
+
+.panel:hover { transform: translateY(-2px); }
 
 .panel h2 {
   margin: 0 0 8px;
@@ -225,7 +282,7 @@ body::before {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.92);
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
 }
 
 .hotel-card:hover,
@@ -233,6 +290,7 @@ body::before {
   transform: translateY(-2px);
   border-color: rgba(255, 122, 54, 0.34);
   background: rgba(255, 248, 242, 0.98);
+  box-shadow: 0 18px 32px rgba(139, 77, 25, 0.14);
 }
 
 .hotel-card h3 {
@@ -334,12 +392,24 @@ body::before {
   overflow: hidden;
   border-radius: 22px;
   background: var(--panel-strong);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.food-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 22px 40px rgba(139, 77, 25, 0.16);
 }
 
 .food-card img {
   width: 100%;
   height: 150px;
   object-fit: cover;
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+
+.food-card:hover img {
+  transform: scale(1.05);
+  filter: saturate(1.06);
 }
 
 .food-content {
@@ -401,7 +471,10 @@ body::before {
   padding: 18px;
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.94);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
+
+.cart-card:hover { transform: translateY(-2px); }
 
 .cart-card h2 {
   margin: 0 0 8px;
@@ -501,6 +574,49 @@ body::before {
   background: rgba(255, 122, 54, 0.08);
 }
 
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(36px) scale(0.985);
+  filter: blur(8px);
+  transition:
+    opacity 0.72s ease,
+    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.72s ease;
+  transition-delay: var(--delay, 0ms);
+}
+
+.motion-ready [data-reveal="left"] { transform: translateX(-42px) scale(0.985); }
+.motion-ready [data-reveal="right"] { transform: translateX(42px) scale(0.985); }
+.motion-ready [data-reveal="zoom"] { transform: translateY(28px) scale(0.94); }
+.motion-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+@keyframes foodFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-32px, 22px, 0); }
+}
+
+@keyframes foodPulse {
+  0%, 100% { transform: scale(1); opacity: 0.56; }
+  50% { transform: scale(1.16); opacity: 0.92; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .motion-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
 @media (max-width: 1320px) {
   .hero-grid {
     grid-template-columns: minmax(0, 1fr) 300px;
@@ -557,7 +673,7 @@ body::before {
 <a class="home-link" href="index.html">Home</a>
 
 <div class="page">
-  <header class="topbar">
+  <header class="topbar" data-reveal="zoom">
     <div class="brand">
       <strong>TrendCart Food</strong>
       <span>Select a hotel first, then browse its menu category by category.</span>
@@ -569,7 +685,7 @@ body::before {
     </div>
   </header>
 
-  <section class="hero">
+  <section class="hero" data-reveal="left">
     <div class="hero-grid">
       <div>
         <span class="eyebrow">Food Ordering</span>
@@ -581,7 +697,7 @@ body::before {
         </p>
       </div>
 
-      <div class="cart-card">
+      <div class="cart-card" data-reveal="right" style="--delay: 100ms;">
         <h2>Your Cart</h2>
         <p>Added items stay here while you browse the selected menu.</p>
         <div id="cartArea" class="cart-empty">No items added yet.</div>
@@ -590,16 +706,16 @@ body::before {
     </div>
   </section>
 
-  <div class="status-bar" id="statusBar">Loading hotels and menu data...</div>
+  <div class="status-bar" id="statusBar" data-reveal="zoom" style="--delay: 120ms;">Loading hotels and menu data...</div>
 
   <div class="layout">
-    <aside class="panel">
+    <aside class="panel" data-reveal="left" style="--delay: 140ms;">
       <h2>Hotels</h2>
       <p>Pick a hotel to open its menu. Nearby hotels are shown first when location is available.</p>
       <div class="hotel-list" id="hotelList"></div>
     </aside>
 
-    <main class="panel">
+    <main class="panel" data-reveal="right" style="--delay: 160ms;">
       <div id="menuArea" class="menu-empty">
         Select a hotel to view its menu.
       </div>
@@ -730,8 +846,8 @@ function renderHotelList() {
     return;
   }
 
-  hotelListBox.innerHTML = visibleHotels.map((hotel) => `
-    <article class="hotel-card ${selectedHotel && selectedHotel.name === hotel.name ? "active" : ""}" data-hotel="${hotel.name}">
+  hotelListBox.innerHTML = visibleHotels.map((hotel, index) => `
+    <article class="hotel-card ${selectedHotel && selectedHotel.name === hotel.name ? "active" : ""}" data-hotel="${hotel.name}" data-reveal="left" style="--delay:${Math.min(index, 8) * 60}ms;">
       <div class="badge">${hotel.cuisine}</div>
       <h3>${hotel.name}</h3>
       <div class="hotel-meta">
@@ -745,6 +861,7 @@ function renderHotelList() {
     </article>
   `).join("");
 
+  revealElements(hotelListBox.querySelectorAll("[data-reveal]"));
   hotelListBox.querySelectorAll("[data-hotel]").forEach((card) => {
     card.addEventListener("click", () => {
       selectedHotel = hotelDirectory.find((hotel) => hotel.name === card.dataset.hotel) || null;
@@ -774,7 +891,7 @@ function renderMenu() {
 
   menuArea.className = "";
   menuArea.innerHTML = `
-    <div class="menu-header">
+    <div class="menu-header" data-reveal="zoom">
       <div>
         <h2>${selectedHotel.name}</h2>
         <p>${selectedHotel.cuisine}</p>
@@ -787,14 +904,14 @@ function renderMenu() {
     </div>
     <div class="category-stack">
       ${orderedCategories.map((category) => `
-        <section class="category-block">
+        <section class="category-block" data-reveal="zoom" style="--delay:${categoryOrder.indexOf(category) * 80}ms;">
           <div class="category-header">
             <h3>${category}</h3>
             <span>${grouped[category].length} items</span>
           </div>
           <div class="food-grid">
             ${grouped[category].map((item) => `
-              <article class="food-card">
+              <article class="food-card" data-reveal="zoom" style="--delay:${Math.min(item.id % 12, 10) * 45}ms;">
                 <img src="${item.image}" alt="${item.name}">
                 <div class="food-content">
                   <h4>${item.name}</h4>
@@ -816,6 +933,7 @@ function renderMenu() {
     </div>
   `;
 
+  revealElements(menuArea.querySelectorAll("[data-reveal]"));
   menuArea.querySelectorAll("[data-add]").forEach((button) => {
     button.addEventListener("click", () => {
       const item = selectedHotel.items.find((food) => food.id === Number(button.dataset.add));
@@ -1013,6 +1131,40 @@ clearCartBtn.addEventListener("click", () => {
   setStatus("Cart cleared.");
 });
 
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let revealObserver = null;
+
+function revealElements(elements) {
+  if (!elements?.length) {
+    return;
+  }
+
+  if (prefersReducedMotion) {
+    elements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+  }
+
+  elements.forEach((element) => {
+    if (element.classList.contains("is-visible")) {
+      return;
+    }
+    revealObserver.observe(element);
+  });
+}
+
+document.body.classList.add("motion-ready");
+revealElements(document.querySelectorAll("[data-reveal]"));
 init();
 </script>
 </body>

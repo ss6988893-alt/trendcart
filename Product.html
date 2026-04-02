@@ -17,9 +17,11 @@
   --muted: #687d98;
   --accent: #1ea7fd;
   --accent-2: #6d78ff;
+  --glow: rgba(109, 120, 255, 0.18);
   --shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: "Manrope", sans-serif;
@@ -39,6 +41,19 @@ body::before {
     linear-gradient(90deg, rgba(90,119,163,0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: auto auto 8% -8%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--glow), transparent 72%);
+  filter: blur(6px);
+  opacity: 0.7;
+  animation: floatOrb 12s ease-in-out infinite;
 }
 .page {
   position: relative;
@@ -60,7 +75,9 @@ body::before {
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.84);
   backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
+.topbar:hover { transform: translateY(-2px); }
 .brand strong {
   display: block;
   font-family: "Syne", sans-serif;
@@ -89,6 +106,15 @@ body::before {
   background: rgba(255, 255, 255, 0.8);
   color: var(--text);
   font-weight: 800;
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+}
+.quick-links a:hover,
+.quick-links a:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(30,167,253,0.34);
+  background: rgba(30,167,253,0.08);
+  box-shadow: 0 16px 28px rgba(45, 79, 128, 0.14);
+  outline: none;
 }
 .toolbar input {
   width: min(340px, 100%);
@@ -105,12 +131,33 @@ body::before {
   background: linear-gradient(135deg, var(--accent), #8fd1ff);
   color: #ffffff;
   font-weight: 800;
+  box-shadow: 0 16px 28px rgba(30, 167, 253, 0.22);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.toolbar a:hover,
+.toolbar a:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 34px rgba(30, 167, 253, 0.28);
+  outline: none;
 }
 .hero {
   margin-top: 18px;
   padding: 24px;
   border-radius: 28px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
+  overflow: hidden;
+  position: relative;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  top: -90px;
+  right: -70px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,167,253,0.2), transparent 70%);
+  animation: pulseGlow 7s ease-in-out infinite;
 }
 .eyebrow {
   display: inline-block;
@@ -148,7 +195,9 @@ body::before {
   padding: 20px;
   border-radius: 24px;
   background: var(--panel);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
+.sidebar:hover { transform: translateY(-2px); }
 .sidebar h3 {
   margin: 0 0 12px;
   font-family: "Syne", sans-serif;
@@ -195,20 +244,22 @@ body::before {
   padding: 18px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.96);
-  transform: translateY(18px);
-  opacity: 0;
-  animation: rise 0.55s ease forwards;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
-.product:nth-child(2) { animation-delay: 0.06s; }
-.product:nth-child(3) { animation-delay: 0.12s; }
-.product:nth-child(4) { animation-delay: 0.18s; }
-.product:nth-child(5) { animation-delay: 0.24s; }
-.product:nth-child(6) { animation-delay: 0.3s; }
+.product:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 24px 54px rgba(45, 79, 128, 0.18);
+}
 .product img {
   width: 100%;
   height: 190px;
   object-fit: cover;
   border-radius: 18px;
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+.product:hover img {
+  transform: scale(1.05);
+  filter: saturate(1.05);
 }
 .category-tag {
   display: inline-block;
@@ -281,8 +332,43 @@ body::before {
   color: var(--muted);
   box-shadow: var(--shadow);
 }
-@keyframes rise {
-  to { opacity: 1; transform: translateY(0); }
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(36px) scale(0.985);
+  filter: blur(8px);
+  transition:
+    opacity 0.72s ease,
+    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.72s ease;
+  transition-delay: var(--delay, 0ms);
+}
+.motion-ready [data-reveal="left"] { transform: translateX(-42px) scale(0.985); }
+.motion-ready [data-reveal="right"] { transform: translateX(42px) scale(0.985); }
+.motion-ready [data-reveal="zoom"] { transform: translateY(26px) scale(0.94); }
+.motion-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+@keyframes floatOrb {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(38px, -24px, 0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.62; }
+  50% { transform: scale(1.14); opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .motion-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 @media (max-width: 920px) {
   .layout { grid-template-columns: 1fr; }
@@ -312,7 +398,7 @@ body::before {
 <body>
 <a class="home-link" href="index.html">Home</a>
 <div class="page">
-  <header class="topbar">
+  <header class="topbar" data-reveal="zoom">
     <div class="brand">
       <strong>TrendCart Products</strong>
       <span>Catalog browsing with cart and database-backed checkout</span>
@@ -327,7 +413,7 @@ body::before {
     </div>
   </header>
 
-  <section class="hero">
+  <section class="hero" data-reveal="left">
     <span class="eyebrow">Storefront</span>
     <h1>Explore your product catalog in a cleaner premium layout.</h1>
     <p>
@@ -337,7 +423,7 @@ body::before {
   </section>
 
   <div class="layout">
-    <aside class="sidebar">
+    <aside class="sidebar" data-reveal="right">
       <h3>Categories</h3>
       <p>Browse 8 curated categories with real product images and cleaner collections.</p>
       <div id="categoryFilters"></div>
@@ -349,7 +435,7 @@ body::before {
     </main>
   </div>
 
-  <section class="footer-panel">
+  <section class="footer-panel" data-reveal="zoom" style="--delay: 120ms;">
     Products stay connected to the same TrendCart account, cart, payment, and order history flow.
   </section>
 </div>
@@ -366,11 +452,12 @@ let categories = [];
 function renderCategoryFilters() {
   const list = ["All", ...categories];
   categoryFilters.innerHTML = list.map((category) => `
-    <button class="${category === selectedCategory ? "active" : ""}" data-category="${category}">
+    <button class="${category === selectedCategory ? "active" : ""}" data-category="${category}" style="--delay:${list.indexOf(category) * 55}ms;" data-reveal="left">
       ${category === "All" ? "All Products" : category}
     </button>
   `).join("");
 
+  revealElements(categoryFilters.querySelectorAll("[data-reveal]"));
   categoryFilters.querySelectorAll("[data-category]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedCategory = button.dataset.category;
@@ -381,8 +468,8 @@ function renderCategoryFilters() {
 }
 
 function renderProducts(list) {
-  productBox.innerHTML = list.map((product) => `
-    <div class="product">
+  productBox.innerHTML = list.map((product, index) => `
+    <div class="product" data-reveal="zoom" style="--delay:${Math.min(index, 11) * 55}ms;">
       <img src="${product.image}" alt="${product.name}">
       <span class="category-tag">${product.category}</span>
       <h3>${product.name}</h3>
@@ -398,6 +485,7 @@ function renderProducts(list) {
     </div>
   `).join("");
 
+  revealElements(productBox.querySelectorAll("[data-reveal]"));
   document.querySelectorAll("[data-add]").forEach((button) => {
     button.addEventListener("click", async () => {
       try {
@@ -439,6 +527,40 @@ document.getElementById("search").addEventListener("input", (event) => {
   loadProducts();
 });
 
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let revealObserver = null;
+
+function revealElements(elements) {
+  if (!elements?.length) {
+    return;
+  }
+
+  if (prefersReducedMotion) {
+    elements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+  }
+
+  elements.forEach((element) => {
+    if (element.classList.contains("is-visible")) {
+      return;
+    }
+    revealObserver.observe(element);
+  });
+}
+
+document.body.classList.add("motion-ready");
+revealElements(document.querySelectorAll("[data-reveal]"));
 loadProducts();
 </script>
 </body>

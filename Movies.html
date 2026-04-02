@@ -16,9 +16,11 @@
   --accent: #1ea7fd;
   --accent-2: #6d78ff;
   --danger: #d94f70;
+  --glow: rgba(109, 120, 255, 0.2);
   --shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: "Manrope", sans-serif;
@@ -39,6 +41,20 @@ body::before {
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
+body::after {
+  content: "";
+  position: fixed;
+  bottom: 8%;
+  left: -90px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--glow), transparent 72%);
+  filter: blur(8px);
+  opacity: 0.76;
+  animation: cinemaFloat 14s ease-in-out infinite;
+}
 .page {
   position: relative;
   max-width: 1240px;
@@ -54,6 +70,19 @@ body::before {
   padding: 26px;
   border-radius: 30px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -76px;
+  top: -76px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,167,253,0.2), transparent 70%);
+  animation: cinemaPulse 7s ease-in-out infinite;
 }
 .eyebrow {
   display: inline-block;
@@ -88,7 +117,9 @@ body::before {
   border-radius: 26px;
   background: var(--panel);
   backdrop-filter: blur(16px);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
+.panel:hover { transform: translateY(-2px); }
 .movies {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -99,9 +130,9 @@ body::before {
   border-radius: 22px;
   background: rgba(255,255,255,0.98);
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
-.movie:hover { transform: translateY(-4px); }
+.movie:hover { transform: translateY(-8px) scale(1.01); }
 .empty-state {
   grid-column: 1 / -1;
   padding: 28px;
@@ -119,6 +150,11 @@ body::before {
   width: 100%;
   height: 250px;
   object-fit: cover;
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+.movie:hover img {
+  transform: scale(1.05);
+  filter: saturate(1.06);
 }
 .movie-content { padding: 16px; }
 .movie-content h3 { margin: 0 0 6px; }
@@ -350,13 +386,61 @@ body::before {
   text-decoration: none;
   font-weight: 800;
   box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.home-link:hover,
+.home-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 36px rgba(45, 79, 128, 0.18);
+  border-color: rgba(30,167,253,0.34);
+  outline: none;
+}
+</style>
+<style>
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(36px) scale(0.985);
+  filter: blur(8px);
+  transition:
+    opacity 0.72s ease,
+    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.72s ease;
+  transition-delay: var(--delay, 0ms);
+}
+.motion-ready [data-reveal="left"] { transform: translateX(-42px) scale(0.985); }
+.motion-ready [data-reveal="right"] { transform: translateX(42px) scale(0.985); }
+.motion-ready [data-reveal="zoom"] { transform: translateY(28px) scale(0.94); }
+.motion-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+@keyframes cinemaFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(34px, -22px, 0); }
+}
+@keyframes cinemaPulse {
+  0%, 100% { transform: scale(1); opacity: 0.56; }
+  50% { transform: scale(1.14); opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .motion-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 </style>
 </head>
 <body>
 <a class="home-link" href="index.html">Home</a>
 <div class="page">
-  <div class="hero">
+  <div class="hero" data-reveal="left">
     <span class="eyebrow">Cinema Flow</span>
     <h1>Book shows with live seat availability.</h1>
     <p>
@@ -366,7 +450,7 @@ body::before {
   </div>
 
   <div class="layout">
-    <section class="panel">
+    <section class="panel" data-reveal="left" style="--delay: 120ms;">
       <h2>Select Movie</h2>
       <div class="movies" id="movies"></div>
 
@@ -393,7 +477,7 @@ body::before {
       <div class="snacks" id="snacks"></div>
     </section>
 
-    <aside class="panel summary">
+    <aside class="panel summary" data-reveal="right" style="--delay: 160ms;">
       <h2>Booking Summary</h2>
       <div class="summary-card">
         <div class="line"><span>Movie</span><strong id="summaryMovie">Not selected</strong></div>
@@ -524,8 +608,8 @@ function renderMovies() {
     return;
   }
 
-  moviesBox.innerHTML = movies.map((movie) => `
-    <div class="movie ${selectedMovie && selectedMovie.id === movie.id ? "selected" : ""}">
+  moviesBox.innerHTML = movies.map((movie, index) => `
+    <div class="movie ${selectedMovie && selectedMovie.id === movie.id ? "selected" : ""}" data-reveal="zoom" style="--delay:${Math.min(index, 8) * 70}ms;">
       <img src="${movie.image}" alt="${movie.name}">
       <div class="movie-content">
         <h3>${movie.name}</h3>
@@ -538,6 +622,7 @@ function renderMovies() {
     </div>
   `).join("");
 
+  revealElements(moviesBox.querySelectorAll("[data-reveal]"));
   document.querySelectorAll("[data-select]").forEach((button) => {
     button.addEventListener("click", async () => {
       await changeShowContext({
@@ -557,10 +642,11 @@ function renderMovies() {
 }
 
 function renderChips(container, values, selectedValue, onSelect) {
-  container.innerHTML = values.map((value) => `
-    <button class="chip ${value === selectedValue ? "active" : ""}" data-value="${value}" type="button">${value}</button>
+  container.innerHTML = values.map((value, index) => `
+    <button class="chip ${value === selectedValue ? "active" : ""}" data-value="${value}" data-reveal="zoom" style="--delay:${index * 55}ms;" type="button">${value}</button>
   `).join("");
 
+  revealElements(container.querySelectorAll("[data-reveal]"));
   container.querySelectorAll(".chip").forEach((chip) => {
     chip.addEventListener("click", async () => {
       await onSelect(chip.dataset.value);
@@ -580,18 +666,21 @@ function renderSeats() {
     seat.className = `seat ${selectedSeats.includes(seatNo) ? "selected" : ""} ${unavailable ? "unavailable" : ""}`.trim();
     seat.textContent = seatNo;
     seat.disabled = unavailable;
+    seat.dataset.reveal = "zoom";
+    seat.style.setProperty("--delay", `${(index % 8) * 34}ms`);
     seat.addEventListener("click", async () => {
       await toggleSeat(seatNo);
     });
     seatsBox.appendChild(seat);
   }
+  revealElements(seatsBox.querySelectorAll("[data-reveal]"));
 }
 
 function renderSnacks() {
   snacksBox.innerHTML = snackItems.map((snack) => {
     const qty = snacks[snack.name]?.qty || 0;
     return `
-      <div class="snack">
+      <div class="snack" data-reveal="right" style="--delay:${snackItems.indexOf(snack) * 70}ms;">
         <div>
           <strong>${snack.name}</strong>
           <div>${formatCurrency(snack.price)}</div>
@@ -605,6 +694,7 @@ function renderSnacks() {
     `;
   }).join("");
 
+  revealElements(snacksBox.querySelectorAll("[data-reveal]"));
   document.querySelectorAll("[data-snack-minus]").forEach((button) => {
     button.addEventListener("click", () => changeSnackQty(button.dataset.snackMinus, -1));
   });
@@ -725,6 +815,41 @@ document.getElementById("closeTrailer").addEventListener("click", () => {
   trailerFrame.src = "";
   trailerModal.classList.remove("open");
 });
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let revealObserver = null;
+
+function revealElements(elements) {
+  if (!elements?.length) {
+    return;
+  }
+
+  if (prefersReducedMotion) {
+    elements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+  }
+
+  elements.forEach((element) => {
+    if (element.classList.contains("is-visible")) {
+      return;
+    }
+    revealObserver.observe(element);
+  });
+}
+
+document.body.classList.add("motion-ready");
+revealElements(document.querySelectorAll("[data-reveal]"));
 
 window.addEventListener("beforeunload", () => {
   clearLockCountdown();

@@ -543,6 +543,62 @@ body::before {
   outline: none;
 }
 
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(40px) scale(0.985);
+  filter: blur(8px);
+  transition:
+    opacity 0.78s ease,
+    transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.78s ease;
+  transition-delay: var(--delay, 0ms);
+}
+
+.motion-ready [data-reveal="left"] { transform: translateX(-46px) scale(0.985); }
+.motion-ready [data-reveal="right"] { transform: translateX(46px) scale(0.985); }
+.motion-ready [data-reveal="zoom"] { transform: translateY(30px) scale(0.94); }
+.motion-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+.navbar,
+.section-card,
+.mini-panel,
+.footer-shell {
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.navbar:hover,
+.section-card:hover,
+.mini-panel:hover,
+.footer-shell:hover {
+  transform: translateY(-3px);
+}
+
+.preview-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.preview-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  filter: saturate(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .motion-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
 @media (max-width: 1080px) {
   .hero,
   .support-grid,
@@ -603,7 +659,7 @@ body::before {
 </head>
 <body>
 <div class="page">
-  <header class="navbar">
+  <header class="navbar" data-reveal="zoom">
     <div class="brand">
       <strong>TrendCart</strong>
       <span id="welcome">A refined hub for shopping, food, and movie plans</span>
@@ -618,7 +674,7 @@ body::before {
   </header>
 
   <section class="hero">
-    <div class="hero-copy">
+    <div class="hero-copy" data-reveal="left">
       <span class="eyebrow">Everyday Lifestyle Platform</span>
       <h1>Everything your users need, without the homepage clutter.</h1>
       <p>
@@ -638,7 +694,7 @@ body::before {
       </div>
     </div>
 
-    <div class="hero-visual">
+    <div class="hero-visual" data-reveal="right" style="--delay: 120ms;">
       <div class="visual-stack">
         <div class="status-panel">
           <small>Live Platform</small>
@@ -671,7 +727,7 @@ body::before {
 
   <section class="section">
     <div class="section-grid">
-      <article class="section-card">
+      <article class="section-card" data-reveal="zoom">
         <small>01</small>
         <h2>Products</h2>
         <p>
@@ -680,7 +736,7 @@ body::before {
         <a href="Product.html">Open product catalog</a>
       </article>
 
-      <article class="section-card">
+      <article class="section-card" data-reveal="zoom" style="--delay: 80ms;">
         <small>02</small>
         <h2>Foods</h2>
         <p>
@@ -689,7 +745,7 @@ body::before {
         <a href="Food.html">Open food section</a>
       </article>
 
-      <article class="section-card">
+      <article class="section-card" data-reveal="zoom" style="--delay: 160ms;">
         <small>03</small>
         <h2>Movies</h2>
         <p>
@@ -703,7 +759,7 @@ body::before {
   <section class="section">
     <div class="support-grid">
       <div class="support-summary">
-        <article class="mini-panel">
+        <article class="mini-panel" data-reveal="left">
           <h3>Designed to feel lighter and more professional</h3>
           <p>
             The home page now acts like a polished landing page instead of a dashboard. It highlights only the core paths,
@@ -711,7 +767,7 @@ body::before {
           </p>
         </article>
 
-        <article class="mini-panel">
+        <article class="mini-panel" data-reveal="left" style="--delay: 110ms;">
           <h3>Ready for your product and food image pack</h3>
           <p>
             Once you send the folder path for the downloaded images, I can map them into the catalog with proper titles,
@@ -720,7 +776,7 @@ body::before {
         </article>
       </div>
 
-      <aside class="mini-panel">
+      <aside class="mini-panel" data-reveal="right" style="--delay: 120ms;">
         <h3>Support</h3>
         <div class="support-list">
           <div class="support-item">
@@ -740,7 +796,7 @@ body::before {
     </div>
   </section>
 
-  <footer class="footer-shell">
+  <footer class="footer-shell" data-reveal="zoom" style="--delay: 180ms;">
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo">
@@ -829,6 +885,41 @@ async function loadServerInfo() {
 }
 
 Promise.all([loadSession(), loadServerInfo()]).catch(() => {});
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let revealObserver = null;
+
+function revealElements(elements) {
+  if (!elements?.length) {
+    return;
+  }
+
+  if (prefersReducedMotion) {
+    elements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+  }
+
+  elements.forEach((element) => {
+    if (element.classList.contains("is-visible")) {
+      return;
+    }
+    revealObserver.observe(element);
+  });
+}
+
+document.body.classList.add("motion-ready");
+revealElements(document.querySelectorAll("[data-reveal]"));
 </script>
 </body>
 </html>
