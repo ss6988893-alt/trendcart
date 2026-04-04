@@ -546,11 +546,9 @@ body::before {
 .motion-ready [data-reveal] {
   opacity: 0;
   transform: translateY(40px) scale(0.985);
-  filter: blur(8px);
   transition:
     opacity 0.78s ease,
-    transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.78s ease;
+    transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--delay, 0ms);
 }
 
@@ -560,7 +558,6 @@ body::before {
 .motion-ready [data-reveal].is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0);
 }
 
 .navbar,
@@ -595,7 +592,6 @@ body::before {
   .motion-ready [data-reveal] {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 
@@ -655,6 +651,81 @@ body::before {
     flex-direction: column;
   }
 }
+
+@media (max-width: 480px) {
+  .page {
+    padding: 12px 12px 28px;
+  }
+
+  .navbar {
+    top: 10px;
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .brand strong {
+    font-size: 1.08rem;
+  }
+
+  .brand span {
+    font-size: 0.84rem;
+  }
+
+  .nav-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .nav-links a {
+    min-width: 0;
+    width: 100%;
+    flex: initial;
+    padding: 10px 12px;
+    font-size: 0.88rem;
+  }
+
+  .hero-copy,
+  .hero-visual,
+  .section-card,
+  .mini-panel,
+  .footer-shell {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.1rem, 11vw, 3rem);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions a,
+  .hero-meta span {
+    width: 100%;
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .preview-card {
+    min-height: 168px;
+  }
+
+  .section-grid,
+  .support-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    gap: 10px;
+  }
+}
 </style>
 </head>
 <body>
@@ -670,6 +741,7 @@ body::before {
       <a href="Product.html">Products</a>
       <a href="Food.html">Foods</a>
       <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
     </nav>
   </header>
 

@@ -274,6 +274,51 @@ body {
     flex-direction: column;
   }
 }
+
+@media (max-width: 480px) {
+  .page {
+    padding: 12px 12px 28px;
+  }
+
+  .navbar,
+  .hero,
+  .content-grid article,
+  .footer-shell {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .brand strong {
+    font-size: 1.08rem;
+  }
+
+  .brand span {
+    font-size: 0.84rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.88rem;
+    padding: 10px 12px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+  }
+
+  .footer-grid,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>

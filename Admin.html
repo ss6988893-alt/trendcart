@@ -323,6 +323,63 @@ button {
     grid-template-columns: 1fr;
   }
 }
+@media (max-width: 480px) {
+  .page {
+    padding: 84px 12px 28px;
+  }
+  .home-link {
+    top: 12px;
+    left: 12px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+  .topbar,
+  .hero,
+  .stat,
+  .panel,
+  .editor,
+  .row,
+  .chart-panel {
+    border-radius: 18px;
+  }
+  .topbar,
+  .hero,
+  .panel,
+  .editor,
+  .chart-panel {
+    padding: 16px;
+  }
+  .topbar > div:last-child,
+  .actions,
+  .inline-actions {
+    width: 100%;
+  }
+  .topbar > div:last-child {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .topbar a,
+  .actions button,
+  .inline-actions button {
+    width: 100%;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero p,
+  .row p,
+  .row small {
+    font-size: 0.92rem;
+  }
+  .stats,
+  .stack,
+  .layout,
+  .list {
+    gap: 14px;
+  }
+}
 </style>
 <style>
 .home-link {

@@ -121,6 +121,48 @@ body::before {
 @media (max-width: 820px) {
   .ticket { grid-template-columns: 1fr; }
 }
+@media (max-width: 480px) {
+  body {
+    padding: 76px 12px 18px;
+    display: block;
+  }
+  .home-link {
+    top: 12px;
+    left: 12px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+  .wrapper {
+    width: 100%;
+  }
+  .ticket {
+    border-radius: 20px;
+  }
+  .left,
+  .right {
+    padding: 18px 16px;
+  }
+  .left h1 {
+    font-size: 1.9rem;
+  }
+  .left p,
+  .right p {
+    font-size: 0.92rem;
+  }
+  .meta {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .actions {
+    display: grid;
+  }
+  .actions a,
+  .actions button {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+}
 </style>
 <style>
 .home-link {
