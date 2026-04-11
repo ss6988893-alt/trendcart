@@ -307,6 +307,14 @@ body::after {
   font-size: 0.9rem;
 }
 
+.hotel-note,
+.menu-location {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -796,11 +804,41 @@ const FOOD_CART_KEY = "trendcart_food_cart_v2";
 const categoryOrder = ["Starters", "Main Course", "Desserts", "Beverages"];
 
 const hotelLocations = {
-  "A2B Signature": { lat: 13.0827, lng: 80.2707, area: "Chennai Central" },
-  "Chettinad Grill House": { lat: 13.0604, lng: 80.2496, area: "T Nagar" },
-  "Urban Slice Pizza": { lat: 12.9716, lng: 77.5946, area: "Bangalore Hub" },
-  "Burger Yard": { lat: 17.385, lng: 78.4867, area: "Hyderabad Downtown" },
-  "Coastal Bowl": { lat: 15.4909, lng: 73.8278, area: "Coastal Goa" }
+  "A2B Signature": {
+    lat: 13.0827,
+    lng: 80.2707,
+    area: "Chennai Central",
+    landmark: "Near Express Avenue",
+    openHours: "7:00 AM - 11:00 PM"
+  },
+  "Chettinad Grill House": {
+    lat: 13.0604,
+    lng: 80.2496,
+    area: "T Nagar",
+    landmark: "Opposite Pondy Bazaar",
+    openHours: "11:30 AM - 11:30 PM"
+  },
+  "Urban Slice Pizza": {
+    lat: 12.9716,
+    lng: 77.5946,
+    area: "Bangalore Hub",
+    landmark: "Brigade Road Corner",
+    openHours: "10:00 AM - 12:00 AM"
+  },
+  "Burger Yard": {
+    lat: 17.385,
+    lng: 78.4867,
+    area: "Hyderabad Downtown",
+    landmark: "Near Necklace Road",
+    openHours: "11:00 AM - 1:00 AM"
+  },
+  "Coastal Bowl": {
+    lat: 15.4909,
+    lng: 73.8278,
+    area: "Coastal Goa",
+    landmark: "Candolim Beach Road",
+    openHours: "12:00 PM - 11:45 PM"
+  }
 };
 
 let allFoodItems = [];
@@ -867,6 +905,8 @@ function buildHotelDirectory(items) {
         cuisine: item.cuisine || "Curated menu",
         time: item.time,
         area: hotelLocations[item.restaurant]?.area || "Featured location",
+        landmark: hotelLocations[item.restaurant]?.landmark || "Popular local spot",
+        openHours: hotelLocations[item.restaurant]?.openHours || "10:00 AM - 10:00 PM",
         nearbyDistance: null,
         items: []
       });
@@ -912,12 +952,14 @@ function renderHotelList() {
       <h3>${hotel.name}</h3>
       <div class="hotel-meta">
         <span>${hotel.items.length} items</span>
-        <span>${hotel.time}</span>
+        <span>Delivery ${hotel.time}</span>
+        <span>Open ${hotel.openHours}</span>
       </div>
       <div class="hotel-distance">
         <span>${hotel.area}</span>
         ${hotel.nearbyDistance != null ? `<span>Nearby ${hotel.nearbyDistance.toFixed(1)} km</span>` : ""}
       </div>
+      <div class="hotel-note">${hotel.landmark}</div>
     </article>
   `).join("");
 
@@ -927,7 +969,7 @@ function renderHotelList() {
       selectedHotel = hotelDirectory.find((hotel) => hotel.name === card.dataset.hotel) || null;
       renderHotelList();
       renderMenu();
-      setStatus(`${selectedHotel.name} selected. Browse categories and add items to your cart.`);
+      setStatus(`${selectedHotel.name} selected. ${selectedHotel.area} | ${selectedHotel.openHours}. Browse categories and add items to your cart.`);
     });
   });
 }
@@ -955,10 +997,12 @@ function renderMenu() {
       <div>
         <h2>${selectedHotel.name}</h2>
         <p>${selectedHotel.cuisine}</p>
+        <div class="menu-location">${selectedHotel.area} • ${selectedHotel.landmark}</div>
       </div>
       <div class="menu-top">
         <span class="badge">${selectedHotel.items.length} menu items</span>
-        <span class="badge">${selectedHotel.time}</span>
+        <span class="badge">Delivery ${selectedHotel.time}</span>
+        <span class="badge">Open ${selectedHotel.openHours}</span>
         <span class="badge">${selectedHotel.area}</span>
       </div>
     </div>
@@ -1148,7 +1192,7 @@ function requestNearbyHotels() {
       }
 
       setStatus(nearestHotel
-        ? `Nearby hotels loaded from your location. Closest option: ${nearestHotel.name}.`
+        ? `Nearby hotels loaded from your location. Closest option: ${nearestHotel.name} in ${nearestHotel.area}, open ${nearestHotel.openHours}.`
         : "Hotels loaded. Nearby locations are not available for some hotels.");
     },
     () => {
