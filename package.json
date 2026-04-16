@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "vercel-build": "node scripts/prepare-vercel-public.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

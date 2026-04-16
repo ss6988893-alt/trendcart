@@ -99,6 +99,26 @@ app.use((req, res, next) => {
   next();
 });
 
+let databaseReadyPromise = null;
+
+function getDatabaseReadyPromise() {
+  if (!databaseReadyPromise) {
+    databaseReadyPromise = initializeDatabase();
+  }
+
+  return databaseReadyPromise;
+}
+
+app.use(async (_req, res, next) => {
+  try {
+    await getDatabaseReadyPromise();
+    next();
+  } catch (error) {
+    console.error("Database initialization error:", error);
+    res.status(500).json({ message: "Database initialization failed." });
+  }
+});
+
 function requireAuth(req, res, next) {
   if (!req.session.user) {
     return res.status(401).json({ message: "Please login first." });
@@ -2030,8 +2050,9 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-initializeDatabase()
-  .then(() => {
+if (!process.env.VERCEL) {
+  getDatabaseReadyPromise()
+    .then(() => {
     app.listen(port, () => {
       console.log(`TrendCart server running on http://localhost:${port}`);
     });
@@ -2040,4 +2061,7 @@ initializeDatabase()
     console.error("Failed to initialize database:", error);
     process.exit(1);
   });
+}
+
+export default app;
 
