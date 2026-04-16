@@ -67,9 +67,9 @@ body::after {
 
 .page {
   position: relative;
-  max-width: 1520px;
+  max-width: 1700px;
   margin: 0 auto;
-  padding: 22px 20px 42px;
+  padding: 22px 16px 42px;
 }
 
 .home-link,
@@ -136,6 +136,35 @@ body::after {
   font-size: 0.92rem;
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+  border: 1px solid var(--line);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 54, 0.28);
+  box-shadow: 0 18px 28px rgba(139, 77, 25, 0.14);
+  outline: none;
+}
+
 .toolbar {
   display: flex;
   align-items: center;
@@ -174,6 +203,68 @@ body::after {
   outline: none;
 }
 
+.food-marquee {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.food-marquee-row {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: foodMarquee 34s linear infinite;
+}
+
+.food-marquee-row.reverse {
+  margin-top: 14px;
+  animation-direction: reverse;
+  animation-duration: 38s;
+}
+
+.food-marquee:hover .food-marquee-row {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  position: relative;
+  width: 172px;
+  min-width: 172px;
+  height: 118px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 122, 54, 0.14);
+  background: #fff;
+}
+
+.marquee-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.marquee-item span {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+}
+
 .hero {
   margin-top: 18px;
   padding: 28px;
@@ -204,6 +295,12 @@ body::after {
   align-items: start;
 }
 
+.hero-copy {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -232,12 +329,74 @@ body::after {
   line-height: 1.8;
 }
 
+.hero-highlights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.hero-highlight {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 122, 54, 0.12);
+}
+
+.hero-highlight strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.05rem;
+}
+
+.hero-highlight span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .status-bar {
   margin-top: 18px;
   padding: 14px 16px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.78);
   color: var(--accent-deep);
+}
+
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  max-width: min(320px, calc(100vw - 28px));
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(63, 207, 142, 0.22);
+  background: rgba(20, 31, 26, 0.92);
+  color: #f7fff9;
+  box-shadow: 0 18px 34px rgba(15, 24, 19, 0.22);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
+.toast span {
+  color: rgba(247, 255, 249, 0.82);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .layout {
@@ -507,6 +666,26 @@ body::after {
   background: #fff4eb;
 }
 
+.cart-item-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cart-item-image {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 122, 54, 0.12);
+  background: #fff;
+}
+
+.cart-item-copy {
+  min-width: 0;
+}
+
 .cart-item strong {
   display: block;
   margin-bottom: 4px;
@@ -608,6 +787,11 @@ body::after {
   50% { transform: scale(1.16); opacity: 0.92; }
 }
 
+@keyframes foodMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -635,6 +819,10 @@ body::after {
   .layout {
     grid-template-columns: 1fr;
   }
+
+  .hero-highlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -656,6 +844,18 @@ body::after {
   .hero,
   .panel {
     padding: 20px;
+  }
+
+  .food-marquee {
+    padding: 12px;
+    border-radius: 22px;
+  }
+
+  .marquee-item {
+    width: 140px;
+    min-width: 140px;
+    height: 96px;
+    border-radius: 16px;
   }
 
   .food-grid {
@@ -714,8 +914,30 @@ body::after {
   .hero-grid {
     gap: 14px;
   }
+  .marquee-item {
+    width: 126px;
+    min-width: 126px;
+    height: 88px;
+  }
+  .cart-item-head {
+    align-items: flex-start;
+  }
+  .cart-item-image {
+    width: 52px;
+    height: 52px;
+  }
   .hero h1 {
     font-size: 2rem;
+  }
+  .toast {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    max-width: none;
+    border-radius: 16px;
+  }
+  .hero-highlights {
+    grid-template-columns: 1fr;
   }
   .menu-header h2,
   .category-header h3 {
@@ -738,8 +960,6 @@ body::after {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
-
 <div class="page">
   <header class="topbar" data-reveal="zoom">
     <div class="brand">
@@ -747,15 +967,71 @@ body::after {
       <span>Select a hotel first, then browse its menu category by category.</span>
     </div>
 
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
+    </nav>
+
     <div class="toolbar">
       <input id="hotelSearch" type="text" placeholder="Search hotels by name...">
       <a href="Orderhistory.html">Orders</a>
     </div>
   </header>
 
+  <section class="food-marquee" data-reveal="zoom" style="--delay: 30ms;">
+    <div class="food-marquee-row">
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/Badam%20Milk.webp" alt="Badam Milk"><span>Badam Milk</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/BBQ%20Chicken%20Burger.jpg" alt="BBQ Chicken Burger"><span>BBQ Chicken Burger</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Chicken%2065.jpg" alt="Chicken 65"><span>Chicken 65</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Calamari%20Fry.jpg" alt="Calamari Fry"><span>Calamari Fry</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Cheese%20Garlic%20Bread.jpg" alt="Cheese Garlic Bread"><span>Cheese Garlic Bread</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/Butter%20Naan.jpg" alt="Butter Naan"><span>Butter Naan</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/Cheese%20Fries.jpg" alt="Cheese Fries"><span>Cheese Fries</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Chicken%20Biryani.jpg" alt="Chicken Biryani"><span>Chicken Biryani</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Crab%20Masala.jpg" alt="Crab Masala"><span>Crab Masala</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Chicken%20Supreme%20Pizza.jpg" alt="Chicken Supreme Pizza"><span>Chicken Supreme Pizza</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/Badam%20Milk.webp" alt="Badam Milk"><span>Badam Milk</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/BBQ%20Chicken%20Burger.jpg" alt="BBQ Chicken Burger"><span>BBQ Chicken Burger</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Chicken%2065.jpg" alt="Chicken 65"><span>Chicken 65</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Calamari%20Fry.jpg" alt="Calamari Fry"><span>Calamari Fry</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Cheese%20Garlic%20Bread.jpg" alt="Cheese Garlic Bread"><span>Cheese Garlic Bread</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/Butter%20Naan.jpg" alt="Butter Naan"><span>Butter Naan</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/Cheese%20Fries.jpg" alt="Cheese Fries"><span>Cheese Fries</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Chicken%20Biryani.jpg" alt="Chicken Biryani"><span>Chicken Biryani</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Crab%20Masala.jpg" alt="Crab Masala"><span>Crab Masala</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Chicken%20Supreme%20Pizza.jpg" alt="Chicken Supreme Pizza"><span>Chicken Supreme Pizza</span></figure>
+    </div>
+
+    <div class="food-marquee-row reverse">
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/Chapati%20Kurma.jpg" alt="Chapati Kurma"><span>Chapati Kurma</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/Brownie%20Fudge.jpg" alt="Brownie Fudge"><span>Brownie Fudge</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Butter%20Chicken.jpg" alt="Butter Chicken"><span>Butter Chicken</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Chicken%20Roast.jpg" alt="Chicken Roast"><span>Chicken Roast</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Brownie%20Shake.avif" alt="Brownie Shake"><span>Brownie Shake</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/bisbellabth.jpg" alt="Bisibelabath"><span>Bisibelabath</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/Cheesecake%20Jar.webp" alt="Cheesecake Jar"><span>Cheesecake Jar</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Chicken%20Curry.jpg" alt="Chicken Curry"><span>Chicken Curry</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Chicken%20Roast.jpg" alt="Chicken Roast"><span>Chicken Roast</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Chicken%20Burger.webp" alt="Chicken Burger"><span>Chicken Burger</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/Chapati%20Kurma.jpg" alt="Chapati Kurma"><span>Chapati Kurma</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/Brownie%20Fudge.jpg" alt="Brownie Fudge"><span>Brownie Fudge</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Butter%20Chicken.jpg" alt="Butter Chicken"><span>Butter Chicken</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Chicken%20Roast.jpg" alt="Chicken Roast"><span>Chicken Roast</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Brownie%20Shake.avif" alt="Brownie Shake"><span>Brownie Shake</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/A2B%20Signature/bisbellabth.jpg" alt="Bisibelabath"><span>Bisibelabath</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Burger%20Yard/Cheesecake%20Jar.webp" alt="Cheesecake Jar"><span>Cheesecake Jar</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Chettinad%20Grill%20House/Chicken%20Curry.jpg" alt="Chicken Curry"><span>Chicken Curry</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Coastal%20Bowl/Chicken%20Roast.jpg" alt="Chicken Roast"><span>Chicken Roast</span></figure>
+      <figure class="marquee-item"><img src="Assests/Foods/Urban%20Slice%20Pizza/Chicken%20Burger.webp" alt="Chicken Burger"><span>Chicken Burger</span></figure>
+    </div>
+  </section>
+
   <section class="hero" data-reveal="left">
     <div class="hero-grid">
-      <div>
+      <div class="hero-copy">
         <span class="eyebrow">Food Ordering</span>
         <h1>Discover nearby hotels and browse menus the easy way.</h1>
         <p>
@@ -763,6 +1039,20 @@ body::after {
           shows the selected hotel menu in clear category sections such as Starters, Main Course,
           Desserts, and Beverages.
         </p>
+        <div class="hero-highlights">
+          <div class="hero-highlight" data-reveal="zoom" style="--delay: 40ms;">
+            <strong>5 Hotels</strong>
+            <span>Browse five curated hotel menus with local favorites and quick delivery timing.</span>
+          </div>
+          <div class="hero-highlight" data-reveal="zoom" style="--delay: 80ms;">
+            <strong>4 Sections</strong>
+            <span>Menus are grouped into Starters, Main Course, Desserts, and Beverages.</span>
+          </div>
+          <div class="hero-highlight" data-reveal="zoom" style="--delay: 120ms;">
+            <strong>Nearby First</strong>
+            <span>Location permission helps sort the closest hotel first and show area plus opening hours.</span>
+          </div>
+        </div>
       </div>
 
       <div class="cart-card" data-reveal="right" style="--delay: 100ms;">
@@ -775,6 +1065,7 @@ body::after {
   </section>
 
   <div class="status-bar" id="statusBar" data-reveal="zoom" style="--delay: 120ms;">Loading hotels and menu data...</div>
+  <div class="toast" id="cartToast" aria-live="polite" aria-atomic="true"></div>
 
   <div class="layout">
     <aside class="panel" data-reveal="left" style="--delay: 140ms;">
@@ -799,9 +1090,11 @@ const cartArea = document.getElementById("cartArea");
 const statusBar = document.getElementById("statusBar");
 const clearCartBtn = document.getElementById("clearCartBtn");
 const hotelSearch = document.getElementById("hotelSearch");
+const cartToast = document.getElementById("cartToast");
 
 const FOOD_CART_KEY = "trendcart_food_cart_v2";
 const categoryOrder = ["Starters", "Main Course", "Desserts", "Beverages"];
+let toastTimer = null;
 
 const hotelLocations = {
   "A2B Signature": {
@@ -864,6 +1157,23 @@ function formatCurrency(value) {
 
 function setStatus(text) {
   statusBar.textContent = text;
+}
+
+function showCartToast(title, message) {
+  if (!cartToast) {
+    return;
+  }
+
+  cartToast.innerHTML = `<strong>${title}</strong><span>${message}</span>`;
+  cartToast.classList.add("is-visible");
+
+  if (toastTimer) {
+    window.clearTimeout(toastTimer);
+  }
+
+  toastTimer = window.setTimeout(() => {
+    cartToast.classList.remove("is-visible");
+  }, 2200);
 }
 
 function getDistanceKm(userLat, userLng, hotelLat, hotelLng) {
@@ -1061,15 +1371,21 @@ function renderCart() {
     return;
   }
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const pricing = TrendCartAPI.getPricingBreakdown(subtotal, "food");
   cartArea.className = "";
   cartArea.innerHTML = `
     <div class="cart-card">
       <div class="cart-list">
         ${cart.map((item) => `
           <div class="cart-item">
-            <strong>${item.name}</strong>
-            <span>${item.restaurant}</span>
+            <div class="cart-item-head">
+              <img class="cart-item-image" src="${item.image}" alt="${item.name}">
+              <div class="cart-item-copy">
+                <strong>${item.name}</strong>
+                <span>${item.restaurant}</span>
+              </div>
+            </div>
             <div class="cart-qty">
               <button data-cart-change="${item.id}" data-change="-1" type="button">-</button>
               <span>${item.qty}</span>
@@ -1080,8 +1396,16 @@ function renderCart() {
         `).join("")}
       </div>
       <div class="cart-total">
+        <span>Subtotal</span>
+        <span>${formatCurrency(pricing.subtotal)}</span>
+      </div>
+      <div class="cart-total">
+        <span>Convenience Fee (${pricing.percentageLabel})</span>
+        <span>${formatCurrency(pricing.convenienceFee)}</span>
+      </div>
+      <div class="cart-total">
         <span>Total</span>
-        <span>${formatCurrency(total)}</span>
+        <span>${formatCurrency(pricing.total)}</span>
       </div>
       <div class="cart-note">
         Cart items stay on this page while you browse. Use Order Now on any food item when you want to continue to payment.
@@ -1111,6 +1435,7 @@ function addToCart(item) {
       id: item.id,
       name: item.name,
       restaurant: item.restaurant,
+      image: item.image,
       price: Number(item.price),
       qty: 1
     });
@@ -1119,6 +1444,7 @@ function addToCart(item) {
   saveCart();
   renderCart();
   setStatus(`${item.name} added to cart.`);
+  showCartToast("Added to cart", `${item.name} added to the cart successfully.`);
 }
 
 function changeCartQty(id, change) {
@@ -1141,11 +1467,15 @@ async function quickOrder(item) {
       return;
     }
 
+    const pricing = TrendCartAPI.getPricingBreakdown(Number(item.price), "food");
     TrendCartAPI.setPendingPayment({
       type: "food",
       title: item.name,
       subtitle: `${item.restaurant} - ${item.time}`,
-      amount: Number(item.price),
+      subtotal: pricing.subtotal,
+      convenienceFee: pricing.convenienceFee,
+      feeRate: pricing.percentageLabel,
+      amount: pricing.total,
       foodItemId: item.id,
       quantity: 1
     });

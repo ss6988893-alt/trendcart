@@ -39,6 +39,50 @@ body::before {
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+.navbar .brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.1rem;
+}
+.navbar .brand span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
 .box {
   width: min(760px, calc(100vw - 32px));
   border: 1px solid var(--line);
@@ -103,6 +147,25 @@ a {
 #details strong {
   color: var(--text);
 }
+.delivery-card {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(30, 167, 253, 0.16);
+  background: linear-gradient(135deg, rgba(232, 246, 255, 0.96), rgba(247, 251, 255, 0.98));
+  color: var(--text);
+}
+.delivery-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.12rem;
+}
+.delivery-card span {
+  display: block;
+  color: var(--muted);
+  line-height: 1.65;
+}
 </style>
 <style>
 .home-link {
@@ -156,7 +219,19 @@ a {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
+<header class="navbar">
+  <div class="brand">
+    <strong>TrendCart</strong>
+    <span>Payment success and order confirmation</span>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="Product.html">Products</a>
+    <a href="Food.html">Foods</a>
+    <a href="Movies.html">Movies</a>
+    <a href="Login.html">Login</a>
+  </nav>
+</header>
 <div class="box">
   <span class="eyebrow">Payment Complete</span>
   <h1>Order successful.</h1>
@@ -170,14 +245,46 @@ a {
 
 <script src="Assests/api.js"></script>
 <script>
+function formatDeliveryDate(daysFromNow) {
+  const date = new Date();
+  date.setDate(date.getDate() + daysFromNow);
+  return date.toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+function getDeliveryMessage(type) {
+  if (type === "food") {
+    return {
+      title: "Food order accepted",
+      message: "Your food order is being prepared. Demo estimate: it should reach you within 35 to 45 minutes."
+    };
+  }
+
+  return {
+    title: "Product delivery scheduled",
+    message: `Your product will be delivered within a few days. Demo estimated delivery date: ${formatDeliveryDate(4)}.`
+  };
+}
+
 async function loadDetails() {
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get("id");
   const type = params.get("type") || "product";
   const details = document.getElementById("details");
+  const deliveryInfo = getDeliveryMessage(type);
 
   if (!orderId) {
-    details.textContent = "Order created successfully.";
+    details.innerHTML = `
+      <div class="delivery-card">
+        <strong>${deliveryInfo.title}</strong>
+        <span>${deliveryInfo.message}</span>
+      </div>
+      <p style="margin-top: 14px;">Order created successfully.</p>
+    `;
     return;
   }
 
@@ -188,6 +295,10 @@ async function loadDetails() {
     `).join("");
 
     details.innerHTML = `
+      <div class="delivery-card">
+        <strong>${deliveryInfo.title}</strong>
+        <span>${deliveryInfo.message}</span>
+      </div>
       <p><strong>Order ID:</strong> #${order.id}</p>
       <p><strong>Type:</strong> ${type}</p>
       <p><strong>Order Status:</strong> ${order.order_status || "Placed"}</p>

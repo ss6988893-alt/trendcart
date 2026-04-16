@@ -1,4 +1,4 @@
-import fs from "fs";
+﻿import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -171,6 +171,185 @@ const productDescriptionProfiles = {
   }
 };
 
+const productPriceMap = {
+  Mobiles: {
+    "vivo V29 Pro": 39999,
+    "iPhone SE": 49900,
+    "Samsung Galaxy A54": 38999,
+    "OnePlus Nord CE 4": 24999,
+    "Redmi Note 13 Pro": 26999,
+    "Realme 12 Pro+": 29999,
+    "iQOO Neo 9 Pro": 37999,
+    "Motorola Edge 50 Fusion": 22999,
+    "OPPO Reno 11": 29999,
+    "Samsung Galaxy S23 FE": 44999,
+    "Nothing Phone (2a)": 23999,
+    "OnePlus 12R": 39999,
+    "Xiaomi 14 Civi": 42999,
+    "POCO X6 Pro": 26999,
+    "Google Pixel 7a": 43999,
+    "vivo T3 5G": 19999,
+    "Redmi 13 5G": 14999,
+    "Realme Narzo 70 Pro": 18999,
+    "Samsung Galaxy M35": 20999,
+    "iPhone 13": 52900
+  },
+  Laptops: {
+    "MacBook Air M2": 89900,
+    "HP Pavilion 15": 62999,
+    "Dell Inspiron 14": 57999,
+    "Lenovo IdeaPad Slim 5": 64999,
+    "ASUS VivoBook 15": 54999,
+    "Acer Aspire 7": 56999,
+    "HP Victus 15": 72999,
+    "Dell XPS 13": 129999,
+    "Lenovo LOQ 15": 78999,
+    "ASUS TUF Gaming F15": 75999,
+    "MSI Modern 14": 52999,
+    "Acer Nitro V": 74999,
+    "MacBook Pro 14": 149900,
+    "Lenovo Yoga Slim 7": 82999,
+    "Dell Latitude 5440": 94999,
+    "HP Envy x360": 88999,
+    "ASUS Zenbook 14": 84999,
+    "Samsung Galaxy Book4": 69999,
+    "MSI Cyborg 15": 79999,
+    "Acer Swift Go 14": 76999
+  },
+  Headphones: {
+    "Sony WH-1000XM5": 29990,
+    "Apple AirPods Pro (2nd Gen)": 24900,
+    "JBL Tune 770NC": 6999,
+    "boAt Nirvana 751 ANC": 3999,
+    "Realme Buds Air 5 Pro": 4999,
+    "OnePlus Buds 3": 5499,
+    "Samsung Galaxy Buds FE": 6999,
+    "Sony WF-C700N": 8990,
+    "JBL Wave Beam": 2999,
+    "boAt Airdopes 141": 1299,
+    "Noise Buds X Prime": 1499,
+    "Nothing Ear (a)": 7999,
+    "Apple AirPods (3rd Gen)": 18900,
+    "Skullcandy Hesh ANC": 8499,
+    "Bose QuietComfort Ultra": 34900,
+    "Sennheiser Accentum": 10990,
+    "Oppo Enco Air 3 Pro": 4999,
+    "Redmi Buds 5": 2999,
+    "Anker Soundcore Life Q30": 7999,
+    "Marshall Major IV": 11999
+  },
+  Watches: {
+    "Apple Watch SE": 29900,
+    "Apple Watch Series 9": 41900,
+    "Samsung Galaxy Watch6": 22999,
+    "OnePlus Watch 2": 24999,
+    "Noise ColorFit Pro 5": 3999,
+    "Fire-Boltt Ninja Call Pro": 1499,
+    "boAt Wave Elevate": 1999,
+    "Amazfit GTR 4": 16999,
+    "Fastrack Revoltt FS1": 1995,
+    "Titan Smart 3": 4995,
+    "Garmin Forerunner 165": 28990,
+    "Huawei Watch GT 4": 16999,
+    "NoiseFit Halo": 3499,
+    "Pebble Cosmos Luxe": 2499,
+    "Fire-Boltt Phoenix Ultra": 1799,
+    "Amazfit Bip 5": 7499,
+    "Samsung Galaxy Watch4": 9999,
+    "Apple Watch Ultra 2": 89900,
+    "Realme Watch 3 Pro": 4999,
+    "Titan Neo Splash": 3995
+  },
+  Shoes: {
+    "Nike Air Max Alpha Trainer": 7495,
+    "Adidas Ultraboost Light": 15999,
+    "Puma Velocity Nitro": 8999,
+    "Skechers Go Walk 6": 6999,
+    "Reebok Floatride Energy": 5999,
+    "ASICS Gel-Contend 8": 4999,
+    "New Balance 574": 8999,
+    "Converse Chuck Taylor All Star": 4299,
+    "Vans Old Skool": 5999,
+    "Crocs Classic Clog": 3495,
+    "Nike Revolution 7": 3695,
+    "Adidas Grand Court 2.0": 4999,
+    "Puma Smashic": 3299,
+    "Skechers Arch Fit": 7999,
+    "Woodland Leather Boots": 3995,
+    "Red Tape Sports Sneakers": 1899,
+    "Bata Power Running Shoes": 1599,
+    "Campus Oxyfit": 1399,
+    "Liberty Gliders": 1299,
+    "Sparx Running Shoes": 1199
+  },
+  Fashion: {
+    "Levi's 511 Slim Jeans": 2799,
+    "H&M Regular Fit T-Shirt": 799,
+    "Allen Solly Polo T-Shirt": 1299,
+    "Van Heusen Formal Shirt": 1899,
+    "W for Woman Printed Kurta": 1999,
+    "Biba Anarkali Kurta Set": 3499,
+    "ZARA Solid Blazer": 5590,
+    "U.S. Polo Assn. Casual Shirt": 2299,
+    "Jack & Jones Slim Fit Jeans": 2999,
+    "ONLY Ribbed Top": 1499,
+    "Forever New Midi Dress": 4299,
+    "Roadster Denim Jacket": 2199,
+    "MAX Cotton Hoodie": 1299,
+    "Fabindia Kurta Set": 2990,
+    "Peter England Trousers": 1799,
+    "Pantaloons Ethnic Dress": 2499,
+    "Mango Satin Shirt": 3290,
+    "Vero Moda Skater Dress": 2799,
+    "Louis Philippe Formal Shirt": 2499,
+    "Marks & Spencer Chinos": 2999
+  },
+  Beauty: {
+    "Lakme 9to5 Primer + Matte Lipstick": 599,
+    "Maybelline Fit Me Foundation": 649,
+    "L'Oreal Paris Hyaluron Moisture Serum": 699,
+    "Mamaearth Ubtan Face Wash": 299,
+    "Cetaphil Gentle Skin Cleanser": 649,
+    "Plum Green Tea Night Gel": 575,
+    "Dot & Key Sunscreen SPF 50": 445,
+    "Minimalist 10% Vitamin C Serum": 699,
+    "The Derma Co 1% Hyaluronic Sunscreen": 499,
+    "Nivea Soft Light Moisturizer": 185,
+    "Dove Intense Repair Shampoo": 349,
+    "Tresemme Keratin Smooth Conditioner": 399,
+    "Garnier Micellar Cleansing Water": 249,
+    "M.A.C Studio Fix Powder Foundation": 3900,
+    "Biotique Bio Cucumber Toner": 210,
+    "Neutrogena Hydro Boost Gel": 950,
+    "Nykaa Wanderlust Body Lotion": 350,
+    "Aqualogica Glow+ Dewy Sunscreen": 449,
+    "Himalaya Neem Face Pack": 170,
+    "BBlunt Hot Shot Hair Spray": 595
+  },
+  Home: {
+    "Philips LED Smart Bulb": 799,
+    "Prestige Electric Kettle": 1499,
+    "Havells Dry Iron": 1199,
+    "Usha Mist Air Icy Fan": 2499,
+    "Wakefit Memory Foam Pillow": 899,
+    "Sleepyhead Bedsheet Set": 1299,
+    "Home Centre Table Lamp": 1599,
+    "IKEA Storage Basket": 499,
+    "Milton Thermosteel Bottle": 799,
+    "Cello Plastic Drawer Unit": 1899,
+    "Dyson V8 Vacuum Cleaner": 29900,
+    "Kent Gold Water Purifier": 1699,
+    "Amazon Basics Foldable Study Table": 2399,
+    "Solimo Laundry Basket": 699,
+    "Urban Ladder Wall Shelf": 1499,
+    "Borosil Glass Storage Jar Set": 999,
+    "Atomberg Renesa Ceiling Fan": 3899,
+    "Syska LED Desk Lamp": 1199,
+    "Nilkamal Plastic Cabinet": 3499,
+    "Eureka Forbes Wet & Dry Vacuum": 8999
+  }
+};
+
 function isProductImageAsset(fileName) {
   return supportedProductImageExtensions.has(path.extname(fileName).toLowerCase());
 }
@@ -192,7 +371,7 @@ function readProductAssets(folderName) {
     .sort((left, right) => normaliseProductName(left).localeCompare(normaliseProductName(right)))
     .map((fileName) => ({
       name: normaliseProductName(fileName),
-      image_url: `Assests/products/${folderName}/${fileName}`
+      image_url: ["Assests", "products", folderName, fileName].map(encodeURIComponent).join("/")
     }));
 }
 
@@ -542,7 +721,9 @@ function buildProducts() {
       category: category.name,
       description: buildProductDescription(category, product.name, itemIndex),
       image_url: product.image_url,
-      price: category.basePrice + itemIndex * Math.max(99, Math.round(category.basePrice * 0.025)),
+      price:
+        productPriceMap[category.name]?.[product.name] ??
+        category.basePrice + itemIndex * Math.max(99, Math.round(category.basePrice * 0.025)),
       rating: 4 + ((categoryIndex + itemIndex) % 2)
     }));
   });
@@ -569,3 +750,4 @@ function buildFoodItems() {
 
 export const curatedProducts = buildProducts();
 export const curatedFoodItems = buildFoodItems();
+

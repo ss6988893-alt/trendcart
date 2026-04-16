@@ -39,9 +39,46 @@ body::before {
 }
 .page {
   position: relative;
-  max-width: 1140px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 24px 20px 42px;
+  padding: 24px 16px 42px;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+.brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.2rem;
+}
+.brand span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nav-links a {
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font-weight: 800;
 }
 .hero,
 .panel {
@@ -227,8 +264,20 @@ button.secondary {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
+  <header class="navbar">
+    <div class="brand">
+      <strong>TrendCart</strong>
+      <span>Product details and purchase flow</span>
+    </div>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
+    </nav>
+  </header>
   <section class="hero">
     <span class="eyebrow">Product Insight</span>
     <h1>Review the item before checkout.</h1>

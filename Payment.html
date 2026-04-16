@@ -211,7 +211,6 @@ ul {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <section class="hero">
     <span class="badge">TrendCart Razorpay Checkout</span>
@@ -272,12 +271,16 @@ async function buildProductPayment() {
     throw new Error("Your cart is empty.");
   }
 
-  const total = items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+  const subtotal = items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+  const pricing = TrendCartAPI.getPricingBreakdown(subtotal, "product");
   return {
     type: "product",
     title: "Shopping Checkout",
     subtitle: `${items.length} cart item(s) ready for payment`,
-    amount: total,
+    subtotal: pricing.subtotal,
+    convenienceFee: pricing.convenienceFee,
+    feeRate: pricing.percentageLabel,
+    amount: pricing.total,
     items: items.map((item) => `${item.name} x ${item.quantity}`)
   };
 }
@@ -292,6 +295,8 @@ function renderSummary(data) {
       <div class="line"><span>Category</span><strong>${data.type.toUpperCase()}</strong></div>
       <div class="line"><span>Title</span><strong>${data.title}</strong></div>
       <div class="line"><span>Details</span><strong>${data.subtitle || "-"}</strong></div>
+      <div class="line"><span>Subtotal</span><strong>${TrendCartAPI.formatCurrency(data.subtotal ?? data.amount)}</strong></div>
+      <div class="line"><span>Convenience Fee (${data.feeRate || "0%"})</span><strong>${TrendCartAPI.formatCurrency(data.convenienceFee || 0)}</strong></div>
       <div class="line"><span>Total</span><strong class="big">${TrendCartAPI.formatCurrency(data.amount)}</strong></div>
       ${items}
     </div>
@@ -393,6 +398,17 @@ async function loadPayment() {
       if (!paymentData || paymentData.type !== type) {
         throw new Error("Payment details not found. Please try again.");
       }
+      const pricing = TrendCartAPI.getPricingBreakdown(
+        paymentData.subtotal ?? paymentData.amount,
+        type
+      );
+      paymentData = {
+        ...paymentData,
+        subtotal: pricing.subtotal,
+        convenienceFee: paymentData.convenienceFee ?? pricing.convenienceFee,
+        feeRate: paymentData.feeRate || pricing.percentageLabel,
+        amount: paymentData.amount ?? pricing.total
+      };
     }
 
     renderSummary(paymentData);

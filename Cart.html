@@ -217,7 +217,6 @@ a {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <section class="hero">
     <span class="eyebrow">Cart Review</span>
@@ -234,6 +233,8 @@ a {
     <div class="summary">
       <h2>Cart Summary</h2>
       <div class="line"><span>Checkout</span><strong>Product Order</strong></div>
+      <div class="line"><span>Subtotal</span><strong id="subtotal">Rs. 0</strong></div>
+      <div class="line"><span>Convenience Fee (2%)</span><strong id="fee">Rs. 0</strong></div>
       <div class="line"><span>Total</span><strong id="total">Rs. 0</strong></div>
       <a href="Payment.html">Proceed to Payment</a>
     </div>
@@ -244,6 +245,8 @@ a {
 <script>
 async function loadCart() {
   const itemsBox = document.getElementById("items");
+  const subtotalBox = document.getElementById("subtotal");
+  const feeBox = document.getElementById("fee");
   const totalBox = document.getElementById("total");
 
   try {
@@ -251,14 +254,16 @@ async function loadCart() {
 
     if (items.length === 0) {
       itemsBox.innerHTML = `<div class="empty">Your cart is empty. <a href="Product.html" style="margin-top:12px;display:inline-block;">Shop now</a></div>`;
+      subtotalBox.textContent = "Rs. 0";
+      feeBox.textContent = "Rs. 0";
       totalBox.textContent = "Rs. 0";
       return;
     }
 
-    let total = 0;
+    let subtotal = 0;
     itemsBox.innerHTML = items.map((item) => {
       const lineTotal = Number(item.price) * Number(item.quantity);
-      total += lineTotal;
+      subtotal += lineTotal;
       return `
         <div class="item">
           <img src="${item.image}" alt="${item.name}">
@@ -274,7 +279,10 @@ async function loadCart() {
       `;
     }).join("");
 
-    totalBox.textContent = TrendCartAPI.formatCurrency(total);
+    const pricing = TrendCartAPI.getPricingBreakdown(subtotal, "product");
+    subtotalBox.textContent = TrendCartAPI.formatCurrency(pricing.subtotal);
+    feeBox.textContent = TrendCartAPI.formatCurrency(pricing.convenienceFee);
+    totalBox.textContent = TrendCartAPI.formatCurrency(pricing.total);
 
     document.querySelectorAll("[data-remove]").forEach((button) => {
       button.addEventListener("click", async () => {

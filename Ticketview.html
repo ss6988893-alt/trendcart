@@ -31,6 +31,50 @@ body::before {
   background-size: 48px 48px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(86,118,170,0.14);
+  box-shadow: 0 18px 44px rgba(45, 79, 128, 0.14);
+  backdrop-filter: blur(16px);
+}
+.navbar .brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.1rem;
+}
+.navbar .brand span {
+  color: #697f98;
+  font-size: 0.9rem;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(86,118,170,0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: #1a2c42;
+  text-decoration: none;
+  font-weight: 800;
+}
 .wrapper {
   width: min(980px, calc(100vw - 32px));
 }
@@ -185,7 +229,19 @@ body::before {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
+<header class="navbar">
+  <div class="brand">
+    <strong>TrendCart</strong>
+    <span>Movie ticket view</span>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="Product.html">Products</a>
+    <a href="Food.html">Foods</a>
+    <a href="Movies.html">Movies</a>
+    <a href="Login.html">Login</a>
+  </nav>
+</header>
 <div class="wrapper">
   <div class="ticket" id="ticket">Loading ticket...</div>
   <div class="actions">

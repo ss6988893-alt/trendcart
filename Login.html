@@ -44,6 +44,47 @@ body::before {
   grid-template-columns: 1.05fr 0.95fr;
   gap: 18px;
 }
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+.navbar .brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.1rem;
+}
+.navbar .brand span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nav-links a {
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font-weight: 800;
+}
 .info,
 .card {
   border: 1px solid var(--line);
@@ -248,7 +289,19 @@ button.secondary {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
+<header class="navbar">
+  <div class="brand">
+    <strong>TrendCart</strong>
+    <span>Login and account access</span>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="Product.html">Products</a>
+    <a href="Food.html">Foods</a>
+    <a href="Movies.html">Movies</a>
+    <a href="Login.html">Login</a>
+  </nav>
+</header>
 <div class="shell">
   <section class="info">
     <span class="eyebrow">Secure Access</span>

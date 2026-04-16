@@ -56,9 +56,46 @@ body::after {
 }
 .page {
   position: relative;
-  max-width: 1240px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 22px 20px 42px;
+  padding: 22px 16px 42px;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+.brand strong {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.2rem;
+}
+.brand span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nav-links a {
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font-weight: 800;
 }
 .hero, .panel, .movie {
   border: 1px solid var(--line);
@@ -499,8 +536,20 @@ body::after {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
+  <header class="navbar" data-reveal="zoom">
+    <div class="brand">
+      <strong>TrendCart</strong>
+      <span>Movies and seat booking</span>
+    </div>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
+    </nav>
+  </header>
   <div class="hero" data-reveal="left">
     <span class="eyebrow">Cinema Flow</span>
     <h1>Book shows with live seat availability.</h1>
@@ -547,6 +596,8 @@ body::after {
         <div class="line"><span>Seats</span><strong id="summarySeats">0</strong></div>
         <div class="line"><span>Lock Timer</span><strong id="lockTimer">Not started</strong></div>
         <div class="line"><span>Snacks</span><strong id="summarySnacks">None</strong></div>
+        <div class="line"><span>Subtotal</span><strong id="summarySubtotal">Rs. 0</strong></div>
+        <div class="line"><span>Convenience Fee (5%)</span><strong id="summaryFee">Rs. 0</strong></div>
         <div class="line"><span>Total</span><strong id="summaryTotal">Rs. 0</strong></div>
       </div>
       <button id="bookBtn">Proceed To Payment</button>
@@ -646,14 +697,17 @@ function updateSummary() {
     .map(([name, value]) => `${name} x${value.qty}`);
   const totalSeatAmount = selectedSeats.length * 180;
   const totalSnackAmount = Object.values(snacks).reduce((sum, item) => sum + (item.price * item.qty), 0);
-  const total = totalSeatAmount + totalSnackAmount;
+  const subtotal = totalSeatAmount + totalSnackAmount;
+  const pricing = TrendCartAPI.getPricingBreakdown(subtotal, "movie");
 
   document.getElementById("summaryMovie").textContent = selectedMovie ? selectedMovie.name : "Not selected";
   document.getElementById("summaryTheatre").textContent = selectedTheatre;
   document.getElementById("summaryTime").textContent = selectedTime;
   document.getElementById("summarySeats").textContent = selectedSeats.length ? selectedSeats.join(", ") : "0";
   document.getElementById("summarySnacks").textContent = snackList.length ? snackList.join(", ") : "None";
-  document.getElementById("summaryTotal").textContent = formatCurrency(total);
+  document.getElementById("summarySubtotal").textContent = formatCurrency(pricing.subtotal);
+  document.getElementById("summaryFee").textContent = formatCurrency(pricing.convenienceFee);
+  document.getElementById("summaryTotal").textContent = formatCurrency(pricing.total);
   if (!selectedSeats.length) {
     syncLockCountdown(null);
   }
@@ -943,13 +997,17 @@ document.getElementById("bookBtn").addEventListener("click", async () => {
       .filter(([, value]) => value.qty > 0)
       .map(([name, value]) => `${name} x${value.qty}`);
     const snackAmount = Object.values(snacks).reduce((sum, value) => sum + (value.price * value.qty), 0);
-    const total = (selectedSeats.length * 180) + snackAmount;
+    const subtotal = (selectedSeats.length * 180) + snackAmount;
+    const pricing = TrendCartAPI.getPricingBreakdown(subtotal, "movie");
 
     TrendCartAPI.setPendingPayment({
       type: "movie",
       title: selectedMovie.name,
       subtitle: `${selectedTheatre} - ${selectedTime}`,
-      amount: total,
+      subtotal: pricing.subtotal,
+      convenienceFee: pricing.convenienceFee,
+      feeRate: pricing.percentageLabel,
+      amount: pricing.total,
       movieId: selectedMovie.id,
       movie: selectedMovie.name,
       theatre: selectedTheatre,

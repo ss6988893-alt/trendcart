@@ -1,4 +1,10 @@
 const API = {
+  convenienceFeeRates: {
+    product: 0.02,
+    food: 0.04,
+    movie: 0.05
+  },
+
   async request(url, options = {}) {
     const response = await fetch(url, {
       headers: {
@@ -258,6 +264,25 @@ const API = {
 
   formatCurrency(value) {
     return `Rs. ${Number(value).toLocaleString("en-IN")}`;
+  },
+
+  getConvenienceFeeRate(type = "product") {
+    return this.convenienceFeeRates[type] ?? 0.02;
+  },
+
+  getPricingBreakdown(amount, type = "product") {
+    const subtotal = Math.max(0, Number(amount) || 0);
+    const rate = this.getConvenienceFeeRate(type);
+    const convenienceFee = subtotal > 0 ? Math.max(1, Math.round(subtotal * rate)) : 0;
+    const total = subtotal + convenienceFee;
+
+    return {
+      subtotal,
+      convenienceFee,
+      total,
+      rate,
+      percentageLabel: `${Math.round(rate * 100)}%`
+    };
   }
 };
 

@@ -55,9 +55,9 @@ body::before {
 
 .page {
   position: relative;
-  max-width: 1240px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 24px 20px 48px;
+  padding: 24px 16px 48px;
 }
 
 .navbar {
@@ -113,14 +113,22 @@ body::before {
   text-decoration: none;
   font-size: 0.94rem;
   font-weight: 800;
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  box-shadow: 0 8px 18px rgba(18, 34, 60, 0);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
 }
 
 .nav-links a:hover,
 .nav-links a:focus-visible {
-  transform: translateY(-1px);
-  border-color: rgba(15, 139, 255, 0.34);
-  background: rgba(15, 139, 255, 0.08);
+  transform: translateY(-1px) scale(1.01);
+  border-color: rgba(15, 139, 255, 0.48);
+  background: linear-gradient(135deg, #0f8bff, #4db5ff);
+  box-shadow: 0 12px 24px rgba(15, 139, 255, 0.24);
+  color: #ffffff;
   outline: none;
 }
 
@@ -567,7 +575,6 @@ body::before {
   transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
 }
 
-.navbar:hover,
 .section-card:hover,
 .mini-panel:hover,
 .footer-shell:hover {

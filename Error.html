@@ -13,6 +13,41 @@ body {
   font-family: "Segoe UI", sans-serif;
   background: linear-gradient(135deg, #b22222, #6b1010);
 }
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.18);
+}
+.navbar .brand strong {
+  display: block;
+  font-size: 1.1rem;
+}
+.navbar .brand span {
+  color: #8a4343;
+  font-size: 0.9rem;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nav-links a {
+  margin-top: 0;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #6b1010;
+}
 
 .box {
   background: white;
@@ -73,7 +108,19 @@ a {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
+<header class="navbar">
+  <div class="brand">
+    <strong>TrendCart</strong>
+    <span>Payment issue and retry flow</span>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="Product.html">Products</a>
+    <a href="Food.html">Foods</a>
+    <a href="Movies.html">Movies</a>
+    <a href="Login.html">Login</a>
+  </nav>
+</header>
 <div class="box">
   <h1>Payment Failed</h1>
   <p id="message">Please try again.</p>

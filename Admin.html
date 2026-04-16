@@ -43,9 +43,9 @@ body::before {
 }
 .page {
   position: relative;
-  max-width: 1380px;
+  max-width: 1660px;
   margin: 0 auto;
-  padding: 28px 20px 56px;
+  padding: 28px 16px 56px;
 }
 .topbar,
 .hero,
@@ -74,6 +74,11 @@ body::before {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.06);
   font-weight: 800;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .hero {
   margin-top: 18px;
@@ -402,17 +407,19 @@ button {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <div class="topbar">
     <div>
       <h1>Admin Dashboard</h1>
       <p>Manage catalog data, monitor live bookings, and update order progress.</p>
     </div>
-    <div>
+    <nav class="nav-links" aria-label="Primary">
       <a href="index.html">Home</a>
-      <a href="Profile.html">Profile</a>
-    </div>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
+    </nav>
   </div>
 
   <section class="hero">
@@ -488,6 +495,13 @@ let editingMovieId = null;
 
 function setStatus(text) {
   document.getElementById("statusBar").textContent = text;
+}
+
+function firstMissingField(payload, labels) {
+  return Object.entries(labels).find(([key]) => {
+    const value = payload[key];
+    return value === null || value === undefined || value === "";
+  });
 }
 
 function setPreview(id, value) {
@@ -999,45 +1013,89 @@ function bindForms() {
 
   document.getElementById("saveProductBtn").addEventListener("click", async () => {
     const payload = getProductPayload();
-    if (editingProductId) {
-      await TrendCartAPI.updateAdminProduct(editingProductId, payload);
-      setStatus("Product updated.");
-    } else {
-      await TrendCartAPI.createAdminProduct(payload);
-      setStatus("Product created.");
+    const missingField = firstMissingField(payload, {
+      name: "Product name",
+      category: "Category",
+      description: "Description",
+      image_url: "Image URL"
+    });
+    if (missingField) {
+      setStatus(`${missingField[1]} is required before saving the product.`);
+      return;
     }
-    await loadAdminData();
-    resetProductForm();
+
+    try {
+      if (editingProductId) {
+        await TrendCartAPI.updateAdminProduct(editingProductId, payload);
+        setStatus("Product updated.");
+      } else {
+        await TrendCartAPI.createAdminProduct(payload);
+        setStatus("Product created.");
+      }
+      await loadAdminData();
+      resetProductForm();
+    } catch (error) {
+      setStatus(error.message || "Unable to save the product right now.");
+    }
   });
 
   document.getElementById("resetProductBtn").addEventListener("click", resetProductForm);
 
   document.getElementById("saveFoodBtn").addEventListener("click", async () => {
     const payload = getFoodPayload();
-    if (editingFoodId) {
-      await TrendCartAPI.updateAdminFoodItem(editingFoodId, payload);
-      setStatus("Food item updated.");
-    } else {
-      await TrendCartAPI.createAdminFoodItem(payload);
-      setStatus("Food item created.");
+    const missingField = firstMissingField(payload, {
+      name: "Food name",
+      restaurant: "Restaurant",
+      delivery_time: "Delivery time",
+      image_url: "Image URL"
+    });
+    if (missingField) {
+      setStatus(`${missingField[1]} is required before saving the food item.`);
+      return;
     }
-    await loadAdminData();
-    resetFoodForm();
+
+    try {
+      if (editingFoodId) {
+        await TrendCartAPI.updateAdminFoodItem(editingFoodId, payload);
+        setStatus("Food item updated.");
+      } else {
+        await TrendCartAPI.createAdminFoodItem(payload);
+        setStatus("Food item created.");
+      }
+      await loadAdminData();
+      resetFoodForm();
+    } catch (error) {
+      setStatus(error.message || "Unable to save the food item right now.");
+    }
   });
 
   document.getElementById("resetFoodBtn").addEventListener("click", resetFoodForm);
 
   document.getElementById("saveMovieBtn").addEventListener("click", async () => {
     const payload = getMoviePayload();
-    if (editingMovieId) {
-      await TrendCartAPI.updateAdminMovie(editingMovieId, payload);
-      setStatus("Movie updated.");
-    } else {
-      await TrendCartAPI.createAdminMovie(payload);
-      setStatus("Movie created.");
+    const missingField = firstMissingField(payload, {
+      name: "Movie name",
+      image_url: "Image URL or local asset",
+      trailer_url: "Trailer URL"
+    });
+    if (missingField) {
+      setStatus(`${missingField[1]} is required before saving the movie.`);
+      return;
     }
-    await loadAdminData();
-    resetMovieForm();
+
+    try {
+      if (editingMovieId) {
+        await TrendCartAPI.updateAdminMovie(editingMovieId, payload);
+        setStatus("Movie updated.");
+      } else {
+        await TrendCartAPI.createAdminMovie(payload);
+        setStatus("Movie created.");
+      }
+      await loadAdminData();
+      resetMovieForm();
+    } catch (error) {
+      setStatus(error.message || "Unable to save the movie right now.");
+    }
   });
 
   document.getElementById("resetMovieBtn").addEventListener("click", resetMovieForm);

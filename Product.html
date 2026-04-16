@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -27,8 +27,8 @@ body {
   font-family: "Manrope", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(109, 184, 255, 0.2), transparent 22%),
-    radial-gradient(circle at 80% 16%, rgba(156, 197, 255, 0.18), transparent 18%),
+    radial-gradient(circle at top left, rgba(109, 184, 255, 0.14), transparent 20%),
+    radial-gradient(circle at 80% 16%, rgba(156, 197, 255, 0.12), transparent 16%),
     linear-gradient(180deg, #f8fbff, #eef4ff 44%, #f4f8ff);
 }
 body::before {
@@ -39,7 +39,8 @@ body::before {
   background-image:
     linear-gradient(rgba(90,119,163,0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(90,119,163,0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background-size: 64px 64px;
+  opacity: 0.55;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 90%);
 }
 body::after {
@@ -56,9 +57,9 @@ body::after {
 }
 .page {
   position: relative;
-  max-width: 1260px;
+  max-width: 1620px;
   margin: 0 auto;
-  padding: 22px 20px 42px;
+  padding: 22px 16px 42px;
 }
 .topbar, .sidebar, .hero, .product {
   border: 1px solid var(--line);
@@ -67,10 +68,10 @@ body::after {
 .topbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 18px;
   flex-wrap: wrap;
-  padding: 16px 18px;
+  padding: 18px 20px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.84);
   backdrop-filter: blur(16px);
@@ -87,46 +88,119 @@ body::after {
   font-size: 0.92rem;
 }
 .toolbar {
-  display: flex;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) 1fr auto;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
 }
-.quick-links {
+.search-wrap {
+  position: relative;
+  width: 100%;
+}
+.nav-links {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
 }
-.quick-links a {
+.nav-links a {
   text-decoration: none;
+  min-width: 98px;
   padding: 12px 14px;
-  border-radius: 14px;
+  border-radius: 999px;
   border: 1px solid rgba(86, 118, 170, 0.14);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(247, 250, 255, 0.92);
   color: var(--text);
   font-weight: 800;
   transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
 }
-.quick-links a:hover,
-.quick-links a:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(30,167,253,0.34);
-  background: rgba(30,167,253,0.08);
-  box-shadow: 0 16px 28px rgba(45, 79, 128, 0.14);
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(30,167,253,0.45);
+  background: linear-gradient(135deg, var(--accent), #7bcaff);
+  box-shadow: 0 12px 24px rgba(30, 167, 253, 0.18);
+  color: #fff;
   outline: none;
 }
 .toolbar input {
-  width: min(340px, 100%);
+  width: 100%;
   padding: 12px 14px;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid rgba(86, 118, 170, 0.14);
   background: #f7faff;
   color: var(--text);
 }
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 15;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(86, 118, 170, 0.12);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 20px 40px rgba(45, 79, 128, 0.16);
+  backdrop-filter: blur(16px);
+}
+.search-suggestions[hidden] {
+  display: none;
+}
+.search-suggestion {
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: #f8fbff;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.search-suggestion:hover,
+.search-suggestion:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(30,167,253,0.22);
+  background: #eef6ff;
+  outline: none;
+}
+.search-suggestion img {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+.search-suggestion-copy {
+  min-width: 0;
+}
+.search-suggestion-copy strong,
+.search-suggestion-copy span {
+  display: block;
+}
+.search-suggestion-copy strong {
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-suggestion-copy span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+.search-suggestion-price {
+  font-weight: 800;
+  color: var(--accent-2);
+  white-space: nowrap;
+}
 .toolbar a {
   text-decoration: none;
-  padding: 12px 16px;
-  border-radius: 14px;
+  padding: 12px 18px;
+  border-radius: 16px;
   background: linear-gradient(135deg, var(--accent), #8fd1ff);
   color: #ffffff;
   font-weight: 800;
@@ -139,9 +213,64 @@ body::after {
   box-shadow: 0 20px 34px rgba(30, 167, 253, 0.28);
   outline: none;
 }
+.product-marquee {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.product-marquee-row {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: productMarquee 34s linear infinite;
+}
+.product-marquee-row.reverse {
+  margin-top: 14px;
+  animation-direction: reverse;
+  animation-duration: 38s;
+}
+.product-marquee:hover .product-marquee-row {
+  animation-play-state: paused;
+}
+.marquee-item {
+  position: relative;
+  width: 156px;
+  min-width: 156px;
+  height: 104px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(86, 118, 170, 0.14);
+  background: #fff;
+}
+.marquee-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.marquee-item span {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+}
 .hero {
   margin-top: 18px;
-  padding: 24px;
+  padding: 24px 24px 22px;
   border-radius: 28px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 255, 0.96));
   overflow: hidden;
@@ -179,19 +308,42 @@ body::after {
   margin: 0;
   max-width: 740px;
   color: var(--muted);
-  line-height: 1.75;
+  line-height: 1.72;
+}
+.hero-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+.hero-metric {
+  min-width: 140px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(86, 118, 170, 0.12);
+  background: rgba(247, 250, 255, 0.92);
+}
+.hero-metric strong {
+  display: block;
+  margin-bottom: 4px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.18rem;
+}
+.hero-metric span {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 .layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 18px;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
   margin-top: 18px;
 }
 .sidebar {
   position: sticky;
   top: 18px;
   height: fit-content;
-  padding: 20px;
+  padding: 22px;
   border-radius: 24px;
   background: var(--panel);
   transition: transform 0.24s ease, box-shadow 0.24s ease;
@@ -226,6 +378,73 @@ body::after {
   border-color: rgba(30,167,253,0.35);
   background: rgba(30,167,253,0.08);
 }
+.mini-cart {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.mini-cart h4 {
+  margin: 0 0 10px;
+  font-family: "Syne", sans-serif;
+  font-size: 1.02rem;
+}
+.mini-cart-list {
+  display: grid;
+  gap: 10px;
+}
+.mini-cart-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(246, 249, 255, 0.92);
+  border: 1px solid rgba(86, 118, 170, 0.1);
+}
+.mini-cart-item img {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.mini-cart-copy {
+  min-width: 0;
+}
+.mini-cart-copy strong {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 4px;
+}
+.mini-cart-copy span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+.mini-cart-total {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 800;
+}
+.mini-cart-breakdown {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.mini-cart-breakdown .mini-cart-total {
+  margin-top: 0;
+  font-size: 0.92rem;
+}
+.mini-cart-empty {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
 #status {
   margin-bottom: 14px;
   padding: 14px 16px;
@@ -234,24 +453,55 @@ body::after {
   color: var(--accent-2);
   border: 1px solid var(--line);
 }
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  max-width: min(320px, calc(100vw - 28px));
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(30, 167, 253, 0.22);
+  background: rgba(19, 33, 54, 0.94);
+  color: #f7fbff;
+  box-shadow: 0 18px 34px rgba(20, 33, 54, 0.22);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+.toast span {
+  color: rgba(247, 251, 255, 0.82);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 20px;
 }
 .product {
-  padding: 18px;
+  padding: 16px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.96);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 .product:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 24px 54px rgba(45, 79, 128, 0.18);
+  transform: translateY(-5px);
+  box-shadow: 0 22px 44px rgba(45, 79, 128, 0.16);
 }
 .product img {
   width: 100%;
-  height: 190px;
+  height: 210px;
   object-fit: cover;
   border-radius: 18px;
   transition: transform 0.45s ease, filter 0.45s ease;
@@ -279,7 +529,11 @@ body::after {
 .product p {
   margin: 0;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .price-row {
   display: flex;
@@ -354,6 +608,10 @@ body::after {
   0%, 100% { transform: scale(1); opacity: 0.62; }
   50% { transform: scale(1.14); opacity: 0.9; }
 }
+@keyframes productMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -366,6 +624,12 @@ body::after {
   }
 }
 @media (max-width: 920px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+  .nav-links {
+    justify-content: flex-start;
+  }
   .layout { grid-template-columns: 1fr; }
   .sidebar { position: static; }
 }
@@ -398,23 +662,45 @@ body::after {
   }
   .toolbar {
     width: 100%;
+    grid-template-columns: 1fr;
   }
   .toolbar input,
   .toolbar a {
     width: 100%;
   }
-  .quick-links {
+  .nav-links {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .quick-links a {
+  .nav-links a {
     min-width: 0;
     padding: 11px 12px;
     font-size: 0.9rem;
   }
   .hero h1 {
     font-size: 2rem;
+  }
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .product-marquee {
+    padding: 12px;
+    border-radius: 22px;
+  }
+  .marquee-item {
+    width: 126px;
+    min-width: 126px;
+    height: 88px;
+    border-radius: 16px;
+  }
+  .toast {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    max-width: none;
+    border-radius: 16px;
   }
   .layout {
     gap: 14px;
@@ -453,7 +739,6 @@ body::after {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <header class="topbar" data-reveal="zoom">
     <div class="brand">
@@ -461,14 +746,68 @@ body::after {
       <span>Catalog browsing with cart and database-backed checkout</span>
     </div>
     <div class="toolbar">
-      <input id="search" type="text" placeholder="Search products...">
-      <div class="quick-links">
-        <a href="index.html">Home</a>
-        <a href="Orderhistory.html">Orders</a>
+      <div class="search-wrap">
+        <input id="search" type="text" placeholder="Search products...">
+        <div id="searchSuggestions" class="search-suggestions" hidden></div>
       </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="Product.html">Products</a>
+        <a href="Food.html">Foods</a>
+        <a href="Movies.html">Movies</a>
+        <a href="Login.html">Login</a>
+      </nav>
       <a href="Cart.html">Go to Cart</a>
     </div>
   </header>
+
+  <section class="product-marquee" data-reveal="zoom" style="--delay: 30ms;">
+    <div class="product-marquee-row">
+      <figure class="marquee-item"><img src="Assests/products/mobiles/Google%20Pixel%207a.jpg" alt="Google Pixel 7a"><span>Google Pixel 7a</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/Acer%20Aspire%207.jpg" alt="Acer Aspire 7"><span>Acer Aspire 7</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Apple%20AirPods%20(3rd%20Gen).jpg" alt="Apple AirPods"><span>Apple AirPods</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Apple%20Watch%20SE.jpg" alt="Apple Watch SE"><span>Apple Watch SE</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/Aqualogica%20Glow%2B%20Dewy%20Sunscreen.jpg" alt="Aqualogica Glow+ Dewy Sunscreen"><span>Aqualogica Glow+</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/mobiles/iPhone%2013.jpg" alt="iPhone 13"><span>iPhone 13</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/Acer%20Nitro%20V.jpg" alt="Acer Nitro V"><span>Acer Nitro V</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Anker%20Soundcore%20Life%20Q30.jpg" alt="Anker Soundcore Life Q30"><span>Soundcore Q30</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Amazfit%20GTR%204.jpg" alt="Amazfit GTR 4"><span>Amazfit GTR 4</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/BBlunt%20Hot%20Shot%20Hair%20Spray.jpg" alt="BBlunt Hot Shot Hair Spray"><span>BBlunt Hot Shot</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/mobiles/Google%20Pixel%207a.jpg" alt="Google Pixel 7a"><span>Google Pixel 7a</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/Acer%20Aspire%207.jpg" alt="Acer Aspire 7"><span>Acer Aspire 7</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Apple%20AirPods%20(3rd%20Gen).jpg" alt="Apple AirPods"><span>Apple AirPods</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Apple%20Watch%20SE.jpg" alt="Apple Watch SE"><span>Apple Watch SE</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/Aqualogica%20Glow%2B%20Dewy%20Sunscreen.jpg" alt="Aqualogica Glow+ Dewy Sunscreen"><span>Aqualogica Glow+</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/mobiles/iPhone%2013.jpg" alt="iPhone 13"><span>iPhone 13</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/Acer%20Nitro%20V.jpg" alt="Acer Nitro V"><span>Acer Nitro V</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Anker%20Soundcore%20Life%20Q30.jpg" alt="Anker Soundcore Life Q30"><span>Soundcore Q30</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Amazfit%20GTR%204.jpg" alt="Amazfit GTR 4"><span>Amazfit GTR 4</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/BBlunt%20Hot%20Shot%20Hair%20Spray.jpg" alt="BBlunt Hot Shot Hair Spray"><span>BBlunt Hot Shot</span></figure>
+    </div>
+
+    <div class="product-marquee-row reverse">
+      <figure class="marquee-item"><img src="Assests/products/mobiles/iPhone%20SE.jpg" alt="iPhone SE"><span>iPhone SE</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/Acer%20Swift%20Go%2014.jpg" alt="Acer Swift Go 14"><span>Swift Go 14</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Apple%20AirPods%20Pro%20(2nd%20Gen).jpg" alt="AirPods Pro"><span>AirPods Pro</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Amazfit%20Bip%205.jpg" alt="Amazfit Bip 5"><span>Amazfit Bip 5</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/Biotique%20Bio%20Cucumber%20Toner.jpg" alt="Biotique Toner"><span>Biotique Toner</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/mobiles/iQOO%20Neo%209%20Pro.jpg" alt="iQOO Neo 9 Pro"><span>iQOO Neo 9 Pro</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/MacBook%20Air%20M2.jpg" alt="MacBook Air M2"><span>MacBook Air M2</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Marshall%20Major%20IV.jpg" alt="Marshall Major IV"><span>Marshall Major IV</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Samsung%20Galaxy%20Watch6.jpg" alt="Galaxy Watch6"><span>Galaxy Watch6</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/Cetaphil%20Gentle%20Skin%20Cleanser.jpg" alt="Cetaphil Cleanser"><span>Cetaphil Cleanser</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/mobiles/iPhone%20SE.jpg" alt="iPhone SE"><span>iPhone SE</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/Acer%20Swift%20Go%2014.jpg" alt="Acer Swift Go 14"><span>Swift Go 14</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Apple%20AirPods%20Pro%20(2nd%20Gen).jpg" alt="AirPods Pro"><span>AirPods Pro</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Amazfit%20Bip%205.jpg" alt="Amazfit Bip 5"><span>Amazfit Bip 5</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/Biotique%20Bio%20Cucumber%20Toner.jpg" alt="Biotique Toner"><span>Biotique Toner</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/mobiles/iQOO%20Neo%209%20Pro.jpg" alt="iQOO Neo 9 Pro"><span>iQOO Neo 9 Pro</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/laptops/MacBook%20Air%20M2.jpg" alt="MacBook Air M2"><span>MacBook Air M2</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/headphones/Marshall%20Major%20IV.jpg" alt="Marshall Major IV"><span>Marshall Major IV</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/watches/Samsung%20Galaxy%20Watch6.jpg" alt="Galaxy Watch6"><span>Galaxy Watch6</span></figure>
+      <figure class="marquee-item"><img src="Assests/products/beauty/Cetaphil%20Gentle%20Skin%20Cleanser.jpg" alt="Cetaphil Cleanser"><span>Cetaphil Cleanser</span></figure>
+    </div>
+  </section>
 
   <section class="hero" data-reveal="left">
     <span class="eyebrow">Storefront</span>
@@ -477,6 +816,12 @@ body::after {
       Browse items from the database, filter by category, open product details, and move into
       the cart and payment flow without losing the full-stack behavior behind the page.
     </p>
+    <div class="hero-metrics">
+      <div class="hero-metric"><strong>8</strong><span>Curated categories</span></div>
+      <div class="hero-metric"><strong>150+</strong><span>Real product images</span></div>
+      <div class="hero-metric"><strong>Search</strong><span>Find products faster</span></div>
+      <div class="hero-metric"><strong>Live cart</strong><span>Preview while browsing</span></div>
+    </div>
   </section>
 
   <div class="layout">
@@ -484,6 +829,10 @@ body::after {
       <h3>Categories</h3>
       <p>Browse 8 curated categories with real product images and cleaner collections.</p>
       <div id="categoryFilters"></div>
+      <div class="mini-cart">
+        <h4>Your Cart</h4>
+        <div id="miniCart" class="mini-cart-empty">Added products will appear here while you browse.</div>
+      </div>
     </aside>
 
     <main>
@@ -496,15 +845,136 @@ body::after {
     Products stay connected to the same TrendCart account, cart, payment, and order history flow.
   </section>
 </div>
+<div class="toast" id="cartToast" aria-live="polite" aria-atomic="true"></div>
 
 <script src="Assests/api.js"></script>
 <script>
 const productBox = document.getElementById("products");
 const statusBox = document.getElementById("status");
 const categoryFilters = document.getElementById("categoryFilters");
+const miniCartBox = document.getElementById("miniCart");
+const cartToast = document.getElementById("cartToast");
+const searchInput = document.getElementById("search");
+const searchSuggestions = document.getElementById("searchSuggestions");
 let selectedCategory = "All";
 let searchText = "";
 let categories = [];
+let toastTimer = null;
+let allProducts = [];
+
+function showCartToast(title, message) {
+  if (!cartToast) {
+    return;
+  }
+
+  cartToast.innerHTML = `<strong>${title}</strong><span>${message}</span>`;
+  cartToast.classList.add("is-visible");
+
+  if (toastTimer) {
+    window.clearTimeout(toastTimer);
+  }
+
+  toastTimer = window.setTimeout(() => {
+    cartToast.classList.remove("is-visible");
+  }, 2200);
+}
+
+function renderSearchSuggestions() {
+  if (!searchText || !allProducts.length) {
+    searchSuggestions.hidden = true;
+    searchSuggestions.innerHTML = "";
+    return;
+  }
+
+  const normalizedSearch = searchText.toLowerCase();
+  const matches = allProducts
+    .filter((product) => product.name.toLowerCase().includes(normalizedSearch))
+    .slice(0, 6);
+
+  if (!matches.length) {
+    searchSuggestions.hidden = true;
+    searchSuggestions.innerHTML = "";
+    return;
+  }
+
+  searchSuggestions.hidden = false;
+  searchSuggestions.innerHTML = matches.map((product) => `
+    <button class="search-suggestion" type="button" data-suggest="${product.id}">
+      <img src="${product.image}" alt="${product.name}">
+      <div class="search-suggestion-copy">
+        <strong>${product.name}</strong>
+        <span>${product.category}</span>
+      </div>
+      <span class="search-suggestion-price">${TrendCartAPI.formatCurrency(product.price)}</span>
+    </button>
+  `).join("");
+
+  searchSuggestions.querySelectorAll("[data-suggest]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const product = allProducts.find((entry) => entry.id === Number(button.dataset.suggest));
+      if (!product) {
+        return;
+      }
+
+      searchText = product.name;
+      searchInput.value = product.name;
+      searchSuggestions.hidden = true;
+      loadProducts();
+      statusBox.textContent = `${product.name} found in ${product.category}.`;
+    });
+  });
+}
+
+function renderMiniCart(items) {
+  if (!items?.length) {
+    miniCartBox.className = "mini-cart-empty";
+    miniCartBox.innerHTML = "Added products will appear here while you browse.";
+    return;
+  }
+
+  const subtotal = items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+  const pricing = TrendCartAPI.getPricingBreakdown(subtotal, "product");
+  miniCartBox.className = "";
+  miniCartBox.innerHTML = `
+    <div class="mini-cart-list">
+      ${items.slice(0, 4).map((item) => `
+        <div class="mini-cart-item">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="mini-cart-copy">
+            <strong>${item.name}</strong>
+            <span>Qty ${item.quantity} &middot; ${TrendCartAPI.formatCurrency(item.price)}</span>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+    <div class="mini-cart-breakdown">
+      <div class="mini-cart-total">
+        <span>Subtotal</span>
+        <span>${TrendCartAPI.formatCurrency(pricing.subtotal)}</span>
+      </div>
+      <div class="mini-cart-total">
+        <span>Convenience Fee (${pricing.percentageLabel})</span>
+        <span>${TrendCartAPI.formatCurrency(pricing.convenienceFee)}</span>
+      </div>
+      <div class="mini-cart-total">
+        <span>Total</span>
+        <span>${TrendCartAPI.formatCurrency(pricing.total)}</span>
+      </div>
+    </div>
+  `;
+}
+
+async function loadMiniCart() {
+  try {
+    const items = await TrendCartAPI.getCart();
+    renderMiniCart(items);
+  } catch (error) {
+    miniCartBox.className = "mini-cart-empty";
+    miniCartBox.innerHTML = error.message.includes("login")
+      ? "Login to see your cart preview here."
+      : "Cart preview is unavailable right now.";
+  }
+}
 
 function renderCategoryFilters() {
   const list = ["All", ...categories];
@@ -533,7 +1003,7 @@ function renderProducts(list) {
       <p>${product.description}</p>
       <div class="price-row">
         <span class="price">${TrendCartAPI.formatCurrency(product.price)}</span>
-        <span class="rating">${"★".repeat(product.rating)}</span>
+        <span class="rating">${"&#9733;".repeat(product.rating)}</span>
       </div>
       <div class="actions">
         <a class="action" href="product-details.html?id=${product.id}">View Details</a>
@@ -546,8 +1016,12 @@ function renderProducts(list) {
   document.querySelectorAll("[data-add]").forEach((button) => {
     button.addEventListener("click", async () => {
       try {
-        await TrendCartAPI.addToCart(Number(button.dataset.add), 1);
+        const productId = Number(button.dataset.add);
+        await TrendCartAPI.addToCart(productId, 1);
+        const product = list.find((entry) => entry.id === productId);
         statusBox.textContent = "Item added to cart successfully.";
+        showCartToast("Added to cart", `${product?.name || "Item"} added to the cart successfully.`);
+        await loadMiniCart();
       } catch (error) {
         if (error.message.includes("login")) {
           window.location.href = "Login.html";
@@ -562,7 +1036,7 @@ function renderProducts(list) {
 async function loadProducts() {
   try {
     if (!categories.length) {
-      const allProducts = await TrendCartAPI.listProducts();
+      allProducts = await TrendCartAPI.listProducts();
       categories = [...new Set(allProducts.map((product) => product.category))];
       renderCategoryFilters();
     }
@@ -572,6 +1046,7 @@ async function loadProducts() {
       search: searchText
     });
     renderProducts(products);
+    renderSearchSuggestions();
     statusBox.textContent = `${products.length} product(s) loaded from ${categories.length} categories.`;
   } catch (error) {
     productBox.innerHTML = "";
@@ -579,9 +1054,20 @@ async function loadProducts() {
   }
 }
 
-document.getElementById("search").addEventListener("input", (event) => {
+searchInput.addEventListener("input", (event) => {
   searchText = event.target.value.trim();
+  renderSearchSuggestions();
   loadProducts();
+});
+
+searchInput.addEventListener("focus", () => {
+  renderSearchSuggestions();
+});
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".search-wrap")) {
+    searchSuggestions.hidden = true;
+  }
 });
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -619,6 +1105,9 @@ function revealElements(elements) {
 document.body.classList.add("motion-ready");
 revealElements(document.querySelectorAll("[data-reveal]"));
 loadProducts();
+loadMiniCart();
 </script>
 </body>
 </html>
+
+

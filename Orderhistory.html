@@ -38,9 +38,9 @@ body::before {
 }
 .page {
   position: relative;
-  max-width: 1140px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 24px 20px 42px;
+  padding: 24px 16px 42px;
 }
 .topbar,
 .card {
@@ -67,6 +67,11 @@ body::before {
   padding: 12px 16px;
   border-radius: 999px;
   font-weight: 800;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .grid {
   display: grid;
@@ -149,17 +154,19 @@ ul {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <div class="topbar">
     <div>
       <h1>Order History</h1>
       <p>Products and food orders saved from checkout</p>
     </div>
-    <div>
+    <nav class="nav-links" aria-label="Primary">
       <a href="index.html">Home</a>
-      <a href="Profile.html">Profile</a>
-    </div>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
+    </nav>
   </div>
   <div class="grid" id="orders"></div>
 </div>

@@ -39,9 +39,9 @@ body::before {
 }
 .page {
   position: relative;
-  max-width: 1140px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 24px 20px 42px;
+  padding: 24px 16px 42px;
 }
 .topbar,
 .hero,
@@ -72,6 +72,11 @@ body::before {
   border-radius: 999px;
   cursor: pointer;
   font-weight: 800;
+}
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .hero {
   border-radius: 28px;
@@ -178,15 +183,18 @@ body::before {
 </style>
 </head>
 <body>
-<a class="home-link" href="index.html">Home</a>
 <div class="page">
   <div class="topbar">
     <div>
       <h1>Profile</h1>
       <p>Account details and activity summary</p>
     </div>
-    <div>
+    <div class="nav-links">
       <a href="index.html">Home</a>
+      <a href="Product.html">Products</a>
+      <a href="Food.html">Foods</a>
+      <a href="Movies.html">Movies</a>
+      <a href="Login.html">Login</a>
       <button id="logoutBtn">Logout</button>
     </div>
   </div>

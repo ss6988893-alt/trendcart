@@ -1,4 +1,4 @@
-import express from "express";
+﻿import express from "express";
 import session from "express-session";
 import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
@@ -23,6 +23,11 @@ const isProduction = process.env.NODE_ENV === "production";
 const PRODUCT_CATEGORY_COUNT = 8;
 const FOOD_HOTEL_COUNT = 5;
 const SEAT_LOCK_MINUTES = 5;
+const CONVENIENCE_FEE_RATES = {
+  product: 0.02,
+  food: 0.04,
+  movie: 0.05
+};
 const ORDER_STATUSES = ["Placed", "Preparing", "Out for delivery", "Completed", "Cancelled"];
 const TICKET_STATUSES = ["Confirmed", "Checked in", "Cancelled"];
 const DEFAULT_MOVIES = [
@@ -148,6 +153,18 @@ function normalizeJsonField(value) {
   return [];
 }
 
+function getPricingBreakdown(amount, type = "product") {
+  const subtotal = Math.max(0, Number(amount) || 0);
+  const rate = CONVENIENCE_FEE_RATES[type] ?? CONVENIENCE_FEE_RATES.product;
+  const convenienceFee = subtotal > 0 ? Math.max(1, Math.round(subtotal * rate)) : 0;
+
+  return {
+    subtotal,
+    convenienceFee,
+    total: subtotal + convenienceFee
+  };
+}
+
 function getNetworkBaseUrl() {
   if (process.env.APP_BASE_URL) {
     return process.env.APP_BASE_URL;
@@ -245,9 +262,9 @@ async function backfillCatalogImageAssignments() {
   for (const product of curatedProducts) {
     await pool.query(
       `UPDATE products
-       SET image_url = ?, description = ?
+       SET image_url = ?, description = ?, price = ?, rating = ?, category = ?
        WHERE name = ?`,
-      [product.image_url, product.description, product.name]
+      [product.image_url, product.description, product.price, product.rating, product.category, product.name]
     );
   }
 
@@ -618,53 +635,28 @@ async function initializeDatabase() {
   `);
 
   const [existingProducts] = await pool.query(
-    "SELECT name, category, image_url FROM products ORDER BY category, name"
+    "SELECT id, name, category, image_url FROM products ORDER BY category, name"
   );
-  const productCounts = { total: existingProducts.length };
-  const existingProductCategories = existingProducts.map((row) => ({ category: row.category }));
-  const allowedProductCategories = new Set(curatedProducts.map((item) => item.category));
-  const hasLegacyProductCategories = existingProductCategories.some(
-    (row) => !allowedProductCategories.has(row.category)
-  );
-  const curatedProductNames = new Set(curatedProducts.map((item) => item.name));
-  const hasLegacyProductNames = existingProducts.some((row) => !curatedProductNames.has(row.name));
-  const hasRemoteProductImages = existingProducts.some(
-    (row) => String(row.image_url || "").startsWith("http")
-  );
-  const hasCatalogCountMismatch = productCounts.total !== curatedProducts.length;
+  const productMap = new Map(existingProducts.map((row) => [String(row.name).toLowerCase(), row]));
 
-  if (
-    productCounts.total === 0 ||
-    hasLegacyProductCategories ||
-    hasLegacyProductNames ||
-    hasRemoteProductImages ||
-    hasCatalogCountMismatch
-  ) {
-    if (
-      hasLegacyProductCategories ||
-      hasLegacyProductNames ||
-      hasRemoteProductImages ||
-      hasCatalogCountMismatch
-    ) {
-      await pool.query("DELETE FROM products");
-    }
+  for (const product of curatedProducts) {
+    const existing = productMap.get(product.name.toLowerCase());
 
-    for (let index = 0; index < curatedProducts.length; index += 40) {
-      const batch = curatedProducts.slice(index, index + 40);
-      const placeholders = batch.map(() => "(?, ?, ?, ?, ?, ?)").join(", ");
-      const values = batch.flatMap((item) => [
-        item.name,
-        item.category,
-        item.description,
-        item.image_url,
-        item.price,
-        item.rating
-      ]);
+    if (!existing) {
       await pool.query(
-        `INSERT INTO products (name, category, description, image_url, price, rating) VALUES ${placeholders}`,
-        values
+        `INSERT INTO products (name, category, description, image_url, price, rating)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [product.name, product.category, product.description, product.image_url, product.price, product.rating]
       );
+      continue;
     }
+
+    await pool.query(
+      `UPDATE products
+       SET category = ?, description = ?, image_url = ?, price = ?, rating = ?
+       WHERE id = ?`,
+      [product.category, product.description, product.image_url, product.price, product.rating, existing.id]
+    );
   }
 
   const [existingFoodItems] = await pool.query(
@@ -1312,17 +1304,18 @@ app.post("/api/orders", requireAuth, async (req, res) => {
       return res.status(400).json({ message: "Your cart is empty." });
     }
 
-    const totalAmount = cartRows.reduce(
+    const subtotal = cartRows.reduce(
       (sum, item) => sum + Number(item.price) * Number(item.quantity),
       0
     );
+    const pricing = getPricingBreakdown(subtotal, "product");
 
     const [orderResult] = await connection.query(
       `INSERT INTO orders (user_id, order_type, total_amount, payment_method, payment_reference, payment_status, order_status)
       VALUES (?, 'product', ?, ?, ?, 'PAID', 'Placed')`,
       [
         req.session.user.id,
-        totalAmount,
+        pricing.total,
         req.body.paymentMethod || "Razorpay",
         req.body.paymentReference || null
       ]
@@ -1342,7 +1335,9 @@ app.post("/api/orders", requireAuth, async (req, res) => {
     res.status(201).json({
       message: "Order placed successfully.",
       orderId: orderResult.insertId,
-      totalAmount
+      subtotal: pricing.subtotal,
+      convenienceFee: pricing.convenienceFee,
+      totalAmount: pricing.total
     });
   } catch (error) {
     await connection.rollback();
@@ -1473,13 +1468,14 @@ app.post("/api/food-orders", requireAuth, async (req, res) => {
     }
 
     const item = rows[0];
-    const total = Number(item.price) * quantity;
+    const subtotal = Number(item.price) * quantity;
+    const pricing = getPricingBreakdown(subtotal, "food");
     const [orderResult] = await pool.query(
       `INSERT INTO orders (user_id, order_type, total_amount, payment_method, payment_reference, payment_status, order_status)
       VALUES (?, 'food', ?, ?, ?, 'PAID', 'Placed')`,
       [
         req.session.user.id,
-        total,
+        pricing.total,
         req.body.paymentMethod || "Razorpay",
         req.body.paymentReference || null
       ]
@@ -1491,7 +1487,13 @@ app.post("/api/food-orders", requireAuth, async (req, res) => {
       [orderResult.insertId, item.id, item.name, item.price, quantity]
     );
 
-    res.status(201).json({ message: "Food order placed.", orderId: orderResult.insertId });
+    res.status(201).json({
+      message: "Food order placed.",
+      orderId: orderResult.insertId,
+      subtotal: pricing.subtotal,
+      convenienceFee: pricing.convenienceFee,
+      totalAmount: pricing.total
+    });
   } catch (error) {
     console.error("Food order error:", error);
     res.status(500).json({ message: "Unable to place food order." });
@@ -2038,3 +2040,4 @@ initializeDatabase()
     console.error("Failed to initialize database:", error);
     process.exit(1);
   });
+
