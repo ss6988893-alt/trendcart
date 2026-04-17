@@ -111,7 +111,11 @@ function getDatabaseReadyPromise() {
   return databaseReadyPromise;
 }
 
-app.use(async (_req, res, next) => {
+app.use(async (req, res, next) => {
+  if (!req.path.startsWith("/api")) {
+    return next();
+  }
+
   try {
     await getDatabaseReadyPromise();
     next();
