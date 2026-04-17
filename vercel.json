@@ -1,25 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npm install",
-  "buildCommand": "npm run vercel-build",
-  "cleanUrls": false,
-  "trailingSlash": false,
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
-    },
-    {
-      "handle": "filesystem"
+  "functions": {
+    "api/index.js": {
+      "includeFiles": [
+        "*.html",
+        "Assests/**",
+        "uploads/**",
+        "README.md",
+        "DEPLOY.md"
+      ]
     }
-  ],
+  },
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "destination": "/api/index.js"
     }
   ]
