@@ -65,15 +65,45 @@ const DEFAULT_MOVIES = [
   }
 ];
 
+const dbHost = process.env.DB_HOST || process.env.MYSQLHOST || "localhost";
+const dbPort = Number(process.env.DB_PORT || process.env.MYSQLPORT || 3306);
+const dbUser = process.env.DB_USER || process.env.MYSQLUSER || "root";
+const dbPassword = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || "";
+const dbName = process.env.DB_NAME || process.env.MYSQLDATABASE || "trendcart";
+const dbSslMode = String(process.env.DB_SSL_MODE || "").trim().toUpperCase();
+const dbSslCa = String(process.env.DB_SSL_CA || process.env.MYSQL_SSL_CA || "").trim();
+
+function getDatabaseSslConfig() {
+  const shouldUseSsl =
+    dbSslMode === "REQUIRED" ||
+    dbHost.includes("aivencloud.com") ||
+    Boolean(dbSslCa);
+
+  if (!shouldUseSsl) {
+    return undefined;
+  }
+
+  const ssl = {
+    rejectUnauthorized: Boolean(dbSslCa)
+  };
+
+  if (dbSslCa) {
+    ssl.ca = dbSslCa.replace(/\\n/g, "\n");
+  }
+
+  return ssl;
+}
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || process.env.MYSQLHOST || "localhost",
-  port: Number(process.env.DB_PORT || process.env.MYSQLPORT || 3306),
-  user: process.env.DB_USER || process.env.MYSQLUSER || "root",
-  password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || "",
-  database: process.env.DB_NAME || process.env.MYSQLDATABASE || "trendcart",
+  host: dbHost,
+  port: dbPort,
+  user: dbUser,
+  password: dbPassword,
+  database: dbName,
   waitForConnections: true,
   connectionLimit: 10,
-  namedPlaceholders: true
+  namedPlaceholders: true,
+  ssl: getDatabaseSslConfig()
 });
 
 if (isProduction) {
@@ -112,6 +142,10 @@ function getDatabaseReadyPromise() {
 }
 
 app.use(async (req, res, next) => {
+  if (req.path === "/api/server-info" || req.path === "/api/auth/me") {
+    return next();
+  }
+
   if (!req.path.startsWith("/api")) {
     return next();
   }
