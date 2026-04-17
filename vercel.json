@@ -3,6 +3,21 @@
   "installCommand": "npm install",
   "buildCommand": "npm run vercel-build",
   "outputDirectory": "public",
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "handle": "filesystem"
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
